@@ -22,7 +22,8 @@ public class Account implements java.io.Serializable {
 	@JsonIgnore
 	private String password;
 
-	private String role = "ROLE_USER";
+	private String role = "ROLE_USER";//TODO: reemplazar por el rol que corresponda
+	//ROLES DISPONIBLES: A=Administrador, G=Gerente, C=Cliente
 
     protected Account() {
 
