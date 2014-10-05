@@ -1,0 +1,25 @@
+Estructura de paquetes y descripción de su contenido
+
+- src
+  - main
+    - java
+      - frgp.seminario.cine
+        - account (relacionado con la cuenta de usuario)
+        - config (archivos de configuración)
+        - controller (controladores)
+        - error (relacionado con el manejo de errores)
+        - findItem (para la búsqueda de registros en la base de datos)
+          - impl (implementación, un archivo por clase del modelo de datos)
+        - home (página principal)
+        - model (modelo de datos, un archivo por clase)
+        - repository (repositorios, operaciones básicas relacionadas al modelo de datos sobre la base de datos)
+          - impl (implementación, un archivo por clase del modelo de datos)
+        - singin (inicio de sesion)
+        - singup (registración en el sitio)
+        - support (otros)
+          - web
+        - utils (clases con funciones comunes a todo el proyecto, agrupados por tipo de datos)
+    - resources (configuración de logback, base de datos y del contexto de Spring Security que no entran en el paquete config)
+  - test (relacionado con las pruebas unitarias)
+    - java (clases de los tests)
+    - resources (configuracion para los tests)
