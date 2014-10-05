@@ -1,0 +1,20 @@
+Estructura de carpetas para la parte de presentación *(en desarollo)*
+
+- webapp
+  - resources (agregados)
+    - css (plantillas de estilos, en formato .css)
+    - js (archivos javascript, en formato .js
+  - WEB-INF
+    - tiles (incluye cabecera, pie, y página de ejemplo)
+    - views (vistas, el contenido de cada página, cada una agrupada por el grupo de casos de uso en el que se usan)
+      - admin
+      - cartelera
+      - error
+      - home
+      - pelicula
+      - signin
+      - signup
+      
+IMPORTANTE:
+* cada carpeta dentro de WEB-INF debe incluir un archivo views.xml describiendo los jsp que incluye, y un nombre. Este nombre es el que se utilizará en cada Controller al momento de indicar qué jsp se utiliza. Para un ejemplo, mirar los correspondientes a la clase Película.
+* solo modificar el archivo header.jsp si se quiere cambiar la apariencia del navbar superior
