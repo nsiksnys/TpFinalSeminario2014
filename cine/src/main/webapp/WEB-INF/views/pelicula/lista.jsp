@@ -21,10 +21,10 @@
 				<tr>
 					<td>${item.id}</td>
 					<td>${item.nombre}</td>
-					<td><fmt:formatDate type="date" value="${adicional.fechaCreacion}"/></td>
+					<td><fmt:formatDate type="date" value="${item.fechaCreacion}"/></td>
 					<td><a href='<s:url value="/view?id=${item.id}"/>'>Ver</a></td>
 					<td><a href='<s:url value="/modificar?id=${item.id}"/>'>Modificar</a></td>
-					<td><a href='<s:url value="/view?id=${item.id}"/>'>X</a></td>
+					<td><a href='<s:url value="/delete?id=${item.id}"/>'>X</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>

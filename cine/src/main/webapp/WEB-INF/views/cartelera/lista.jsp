@@ -26,7 +26,7 @@
 					<td><fmt:formatDate type="date" value="${adicional.fechaFin}"/></td>
 					<td><a href='<s:url value="/view?id=${item.id}"/>'>Ver</a></td>
 					<td><a href='<s:url value="/modificar?id=${item.id}"/>'>Modificar</a></td>
-					<td><a href='<s:url value="/view?id=${item.id}"/>'>X</a></td>
+					<td><a href='<s:url value="/delete?id=${item.id}"/>'>X</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>

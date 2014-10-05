@@ -8,19 +8,41 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Demo project</a>
+        <a class="navbar-brand" href="#">CINE</a>
         <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
+               <li><a href="#">Complejos y salas</a></li>
+               <li><a href="#">Cartelera</a></li>
+               <li><a href="#">Proximos estrenos</a></li>
+               <li><a href="#">Peliculas</a></li>
+		         	<security:authorize access="isAuthenticated()">
+		            	<li><a href="#">Usuarios</a></li>
+  			            <li><a href="#">Promociones</a></li>
+  			            <li><a href="#">Precios</a></li>
+		            	<li><a href="#">Reservar entradas</a></li>
+		                <li><a href="#">Estadisticas</a></li>
+		            </security:authorize>
             </ul>
+            
             <ul class="nav navbar-nav pull-right">
                 <security:authorize access="!isAuthenticated()">
-                    <li><a href='<s:url value="/signin"></s:url>'>Sign in</a></li>
+                    <li><a href='<s:url value="/signin"/>'>Iniciar sesion</a></li>
+                    <li><a href='<s:url value="/signup"/>'>Registrarse </a></li>
                 </security:authorize>
                 <security:authorize access="isAuthenticated()">
-                    <li><a href='<s:url value="/logout"></s:url>'>Logout (<security:authentication property="principal.username"/>)</a></li>
+                    <li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<font><security:authentication property="principal.username"/></font>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<a href="#"><font><font>Perfil</font></font></a>
+							</li>
+							<li>
+								<a href='<s:url value="/logout"></s:url>'><font><font>Cerrar sesion</font></font></a>
+							</li>
+						</ul>
+					</li>
                 </security:authorize>
             </ul>
         </div>
