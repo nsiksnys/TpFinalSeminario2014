@@ -10,11 +10,11 @@ public interface DataAccessInterface {
 	@SuppressWarnings("rawtypes")
 	public List getAll(Class entityClass);
 	@SuppressWarnings("rawtypes")
-	public void save(Object registro);
-	public void merge(Object registro);
-	public void saveOrUpdate(Object registro);
-	public void update(Object registro);
-	public void delete (Object registro);
+	public boolean save(Object registro);
+	public boolean merge(Object registro);
+//	public void saveOrUpdate(Object registro);
+//	public void update(Object registro);
+	public boolean delete (Object registro);
 	@SuppressWarnings("rawtypes")
 	public Object createQuery(Class entityClass);
 }
