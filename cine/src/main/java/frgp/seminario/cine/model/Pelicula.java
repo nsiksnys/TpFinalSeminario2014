@@ -46,10 +46,10 @@ public class Pelicula {
 			String clasificacion, boolean reposicion, FichaTecnica detalles,
 			Date fechaCreacion) {
 		super();
-		this.nombre = nombre;
-		this.idioma = idioma;
+		this.nombre = nombre.toUpperCase();
+		this.idioma = idioma.toUpperCase();
 		this.subs = subs;
-		this.clasificacion = clasificacion;
+		this.clasificacion = clasificacion.toUpperCase();
 		this.reposicion = reposicion;
 		this.detalles = detalles;
 		this.fechaCreacion = fechaCreacion;
@@ -57,26 +57,25 @@ public class Pelicula {
 	
 	public Pelicula(String nombre, String idioma, boolean subs,
 			String clasificacion, boolean reposicion, String descripcion, String actores, String director,
-			String urlTrailer,
-			Date fechaCreacion) {
+			String urlTrailer) {
 		super();
-		this.nombre = nombre;
-		this.idioma = idioma;
+		this.nombre = nombre.toUpperCase();
+		this.idioma = idioma.toUpperCase();
 		this.subs = subs;
-		this.clasificacion = clasificacion;
+		this.clasificacion = clasificacion.toUpperCase();
 		this.reposicion = reposicion;
 		this.detalles = new FichaTecnica(descripcion, actores, director, urlTrailer);
-		this.fechaCreacion = fechaCreacion;
+		this.fechaCreacion = new Date();
 	}
 
 	public Pelicula(String nombre, String idioma, boolean subs,
 			String clasificacion, boolean reposicion, FichaTecnica detalles,
 			Date fechaCreacion, boolean activo) {
 		super();
-		this.nombre = nombre;
-		this.idioma = idioma;
+		this.nombre = nombre.toUpperCase();
+		this.idioma = idioma.toUpperCase();
 		this.subs = subs;
-		this.clasificacion = clasificacion;
+		this.clasificacion = clasificacion.toUpperCase();
 		this.reposicion = reposicion;
 		this.detalles = detalles;
 		this.fechaCreacion = fechaCreacion;
@@ -153,5 +152,33 @@ public class Pelicula {
 
 	public void setActivo(boolean activo) {
 		this.activo = activo;
+	}
+	
+	public boolean equals(Pelicula registro){
+		if (!nombre.equals(registro.getNombre()))
+			return false;
+		
+		if (!idioma.equals(registro.getIdioma()))
+			return false;
+		
+		if (subs != registro.isSubs())
+			return false;
+		
+		if (!clasificacion.equals(registro.getClasificacion()))
+			return false;
+		
+		if (reposicion != registro.isReposicion())
+			return false;
+		
+		if (!detalles.equals(registro.getDetalles()))
+			return false;
+		
+		if (fechaCreacion.compareTo(registro.getFechaCreacion()) != 0)
+			return false;
+		
+		if (activo != registro.isActivo())
+			return false;
+		
+		return true;
 	}
 }
