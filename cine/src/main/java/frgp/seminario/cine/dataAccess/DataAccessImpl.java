@@ -40,9 +40,15 @@ public class DataAccessImpl implements DataAccessInterface{
 	 ** @param registro El objeto a persistir.
 	 **/
 	@Override
-	public void save(Object registro) {
-		entityManager.persist(registro);
-		entityManager.flush();
+	public boolean save(Object registro) {
+		try {
+			entityManager.persist(registro);
+			entityManager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -50,37 +56,49 @@ public class DataAccessImpl implements DataAccessInterface{
 	 ** @param registro El objeto a mergear.
 	 **/
 	@Override
-	public void merge(Object registro) {
-		entityManager.merge(registro);
-		entityManager.flush();
+	public boolean merge(Object registro) {
+		try {
+			entityManager.merge(registro);
+			entityManager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**
 	 ** Persiste o actualiza un registro en la base de datos.
 	 ** @param registro El objeto a guardar.
 	 **/
-	@Override
+/*	@Override
 	public void saveOrUpdate(Object registro) {
 		// TODO Auto-generated method stub
-	}
+	}*/
 
 	/**
 	 ** Actualiza un registro en la base de datos.
 	 ** @param registro El objeto a actualizar.
 	 **/
-	@Override
+/*	@Override
 	public void update(Object registro) {
 		// TODO Auto-generated method stub
-	}
+	}*/
 
 	/**
 	 ** Borra un registro en la base de datos.
 	 ** @param registro El objeto a borrar.
 	 **/
 	@Override
-	public void delete(Object registro) {
-		entityManager.remove(registro);
-		entityManager.flush();
+	public boolean delete(Object registro) {
+		try {
+			entityManager.remove(registro);
+			entityManager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**
