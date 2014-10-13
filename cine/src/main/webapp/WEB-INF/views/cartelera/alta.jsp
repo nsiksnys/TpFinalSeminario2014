@@ -28,7 +28,7 @@
 					<select class="form-control" id="pelicula">
 						<c:if test="${not empty peliculas}">
 							<c:forEach items="${peliculas}" var="item">
-								<option>${item.nombre}</option>
+								<option value="${item.id}">${item.nombre}</option>
 							</c:forEach>
 						</c:if>
 						<c:if test="${empty lista}">
@@ -41,7 +41,7 @@
 					<input class="form-control" id="version" type="text" placeholder="2D, 3D"/>
 				</div>
 				<div class="checkbox">
-					<label>Subtitulos? <input type="checkbox" /></label>
+					<label>Subtitulos? <input type="checkbox" id="subtitulo"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>

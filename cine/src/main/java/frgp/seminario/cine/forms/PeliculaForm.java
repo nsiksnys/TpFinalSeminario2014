@@ -1,4 +1,4 @@
-package frgp.seminario.cine.forms.pelicula;
+package frgp.seminario.cine.forms;
 
 public class PeliculaForm {
 	//Contenido del formulario

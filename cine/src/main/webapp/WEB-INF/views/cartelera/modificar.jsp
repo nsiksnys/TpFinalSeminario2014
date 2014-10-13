@@ -24,6 +24,10 @@
 		<form class="form" action="alta" method="post">
 			<fieldset>
 				<div class="form-group">
+					<label for="id">Nro</label>
+					<input class="form-control" id="id" disabled="" type="text" />
+				</div>
+				<div class="form-group">
 					<label for="pelicula">Titulo</label>
 					<input class="form-control" id="pelicula" disabled="" type="text" />
 				</div>
@@ -32,7 +36,7 @@
 					<input class="form-control" id="version" type="text" placeholder="2D, 3D"/>
 				</div>
 				<div class="checkbox">
-					<label>Subtitulos? <input type="checkbox" /></label>
+					<label>Subtitulos? <input type="checkbox" id="subtitulos"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
