@@ -44,8 +44,8 @@ public class PeliculaController {
 	public ModelAndView guardar(@ModelAttribute PeliculaForm formulario, Principal principal) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:lista");
-		Pelicula pelicula = new Pelicula(formulario.getNombre(), formulario.getIdioma(), formulario.isSubs(),
-				formulario.getClasificacion(), formulario.isReposicion(), formulario.getDescripcion(),
+		Pelicula pelicula = new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
+				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
 				formulario.getActores(), formulario.getDirector(), formulario.getDirector());
 		
 		if (!logicaNegocio.guardar(pelicula)){//si no se guarda
@@ -63,8 +63,8 @@ public class PeliculaController {
 	public ModelAndView modificar(@ModelAttribute PeliculaForm formulario, Principal principal) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:lista");
-		Pelicula pelicula = new Pelicula(formulario.getNombre(), formulario.getIdioma(), formulario.isSubs(),
-				formulario.getClasificacion(), formulario.isReposicion(), formulario.getDescripcion(),
+		Pelicula pelicula = new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
+				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
 				formulario.getActores(), formulario.getDirector(), formulario.getDirector());
 		
 		if (!logicaNegocio.modificar(pelicula)){//si no se guarda
