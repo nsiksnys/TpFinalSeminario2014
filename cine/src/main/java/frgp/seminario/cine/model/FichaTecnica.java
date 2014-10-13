@@ -3,14 +3,13 @@ package frgp.seminario.cine.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "ficha_tecnica")
 public class FichaTecnica {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(nullable=false)
@@ -80,5 +79,25 @@ public class FichaTecnica {
 
 	public void setUrlTrailer(String urlTrailer) {
 		this.urlTrailer = urlTrailer;
+	}
+	
+	public boolean equals(FichaTecnica item)
+	{
+		if (id != item.getId())
+			return false;
+		
+		if (descripcion.compareTo(item.getDescripcion()) != 0)
+			return false;
+		
+		if (actores.compareTo(item.getActores()) != 0)
+			return false;
+		
+		if (director.compareTo(item.getDirector()) != 0)
+			return false;
+		
+		if (urlTrailer.compareTo(item.getUrlTrailer()) != 0)
+			return false;
+		
+		return true;
 	}
 }
