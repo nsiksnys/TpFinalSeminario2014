@@ -23,7 +23,6 @@ public class Promocion {
 	@Column(nullable=false)
 	private String descripcion;
 	
-	@Column(nullable=false)
 	@OneToMany
 	private List<Complejo> cines;
 	

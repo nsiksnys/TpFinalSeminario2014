@@ -19,7 +19,6 @@ public class Cartelera {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable=false)
 	@ManyToOne
 	private Pelicula pelicula;
 	
@@ -29,7 +28,6 @@ public class Cartelera {
 	@Column(nullable=false)
 	private boolean subtitulada;
 	
-	@Column(nullable=false)
 	@OneToMany
 	List<Funcion> funciones;
 	

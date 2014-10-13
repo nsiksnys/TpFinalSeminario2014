@@ -13,7 +13,6 @@ public class Sala {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable = false)
 	@ManyToOne
 	private Complejo complejo;
 	

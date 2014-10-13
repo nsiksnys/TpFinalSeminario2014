@@ -20,11 +20,9 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(nullable=false)
 	@ManyToOne(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Cliente cliente;
 	
-	@Column(nullable=false)
 	@ManyToOne(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Funcion funcion;
 	
@@ -34,11 +32,9 @@ public class Reserva {
 	@Transient
 	private Entrada entrada;
 	
-	@Column(nullable=false)
 	@OneToMany(mappedBy="reserva")
 	private List<Asiento> asientos;
 	
-	@Column(nullable=false)
 	@ManyToOne(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Promocion promo;
 	

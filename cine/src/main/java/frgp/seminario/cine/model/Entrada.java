@@ -1,5 +1,7 @@
 package frgp.seminario.cine.model;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,10 +10,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="Entrada_reserva")
-public class Entrada {
+public class Entrada implements Serializable{
+	@Transient
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="idReserva")
