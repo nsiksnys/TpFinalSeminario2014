@@ -1,19 +1,15 @@
 package frgp.seminario.cine.model;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -35,7 +31,7 @@ public class Cartelera {
 	
 	@Column(nullable=false)
 	@OneToMany
-	ArrayList<Funcion> funciones;
+	List<Funcion> funciones;
 	
 	@Column(nullable=false)
 	private Date fechaInicio;
@@ -47,7 +43,7 @@ public class Cartelera {
 	private boolean activo;
 
 	public Cartelera(Long id, Pelicula pelicula, String proyeccion,
-			boolean subtitulada, ArrayList<Funcion> funciones,
+			boolean subtitulada, List<Funcion> funciones,
 			Date fechaInicio, Date fechaFin, boolean activo) {
 		this.id = id;
 		this.pelicula = pelicula;
@@ -60,7 +56,7 @@ public class Cartelera {
 	}
 
 	public Cartelera(Pelicula pelicula, String proyeccion, boolean subtitulada,
-			ArrayList<Funcion> funciones, Date fechaInicio, Date fechaFin) {
+			List<Funcion> funciones, Date fechaInicio, Date fechaFin) {
 		this.pelicula = pelicula;
 		this.proyeccion = proyeccion;
 		this.subtitulada = subtitulada;
@@ -112,11 +108,11 @@ public class Cartelera {
 		this.subtitulada = subtitulada;
 	}
 
-	public ArrayList<Funcion> getFunciones() {
+	public List<Funcion> getFunciones() {
 		return funciones;
 	}
 
-	public void setFunciones(ArrayList<Funcion> funciones) {
+	public void setFunciones(List<Funcion> funciones) {
 		this.funciones = funciones;
 	}
 
@@ -170,7 +166,7 @@ public class Cartelera {
 		return true;
 	}
 	
-	public boolean isMismaLista(ArrayList<Funcion> thisFunciones, ArrayList<Funcion> registroFunciones)
+	public boolean isMismaLista(List<Funcion> thisFunciones, List<Funcion> registroFunciones)
 	{
 		int cuenta = 0;
 		for (int i = 0; i < thisFunciones.size(); i++) {// uso un for tradicional para evitar que busque un null en elementos
