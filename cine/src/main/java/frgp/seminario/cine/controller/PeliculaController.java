@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.bo.impl.BoPelicula;
-import frgp.seminario.cine.forms.pelicula.PeliculaForm;
+import frgp.seminario.cine.forms.PeliculaForm;
 
 @RequestMapping(value="/pelicula/**")
 @Controller
@@ -44,11 +44,9 @@ public class PeliculaController {
 	public ModelAndView guardar(@ModelAttribute PeliculaForm formulario, Principal principal) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:lista");
-		Pelicula pelicula = new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
-				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
-				formulario.getActores(), formulario.getDirector(), formulario.getDirector());
+		Pelicula item = logicaNegocio.formToEntity(formulario);
 		
-		if (!logicaNegocio.guardar(pelicula)){//si no se guarda
+		if (!logicaNegocio.guardar(item)){//si no se guarda
 			mav.setViewName("alta");
 			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 		}
@@ -60,15 +58,14 @@ public class PeliculaController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@ModelAttribute PeliculaForm formulario, Principal principal) 
+	public ModelAndView modificar(@RequestParam("id") String id, @ModelAttribute PeliculaForm formulario, Principal principal) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:lista");
-		Pelicula pelicula = new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
-				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
-				formulario.getActores(), formulario.getDirector(), formulario.getDirector());
+		Pelicula registro = logicaNegocio.formToEntity(formulario);
+		registro.setId(Long.parseLong(id));
 		
-		if (!logicaNegocio.modificar(pelicula)){//si no se guarda
-			mav.setViewName("alta");
+		if (!logicaNegocio.modificar(registro)){//si no se guarda
+			mav.setViewName("modificar");
 			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 		}
 		else

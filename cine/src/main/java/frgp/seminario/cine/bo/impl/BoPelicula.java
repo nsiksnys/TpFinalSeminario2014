@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import frgp.seminario.cine.bo.BoInterface;
 import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
+import frgp.seminario.cine.forms.PeliculaForm;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.impl.PeliculaRepository;
 
@@ -94,5 +95,17 @@ public class BoPelicula implements BoInterface<Pelicula>{
 		
 		
 		return true;
+	}
+	
+	/**
+	 * Convierte un formulario en un registro Pelicula
+	 * @param formulario el formulario submiteado
+	 * @return un objeto Pelicula
+	 */
+	public Pelicula formToEntity(PeliculaForm formulario)
+	{
+		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
+				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
+				formulario.getActores(), formulario.getDirector(), formulario.getDirector());
 	}
 }
