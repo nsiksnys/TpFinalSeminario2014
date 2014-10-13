@@ -1,11 +1,11 @@
 package frgp.seminario.cine.bo.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import frgp.seminario.cine.bo.BoInterface;
+import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.impl.PeliculaRepository;
 
@@ -13,6 +13,9 @@ import frgp.seminario.cine.repository.impl.PeliculaRepository;
 public class BoPelicula implements BoInterface<Pelicula>{
 	@Autowired
 	PeliculaRepository repositorio;
+	
+	@Autowired
+	PeliculaFindItem findItem;
 	//ReservasFindItem findReservas;//findItem de reservas 
 	//CarteleraFindItem findCartelera;//findItem de peliculas en cartelera
 	
@@ -59,8 +62,8 @@ public class BoPelicula implements BoInterface<Pelicula>{
 	@Override
 	public boolean desactivar(Pelicula registro) {
 		//verificar que no haya reservas para esta pelicula
-		if (boReserva.hasEnabledReservationByMovie(registro.getId()))
-					return false;
+		/*if (boReserva.hasEnabledReservationByMovie(registro.getId()))
+					return false;*/
 		
 		if (registro.isActivo())
 			registro.setActivo(false);
@@ -86,25 +89,10 @@ public class BoPelicula implements BoInterface<Pelicula>{
 		if (!registro.getClass().isInstance(Pelicula.class))
 			return false;
 		
-		if (isDuplicate(registro))//si el registro ya existe en la base de datos
+		if (findItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		
 		return true;
-	}
-	
-	/**
-	 * Determina si existe un registro con las mismas caracteristicas en la base de datos
-	 * @param item Pelicula que buscamos en la base
-	 * @return true si existe un registro, false si no
-	 **/
-	public boolean isDuplicate(Pelicula item){
-		ArrayList<Pelicula> todos = (ArrayList<Pelicula>) repositorio.getAll(Pelicula.class);
-		
-		for (Pelicula registro : todos) {
-			if (registro.equals(item))
-				return true;
-		}
-		return false;
 	}
 }

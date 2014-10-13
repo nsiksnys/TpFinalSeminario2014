@@ -2,52 +2,22 @@ package frgp.seminario.cine.forms.pelicula;
 
 public class PeliculaForm {
 	//Contenido del formulario
-	private String nombre;
-	private String idioma;
-	private boolean subs;
-	private String clasificacion;
-	private boolean reposicion;
-	private String descripcion;
+	private String titulo;
 	private String actores;
 	private String director;
-	private String urlTrailer;
+	private String sinopsis;
+	private String trailer;
+	private String idioma;
+	private boolean subs;
+	private boolean reposicion;
+	private String clasificacion;
 	
 	//getters y setters
-	public String getNombre() {
-		return nombre;
+	public String getTitulo() {
+		return titulo;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public String getIdioma() {
-		return idioma;
-	}
-	public void setIdioma(String idioma) {
-		this.idioma = idioma;
-	}
-	public boolean isSubs() {
-		return subs;
-	}
-	public void setSubs(boolean subs) {
-		this.subs = subs;
-	}
-	public String getClasificacion() {
-		return clasificacion;
-	}
-	public void setClasificacion(String clasificacion) {
-		this.clasificacion = clasificacion;
-	}
-	public boolean isReposicion() {
-		return reposicion;
-	}
-	public void setReposicion(boolean reposicion) {
-		this.reposicion = reposicion;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
 	}
 	public String getActores() {
 		return actores;
@@ -61,10 +31,40 @@ public class PeliculaForm {
 	public void setDirector(String director) {
 		this.director = director;
 	}
-	public String getUrlTrailer() {
-		return urlTrailer;
+	public String getSinopsis() {
+		return sinopsis;
 	}
-	public void setUrlTrailer(String urlTrailer) {
-		this.urlTrailer = urlTrailer;
+	public void setSinopsis(String sinopsis) {
+		this.sinopsis = sinopsis;
+	}
+	public String getTrailer() {
+		return trailer;
+	}
+	public void setTrailer(String trailer) {
+		this.trailer = trailer;
+	}
+	public String getIdioma() {
+		return idioma;
+	}
+	public void setIdioma(String idioma) {
+		this.idioma = idioma;
+	}
+	public boolean isSubs() {
+		return subs;
+	}
+	public void setSubs(boolean subs) {
+		this.subs = subs;
+	}
+	public boolean isReposicion() {
+		return reposicion;
+	}
+	public void setReposicion(boolean reposicion) {
+		this.reposicion = reposicion;
+	}
+	public String getClasificacion() {
+		return clasificacion;
+	}
+	public void setClasificacion(String clasificacion) {
+		this.clasificacion = clasificacion;
 	}
 }

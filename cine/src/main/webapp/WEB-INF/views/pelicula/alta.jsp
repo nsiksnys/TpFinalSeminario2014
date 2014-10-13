@@ -37,7 +37,7 @@
 				</div>
 				<div class="form-group">
 					<label for="sinopsis">Sinopsis del argumento</label>
-					<textarea class="form-control" id="director"></textarea>
+					<textarea class="form-control" id="sinopsis"></textarea>
 				</div>
 				<div class="form-group">
 					<label for="trailer">Trailer (URL)</label>
@@ -48,7 +48,10 @@
 					<input class="form-control" id="idioma" type="text" placeholder="ES, EN, FR"/>
 				</div>
 				<div class="checkbox">
-					<label>Reposicion? <input type="checkbox" /></label>
+					<label>Subtitulos? <input type="checkbox" id="subs" /></label>
+				</div>
+				<div class="checkbox">
+					<label>Reposicion? <input type="checkbox" id="reposicion" /></label>
 				</div>
 				<div class="form-group">
 					<label for="clasificacion">Clasificacion</label>

@@ -12,6 +12,23 @@ public class PeliculaFindItem implements FindItemWithFlag<Pelicula> {
 	@Autowired
 	DataAccessImpl dataAccess;
 	
+	/**
+	 * Determina si existe un registro con las mismas caracteristicas en la base de datos
+	 * @param item Pelicula que buscamos en la base
+	 * @return true si existe un registro, false si no
+	 **/
+	@SuppressWarnings("unchecked")
+	public Long getIdByObject(Pelicula item){
+		ArrayList<Pelicula> todos = (ArrayList<Pelicula>) dataAccess.getAll(Pelicula.class);
+		
+		for (Pelicula registro : todos) {
+			if (registro.equals(item))
+				return registro.getId();
+		}
+		return (long) 0;
+	}
+
+	
 	@SuppressWarnings("unchecked")
 	public Pelicula findByName(String name){
 		String titulo = name.toUpperCase();

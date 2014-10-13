@@ -38,7 +38,7 @@ public class PeliculaRepository implements RepoInterface<Pelicula> {
 	/**
 	 ** Persiste un registro en la base de datos.
 	 ** @param registro El objeto a persistir.
-	 ** @param true si se realizo con exito, false si hubo una excepcion.
+	 ** @return true si se realizo con exito, false si hubo una excepcion.
 	 **/
 	@Override
 	public boolean save(Pelicula registro) {
@@ -48,7 +48,7 @@ public class PeliculaRepository implements RepoInterface<Pelicula> {
 	/**
 	 ** Mergea un registro en la base de datos.
 	 ** @param registro El objeto a mergear.
-	 ** @param true si se realizo con exito, false si hubo una excepcion.
+	 ** @return true si se realizo con exito, false si hubo una excepcion.
 	 **/
 	@Override
 	public boolean merge(Pelicula registro) {
