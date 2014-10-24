@@ -3,14 +3,15 @@ package frgp.seminario.cine.findItem.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.dataAccess.DataAccessImpl;
-import frgp.seminario.cine.findItem.FindItemWithFlag;
+import frgp.seminario.cine.dataAccess.DataAccess;
 import frgp.seminario.cine.model.Cartelera;
 
-public class CarteleraFindItem implements FindItemWithFlag<Cartelera> {
+@Service("CarteleraFindItem")//agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
+public class CarteleraFindItem /*implements FindItemWithFlag<Cartelera>*/ {
 	@Autowired
-	DataAccessImpl dataAccess;
+	DataAccess dataAccess;
 	
 	/**
 	 * Determina si existe un registro con las mismas caracteristicas en la base de datos
@@ -64,7 +65,7 @@ public class CarteleraFindItem implements FindItemWithFlag<Cartelera> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public ArrayList<Cartelera> getAllByFlag(boolean flag) {
 		ArrayList<Cartelera> todos = (ArrayList<Cartelera>) dataAccess.getAll(Cartelera.class);
 		ArrayList<Cartelera> rta = new ArrayList<Cartelera>();

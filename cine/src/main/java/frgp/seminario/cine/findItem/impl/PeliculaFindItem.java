@@ -3,14 +3,15 @@ package frgp.seminario.cine.findItem.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.dataAccess.DataAccessImpl;
-import frgp.seminario.cine.findItem.FindItemWithFlag;
+import frgp.seminario.cine.dataAccess.DataAccess;
 import frgp.seminario.cine.model.Pelicula;
 
-public class PeliculaFindItem implements FindItemWithFlag<Pelicula> {
+@Service("PeliculaFindItem")//agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
+public class PeliculaFindItem /* implements FindItemWithFlag<Pelicula> */ {
 	@Autowired
-	DataAccessImpl dataAccess;
+	DataAccess dataAccess;
 	
 	/**
 	 * Determina si existe un registro con las mismas caracteristicas en la base de datos
@@ -76,7 +77,7 @@ public class PeliculaFindItem implements FindItemWithFlag<Pelicula> {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	//@Override
 	public ArrayList<Pelicula> getAllByFlag(boolean flag) {
 		ArrayList<Pelicula> todos = (ArrayList<Pelicula>) dataAccess.getAll(Pelicula.class);
 		ArrayList<Pelicula> rta = new ArrayList<Pelicula>();

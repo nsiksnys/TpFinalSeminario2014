@@ -4,30 +4,37 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.bo.BoInterface;
+import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.CarteleraFindItem;
 import frgp.seminario.cine.forms.CarteleraForm;
 import frgp.seminario.cine.model.Cartelera;
 import frgp.seminario.cine.model.Pelicula;
-import frgp.seminario.cine.repository.impl.CarteleraRepository;
-import frgp.seminario.cine.repository.impl.PeliculaRepository;
+import frgp.seminario.cine.repository.Repository;
 
-public class BoCartelera implements BoInterface<Cartelera> {
+//Funciones pertenecientes a la logica de negocios
+@Service("BoCartelera") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
+public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	@Autowired
-	CarteleraRepository repositorio;
+	@Qualifier("CarteleraRepository") //aclaro cual es el bean a inyectar
+	Repository<Cartelera> repositorio; //aclaro la clase que se utiliza en este caso en particular
 	
 	@Autowired
+	@Qualifier("CarteleraFindItem") //aclaro cual es el bean a inyectar
 	CarteleraFindItem CarteleraFindItem;
 	
 	@Autowired
-	PeliculaRepository peliculaRepositorio;
+	@Qualifier("PeliculaRepository") //aclaro cual es el bean a inyectar
+	Repository<Pelicula> peliculaRepositorio; //aclaro la clase que se utiliza en este caso en particular
 	
 	/** 
 	 ** Busca un registro en específico.
 	 ** @param id el id del objeto buscado
 	 ** @return el registro Pelicula buscado
 	 **/
+	@Override
 	public Cartelera get(int id) {
 		return repositorio.get(Cartelera.class, id);
 	}
@@ -99,7 +106,8 @@ public class BoCartelera implements BoInterface<Cartelera> {
 	 * @param formulario el formulario submiteado
 	 * @return un objeto Cartelera
 	 */
-	public Cartelera formToEntity(CarteleraForm formulario){
+	@Override
+ 	public Cartelera formToEntity(CarteleraForm formulario){
 		return new Cartelera(peliculaRepositorio.get(Pelicula.class, formulario.getPelicula()),
 							 formulario.getVersion(),
 							 formulario.isSubtitulos(),

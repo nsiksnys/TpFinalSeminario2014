@@ -2,7 +2,7 @@ package frgp.seminario.cine.repository;
 
 import java.util.List;
 
-public interface RepoInterface<E> {
+public interface Repository<E> {
 //funciones comunes a todos los repositorios
 	@SuppressWarnings("rawtypes")
 	public E get(Class entityClass, int id);

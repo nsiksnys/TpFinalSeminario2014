@@ -3,14 +3,16 @@ package frgp.seminario.cine.repository.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.dataAccess.DataAccessImpl;
+import frgp.seminario.cine.dataAccess.DataAccess;
 import frgp.seminario.cine.model.Cartelera;
-import frgp.seminario.cine.repository.RepoInterface;
+import frgp.seminario.cine.repository.Repository;
 
-public class CarteleraRepository implements RepoInterface<Cartelera> {
+@Service("CarteleraRepository")
+public class CarteleraRepository implements Repository<Cartelera> {
 	@Autowired
-	DataAccessImpl dataAccess;
+	DataAccess dataAccess;
 	
 	/** 
 	 ** Busca un registro en específico.

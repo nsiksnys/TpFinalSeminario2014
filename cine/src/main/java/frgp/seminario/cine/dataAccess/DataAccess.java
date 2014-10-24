@@ -2,7 +2,7 @@ package frgp.seminario.cine.dataAccess;
 
 import java.util.List;
 
-public interface DataAccessInterface {
+public interface DataAccess {
 //Funciones comunes a todas las entidades
 	
 	@SuppressWarnings("rawtypes")

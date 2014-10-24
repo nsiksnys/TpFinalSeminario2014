@@ -3,19 +3,24 @@ package frgp.seminario.cine.bo.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.bo.BoInterface;
+import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
 import frgp.seminario.cine.forms.PeliculaForm;
 import frgp.seminario.cine.model.Pelicula;
-import frgp.seminario.cine.repository.impl.PeliculaRepository;
+import frgp.seminario.cine.repository.Repository;
 
 //Funciones pertenecientes a la logica de negocios
-public class BoPelicula implements BoInterface<Pelicula>{
+@Service("BoPelicula") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
+public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	@Autowired
-	PeliculaRepository repositorio;
+	@Qualifier("PeliculaRepository") //aclaro cual es el bean a inyectar
+	Repository<Pelicula> repositorio; //aclaro la clase que se utiliza en este caso en particular
 	
 	@Autowired
+	@Qualifier("PeliculaFindItem")//aclaro cual es el bean a inyectar
 	PeliculaFindItem findItem;
 	//ReservasFindItem findReservas;//findItem de reservas 
 	//CarteleraFindItem findCartelera;//findItem de peliculas en cartelera
@@ -25,6 +30,7 @@ public class BoPelicula implements BoInterface<Pelicula>{
 	 ** @param id el id del objeto buscado
 	 ** @return el registro Pelicula buscado
 	 **/
+	@Override
 	public Pelicula get(int id) {
 		return repositorio.get(Pelicula.class, id);
 	}
@@ -102,6 +108,7 @@ public class BoPelicula implements BoInterface<Pelicula>{
 	 * @param formulario el formulario submiteado
 	 * @return un objeto Pelicula
 	 */
+	@Override
 	public Pelicula formToEntity(PeliculaForm formulario)
 	{
 		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),

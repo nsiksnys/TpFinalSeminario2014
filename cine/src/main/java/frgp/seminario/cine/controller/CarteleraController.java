@@ -3,6 +3,7 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,16 +11,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import frgp.seminario.cine.bo.impl.BoCartelera;
+import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.forms.CarteleraForm;
 import frgp.seminario.cine.model.Cartelera;
 
-@RequestMapping(value="/cartelera/**")@Controller
+@RequestMapping(value="/cartelera/**")
+@Controller
 public class CarteleraController {
 	@Autowired
-	BoCartelera logicaNegocio;
+	@Qualifier("BoCartelera") //aclaro cual es el bean a inyectar
+	BusinessObject<Cartelera, CarteleraForm> logicaNegocio; //aclaro las clases que se utilizan en este caso en particular
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ModelAndView index(Principal principal) {
+		ModelAndView mav =new ModelAndView("lista");//indico que uso la vista "lista"
+		mav.getModelMap().addAttribute("lista", logicaNegocio.listarTodos());
+		return mav;
+	}
+	
+	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal) {
 		ModelAndView mav =new ModelAndView("lista");//indico que uso la vista "lista"
 		mav.getModelMap().addAttribute("lista", logicaNegocio.listarTodos());
