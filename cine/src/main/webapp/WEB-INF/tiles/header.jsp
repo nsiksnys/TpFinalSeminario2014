@@ -12,15 +12,23 @@
         <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
                <li><a href="#">Complejos y salas</a></li>
-               <li><a href="#">Cartelera</a></li>
-               <li><a href="#">Proximos estrenos</a></li>
-               <li><a href="#">Peliculas</a></li>
+               <li><a href="<s:url value="/cartelera"/>">Cartelera</a></li>
+               <security:authorize ifAllGranted="C">
+               		 <li><a href="#">Proximos estrenos</a></li>
+               </security:authorize>
+               <li><a href="<s:url value="/pelicula"/>">Peliculas</a></li>
 		         	<security:authorize access="isAuthenticated()">
-		            	<li><a href="#">Usuarios</a></li>
-  			            <li><a href="#">Promociones</a></li>
-  			            <li><a href="#">Precios</a></li>
-		            	<li><a href="#">Reservar entradas</a></li>
-		                <li><a href="#">Estadisticas</a></li>
+		         		<security:authorize ifAllGranted="A"> <!-- Menues que puede ver un admin -->
+			            	<li><a href="<s:url value="/usuarios"/>">Usuarios</a></li>
+	  			            <li><a href="<s:url value="/promos"/>">Promociones</a></li>
+	  			            <li><a href="<s:url value="/precios"/>">Precios</a></li>
+  			            </security:authorize>
+  			            <security:authorize ifAllGranted="C"> <!-- Menues que puede ver un cliente -->
+		            		<li><a href="<s:url value="/reserva"/>">Reservar entradas</a></li>
+		            	</security:authorize>
+		            	<security:authorize ifAllGranted="G"> <!-- Menues que puede ver un gerente -->
+		                	<li><a href="<s:url value="/stats"/>">Estadisticas</a></li>
+		                </security:authorize>
 		            </security:authorize>
             </ul>
             

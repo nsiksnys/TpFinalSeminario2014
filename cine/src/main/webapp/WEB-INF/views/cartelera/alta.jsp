@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
-<h3>Alta de una pelicula</h3>
+<h3>Alta de una pelicula en cartelera</h3>
 <br>
 <!-- Si hay un error, avisa -->
 <c:if test="${not empty error}">
