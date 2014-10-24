@@ -26,29 +26,28 @@ public class PeliculaController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
-		ModelAndView mav =new ModelAndView("lista");//indico que uso la vista "lista"
-		mav.getModelMap().addAttribute("lista", logicaNegocio.listarTodos());
-		return mav;
+		return new ModelAndView("redirect:/pelicula/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
-		ModelAndView mav =new ModelAndView("lista");//indico que uso la vista "lista"
+		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", logicaNegocio.listarTodos());
 		return mav;
 	}
 		
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
-	public String alta(Principal principal) 
+	public ModelAndView alta(Principal principal)
 	{
-		return "alta";
+		return new ModelAndView();
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") int id, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
+		//ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
+		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
 		return mav;
 	}
@@ -56,7 +55,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public ModelAndView guardar(@ModelAttribute PeliculaForm formulario, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:lista");
+		//ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
+		ModelAndView mav =new ModelAndView();
 		Pelicula item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
@@ -73,7 +73,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@RequestParam("id") String id, @ModelAttribute PeliculaForm formulario, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:lista");
+		//ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
+		ModelAndView mav =new ModelAndView();
 		Pelicula registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(id));
 		

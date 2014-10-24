@@ -24,14 +24,12 @@ public class CarteleraController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal) {
-		ModelAndView mav =new ModelAndView("lista");//indico que uso la vista "lista"
-		mav.getModelMap().addAttribute("lista", logicaNegocio.listarTodos());
-		return mav;
+		return new ModelAndView("redirect:/cartelera/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal) {
-		ModelAndView mav =new ModelAndView("lista");//indico que uso la vista "lista"
+		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", logicaNegocio.listarTodos());
 		return mav;
 	}
@@ -43,7 +41,7 @@ public class CarteleraController {
 	
 	public ModelAndView modificar(@RequestParam("id") int id, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
+		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
 		return mav;
 	}
@@ -51,7 +49,8 @@ public class CarteleraController {
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public ModelAndView guardar(@ModelAttribute CarteleraForm formulario, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:lista");
+		//ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
+		ModelAndView mav =new ModelAndView();
 		Cartelera item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
@@ -68,7 +67,8 @@ public class CarteleraController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@RequestParam("id") String id, @ModelAttribute CarteleraForm formulario, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:lista");
+		//ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
+		ModelAndView mav =new ModelAndView();
 		Cartelera registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(id));
 		

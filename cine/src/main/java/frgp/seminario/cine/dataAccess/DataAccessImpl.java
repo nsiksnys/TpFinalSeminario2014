@@ -3,6 +3,7 @@ package frgp.seminario.cine.dataAccess;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DataAccessImpl implements DataAccess{
+	@PersistenceContext
 	private EntityManager entityManager;
 	
 	/** 
