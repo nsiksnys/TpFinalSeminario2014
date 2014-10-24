@@ -17,9 +17,10 @@ public class UserService implements UserDetailsService {
 	private AccountRepository accountRepository;
 	
 	@PostConstruct	
-	protected void initialize() {
-		accountRepository.save(new Account("user", "demo", "ROLE_USER"));
-		accountRepository.save(new Account("admin", "admin", "ROLE_ADMIN"));
+	protected void initialize() {//Usuarios de prueba
+		accountRepository.save(new Account(Long.parseLong("1337"),"admin@frgp.utn.edu.ar", "test", "A"));
+		accountRepository.save(new Account(Long.parseLong("1234"),"gerente@frgp.utn.edu.ar", "test", "G"));
+		accountRepository.save(new Account(Long.parseLong("7893"),"cliente@frgp.edu.ar", "test", "C"));
 	}
 	
 	@Override

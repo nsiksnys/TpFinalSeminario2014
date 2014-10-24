@@ -4,12 +4,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.stereotype.Service;
+
 
 /*
  * Funciones básicas para el accesso a datos.
  */
-
-public class DataAccessImpl implements DataAccessInterface{
+@Service
+public class DataAccessImpl implements DataAccess{
 	private EntityManager entityManager;
 	
 	/** 
