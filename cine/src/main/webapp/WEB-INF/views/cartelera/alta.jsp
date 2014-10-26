@@ -21,35 +21,35 @@
 
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form class="form" action="alta" method="post">
+		<form class="form" action="guardar" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="pelicula">Titulo</label>
-					<select class="form-control" id="pelicula">
+					<select class="form-control" id="pelicula" name="pelicula">
 						<c:if test="${not empty peliculas}">
 							<c:forEach items="${peliculas}" var="item">
 								<option value="${item.id}">${item.nombre}</option>
 							</c:forEach>
 						</c:if>
-						<c:if test="${empty lista}">
+						<c:if test="${empty peliculas}">
 							<option>No hay peliculas en la base de datos</option>
 						</c:if>
 			        </select>
 				</div>
 				<div class="form-group">
 					<label for="version">Version a proyectar</label>
-					<input class="form-control" id="version" type="text" placeholder="2D, 3D"/>
+					<input class="form-control" id="version" name="version" type="text" placeholder="2D, 3D"/>
 				</div>
 				<div class="checkbox">
-					<label>Subtitulos? <input type="checkbox" id="subtitulo"/></label>
+					<label>Subtitulos? <input type="checkbox" id="subtitulo" name="subtitulo"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
-					<input class="form-control" id="inicio" type="text" placeholder="dd/mm/aaaa"/>
+					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa"/>
 				</div>
 				<div class="form-group">
 					<label for="fin">Fin de proyeccion</label>
-					<input class="form-control" id="fin" type="text" placeholder="dd/mm/aaaa"/>
+					<input class="form-control" id="fin" name="fin" type="text" placeholder="dd/mm/aaaa"/>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>

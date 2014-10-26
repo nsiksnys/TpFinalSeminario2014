@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.Repository;
 
 @Service("PeliculaRepository")
+@Transactional
 public class PeliculaRepository implements Repository<Pelicula> {
 	@Autowired
 	DataAccess dataAccess;
@@ -22,7 +24,7 @@ public class PeliculaRepository implements Repository<Pelicula> {
 	 **/
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Pelicula get(Class entityClass, int id) {
+	public Pelicula get(Class entityClass, Object id) {
 		return (Pelicula) dataAccess.get(entityClass, id);
 	}
 

@@ -1,15 +1,24 @@
 package frgp.seminario.cine.forms;
 
 public class CarteleraForm {
-	private int pelicula;
+	private String id;
+	private String pelicula;
 	private String version;
 	private boolean subtitulos;
 	private String inicio;
 	private String fin;
-	public int getPelicula() {
+	
+	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getPelicula() {
 		return pelicula;
 	}
-	public void setPelicula(int pelicula) {
+	public void setPelicula(String pelicula) {
 		this.pelicula = pelicula;
 	}
 	public String getVersion() {

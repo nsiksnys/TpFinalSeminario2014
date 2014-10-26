@@ -2,6 +2,7 @@ package frgp.seminario.cine.forms;
 
 public class PeliculaForm {
 	//Contenido del formulario
+	private String id;
 	private String titulo;
 	private String actores;
 	private String director;
@@ -13,6 +14,12 @@ public class PeliculaForm {
 	private String clasificacion;
 	
 	//getters y setters
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getTitulo() {
 		return titulo;
 	}

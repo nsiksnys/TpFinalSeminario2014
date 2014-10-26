@@ -22,7 +22,7 @@ public class FichaTecnicaRepository implements Repository<FichaTecnica> {
 	 **/
 	@SuppressWarnings("rawtypes")
 	@Override
-	public FichaTecnica get(Class entityClass, int id) {
+	public FichaTecnica get(Class entityClass, Object id) {
 		return (FichaTecnica) dataAccess.get(entityClass, id);
 	}
 

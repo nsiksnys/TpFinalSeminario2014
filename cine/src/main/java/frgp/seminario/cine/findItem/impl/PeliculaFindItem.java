@@ -14,9 +14,9 @@ public class PeliculaFindItem /* implements FindItemWithFlag<Pelicula> */ {
 	DataAccess dataAccess;
 	
 	/**
-	 * Determina si existe un registro con las mismas caracteristicas en la base de datos
+	 * Busca un registro con las mismas caracteristicas en la base de datos
 	 * @param item Pelicula que buscamos en la base
-	 * @return true si existe un registro, false si no
+	 * @return id del registro, 0 si no se encontro ninguno
 	 **/
 	@SuppressWarnings("unchecked")
 	public Long getIdByObject(Pelicula item){

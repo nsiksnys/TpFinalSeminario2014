@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
 import frgp.seminario.cine.model.Cartelera;
 import frgp.seminario.cine.repository.Repository;
 
 @Service("CarteleraRepository")
+@Transactional
 public class CarteleraRepository implements Repository<Cartelera> {
 	@Autowired
 	DataAccess dataAccess;
@@ -22,7 +24,7 @@ public class CarteleraRepository implements Repository<Cartelera> {
 	 **/
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Cartelera get(Class entityClass, int id) {
+	public Cartelera get(Class entityClass, Object id) {
 		return (Cartelera) dataAccess.get(entityClass, id);
 	}
 

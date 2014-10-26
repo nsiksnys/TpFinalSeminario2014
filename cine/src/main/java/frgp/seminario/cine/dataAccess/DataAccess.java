@@ -6,7 +6,7 @@ public interface DataAccess {
 //Funciones comunes a todas las entidades
 	
 	@SuppressWarnings("rawtypes")
-	public Object get(Class entityClass, int id);
+	public Object get(Class entityClass, Object id);
 	@SuppressWarnings("rawtypes")
 	public List getAll(Class entityClass);
 	@SuppressWarnings("rawtypes")

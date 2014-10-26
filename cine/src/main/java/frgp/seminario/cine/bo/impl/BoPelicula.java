@@ -2,6 +2,7 @@ package frgp.seminario.cine.bo.impl;
 
 import java.util.List;
 
+import org.hamcrest.core.IsInstanceOf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	 ** @return el registro Pelicula buscado
 	 **/
 	@Override
-	public Pelicula get(int id) {
+	public Pelicula get(Object id) {
 		return repositorio.get(Pelicula.class, id);
 	}
 	
@@ -77,6 +78,18 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		
 		return repositorio.merge(registro);
 	}
+	
+	/**
+	 ** Activa un registro en la base de datos.
+	 ** @param registro El objeto a activar.
+	 ** @return true si se realizo con exito, false si hubo una excepcion.
+	 **/
+	public boolean activar(Pelicula registro) {		
+		if (!registro.isActivo())
+			registro.setActivo(true);
+		
+		return repositorio.merge(registro);
+	}
 
 	/**
 	 ** Recupera todos los registros de la clase Pelicula
@@ -93,12 +106,11 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	 **/
 	@Override
 	public boolean verificar(Pelicula registro) {
-		if (!registro.getClass().isInstance(Pelicula.class))
+		if (!(registro instanceof frgp.seminario.cine.model.Pelicula))
 			return false;
 		
 		if (findItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
-		
 		
 		return true;
 	}

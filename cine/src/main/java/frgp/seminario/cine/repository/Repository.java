@@ -5,7 +5,7 @@ import java.util.List;
 public interface Repository<E> {
 //funciones comunes a todos los repositorios
 	@SuppressWarnings("rawtypes")
-	public E get(Class entityClass, int id);
+	public E get(Class entityClass, Object id);
 	@SuppressWarnings("rawtypes")
 	public List<E> getAll(Class entityClass);
 	public boolean save(E registro);

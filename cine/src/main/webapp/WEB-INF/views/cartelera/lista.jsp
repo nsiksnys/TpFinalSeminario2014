@@ -11,7 +11,8 @@
 			<td>Pelicula</td>
 			<td>Inicio</td>
 			<td>Fin</td>
-			<td>Detalles</td>
+			<td>Proyeccion</td>
+			<td>Subtitulos</td>
 			<td>Modificar</td>
 			<td>Eliminar</td>
 		</tr>
@@ -22,16 +23,23 @@
 				<tr>
 					<td>${item.id}</td>
 					<td>${item.pelicula.nombre}</td>
-					<td><fmt:formatDate type="date" value="${adicional.fechaInicio}"/></td>
-					<td><fmt:formatDate type="date" value="${adicional.fechaFin}"/></td>
-					<td><a href='<s:url value="/view?id=${item.id}"/>'>Ver</a></td>
-					<td><a href='<s:url value="/modificar?id=${item.id}"/>'>Modificar</a></td>
-					<td><a href='<s:url value="/delete?id=${item.id}"/>'>X</a></td>
+					<td><fmt:formatDate type="date" value="${item.fechaInicio}" pattern="dd-MM-yyyy"/></td>
+					<td><fmt:formatDate type="date" value="${item.fechaFin}" pattern="dd-MM-yyyy"/></td>
+					<td>${item.proyeccion}</td>
+					<td>
+						<c:if test="${item.subtitulada == true}"> Si </c:if>
+						<c:if test="${item.subtitulada == false}"> No </c:if>
+					</td>
+					<td><a href='<s:url value="/cartelera/modificar?id=${item.id}"/>'>Modificar</a></td>
+					<td>
+						<c:if test="${item.activo == true}"> <a href='<s:url value="/cartelera/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
+						<c:if test="${item.activo == false}"> <a href='<s:url value="/cartelera/activar?id=${item.id}"/>'>Activar</a> </c:if>
+					</td>
 				</tr>
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty lista}">
-			<tr><td colspan="7"><center>No hay peliculas en la cartelera</center></td></tr>
+			<tr><td colspan="7"><center>No hay peliculas en la cartelera. <a href='<s:url value="/pelicula/lista"/>'>Agregar registros.</a></center></td></tr>
 		</c:if>
 	</tbody>
 </table>

@@ -23,6 +23,10 @@ public class FichaTecnica {
 	
 	@Column(nullable=true)
 	private String urlTrailer;
+	
+	public FichaTecnica(){
+		//constructor por defecto
+	}
 
 	public FichaTecnica(String descripcion, String actores, String director,
 			String urlTrailer) {

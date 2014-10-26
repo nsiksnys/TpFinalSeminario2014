@@ -39,7 +39,13 @@ public class Pelicula {
 	private Date fechaCreacion;
 	
 	@Column(nullable=false)
-	private boolean activo;
+	private boolean activo=true;
+
+	
+	
+	public Pelicula() {
+		//constructor por defecto
+	}
 
 	public Pelicula(String nombre, String idioma, boolean subs,
 			String clasificacion, boolean reposicion, FichaTecnica detalles,

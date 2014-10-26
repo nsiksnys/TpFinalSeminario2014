@@ -39,6 +39,10 @@ public class Cartelera {
 	
 	@Column(nullable=false)
 	private boolean activo;
+	
+	public Cartelera(){
+		//constructor por defecto
+	}
 
 	public Cartelera(Long id, Pelicula pelicula, String proyeccion,
 			boolean subtitulada, List<Funcion> funciones,
