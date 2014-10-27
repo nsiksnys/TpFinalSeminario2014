@@ -52,5 +52,8 @@
 	
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/MeioMaskStart.js"/>"  rel="stylesheet" media="screen"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/jquery.meiomask.js"/>"  rel="stylesheet" media="screen" ></script>
+
 </body>
 </html>

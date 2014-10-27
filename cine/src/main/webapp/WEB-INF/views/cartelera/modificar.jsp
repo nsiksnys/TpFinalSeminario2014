@@ -34,18 +34,18 @@
 				</div>
 				<div class="form-group">
 					<label for="version">Version a proyectar</label>
-					<input class="form-control" id="version" name="version" type="text" value="${registro.proyeccion}"/>
+					<input class="form-control" id="version" name="version" type="text" value="${registro.proyeccion}" alt="3a"/>
 				</div>
 				<div class="checkbox">
 					<label>Subtitulos? <input type="checkbox" id="subtitulos" name="subtitulos" value="${registro.subtitulada}"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
-					<input class="form-control" id="inicio" name="inicio" type="text"  value="<fmt:formatDate value="${registro.fechaInicio}" pattern="dd-MM-yyyy" />"/>
+					<input class="form-control" id="inicio" name="inicio" type="text"  value="<fmt:formatDate value="${registro.fechaInicio}" pattern="dd-MM-yyyy" />" alt="date"/>
 				</div>
 				<div class="form-group">
 					<label for="fin">Fin de proyeccion</label>
-					<input class="form-control" id="fin" name="fin" type="text" value="<fmt:formatDate value="${registro.fechaFin}" pattern="dd-MM-yyyy" />"/>
+					<input class="form-control" id="fin" name="fin" type="text" value="<fmt:formatDate value="${registro.fechaFin}" pattern="dd-MM-yyyy" />" alt="date"/>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>

@@ -38,18 +38,18 @@
 				</div>
 				<div class="form-group">
 					<label for="version">Version a proyectar</label>
-					<input class="form-control" id="version" name="version" type="text" placeholder="2D, 3D"/>
+					<input class="form-control" id="version" name="version" type="text" placeholder="2D, 3D" alt="3a"/>
 				</div>
 				<div class="checkbox">
 					<label>Subtitulos? <input type="checkbox" id="subtitulo" name="subtitulo"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
-					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa"/>
+					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa" alt="date"/>
 				</div>
 				<div class="form-group">
 					<label for="fin">Fin de proyeccion</label>
-					<input class="form-control" id="fin" name="fin" type="text" placeholder="dd/mm/aaaa"/>
+					<input class="form-control" id="fin" name="fin" type="text" placeholder="dd/mm/aaaa" alt="date"/>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
