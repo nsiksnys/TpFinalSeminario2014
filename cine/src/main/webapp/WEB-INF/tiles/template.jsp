@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-	<title>Hello World!</title>
+	<title>Cine - ${url}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet" media="screen" />
 	<link href="<c:url value="/resources/css/core.css" />" rel="stylesheet" media="screen" />
@@ -52,8 +52,11 @@
 	
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/MeioMaskStart.js"/>"  rel="stylesheet" media="screen"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery.meiomask.js"/>"  rel="stylesheet" media="screen" ></script>
+    
+    <!-- scripts necesarios para la validacion en altas y modificaciones -->
+		<script type="text/javascript" src="<c:url value="/resources/js/MeioMaskStart.js"/>"  rel="stylesheet" media="screen"></script>
+		<script type="text/javascript" src="<c:url value="/resources/js/jquery.meiomask.js"/>"  rel="stylesheet" media="screen" ></script>
+		<script type="text/javascript" src="<c:url value="/resources/js/validateHelper.js"/>"  rel="stylesheet" media="screen" ></script>
 
 </body>
 </html>

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Sala {
@@ -13,8 +12,8 @@ public class Sala {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne
-	private Complejo complejo;
+	@Column(nullable = false)
+	Long idComplejo;
 	
 	@Column(nullable = false)
 	private int numeroSala;
@@ -22,15 +21,20 @@ public class Sala {
 	@Column(nullable = false)
 	private boolean activa;
 
-	public Sala(Long id, Complejo complejo, int numeroSala, boolean activa) {
+	public Sala()
+	{
+		//constructor vacio
+	}
+	
+	public Sala(Long id, Long complejo, int numeroSala, boolean activa) {
 		this.id = id;
-		this.complejo = complejo;
+		this.idComplejo = complejo;
 		this.numeroSala = numeroSala;
 		this.activa = activa;
 	}
 
-	public Sala(Complejo complejo, int numeroSala) {
-		this.complejo = complejo;
+	public Sala(Long complejo, int numeroSala) {
+		this.idComplejo = complejo;
 		this.numeroSala = numeroSala;
 		this.activa = true;
 	}
@@ -43,12 +47,12 @@ public class Sala {
 		this.id = id;
 	}
 
-	public Complejo getComplejo() {
-		return complejo;
+	public Long getIdComplejo() {
+		return idComplejo;
 	}
 
-	public void setComplejo(Complejo complejo) {
-		this.complejo = complejo;
+	public void setIdComplejo(Long complejo) {
+		this.idComplejo = complejo;
 	}
 
 	public int getNumeroSala() {
@@ -69,10 +73,7 @@ public class Sala {
 	
 	public boolean equals(Sala item)
 	{
-		if (complejo.getId() != item.getComplejo().getId())
-			return false;
-		
-		if (!complejo.equals(item.getComplejo()))
+		if (idComplejo != item.getIdComplejo())
 			return false;
 		
 		if (numeroSala != item.getNumeroSala())

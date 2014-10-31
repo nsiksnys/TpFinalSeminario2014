@@ -1,10 +1,13 @@
 package frgp.seminario.cine.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Complejo {
@@ -18,8 +21,16 @@ public class Complejo {
 	@Column(nullable = false)
 	private String direccion;
 	
+	@OneToMany
+	private List<Sala> salas;
+	
 	@Column(nullable = false)
 	private boolean activo;
+	
+	public Complejo()
+	{
+		//constructor vacio
+	}
 
 	public Complejo(Long id, String nombre, String direccion, boolean activo) {
 		this.id = id;
@@ -31,6 +42,12 @@ public class Complejo {
 	public Complejo(String nombre, String direccion) {
 		this.nombre = nombre;
 		this.direccion = direccion;
+	}
+	
+	public Complejo(String nombre, String direccion, List<Sala> salas) {
+		this.nombre = nombre;
+		this.direccion = direccion;
+		this.salas = salas;
 	}
 
 	public Long getId() {
@@ -57,6 +74,14 @@ public class Complejo {
 		this.direccion = direccion;
 	}
 
+	public List<Sala> getSalas() {
+		return salas;
+	}
+
+	public void setSalas(List<Sala> salas) {
+		this.salas = salas;
+	}
+
 	public boolean isActivo() {
 		return activo;
 	}
@@ -72,6 +97,8 @@ public class Complejo {
 		
 		if (direccion.compareTo(item.getDireccion()) != 0)
 			return false;
+		
+		//TODO: comparar la list de salas.
 		
 		return true;
 	}

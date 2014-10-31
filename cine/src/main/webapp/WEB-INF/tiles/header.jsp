@@ -29,6 +29,7 @@
 	         			<li class="dropdown">
 							<a href="<s:url value="/cartelera"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Cartelera</font>
+								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -42,6 +43,7 @@
 		         		<li class="dropdown">
 							<a href="<s:url value="/pelicula"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Peliculas</font>
+								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -55,6 +57,7 @@
 						<li class="dropdown">
 							<a href="<s:url value="/usuario"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Usuarios</font>
+								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -68,6 +71,7 @@
 						<li class="dropdown">
 							<a href="<s:url value="/promo"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Promociones</font>
+								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -81,6 +85,7 @@
 						<li class="dropdown">
 							<a href="<s:url value="/precio"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Precios</font>
+								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
@@ -108,6 +113,7 @@
                     <li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<font><security:authentication property="principal.username"/></font>
+							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
 							<li>

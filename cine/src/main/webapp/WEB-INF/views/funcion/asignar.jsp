@@ -1,21 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!-- Si hay un error, avisa -->
-<c:if test="${not empty error}">
-	<div class="alert alert-dismissable alert-warning">
-	  <button type="button" class="close" data-dismiss="alert">×</button>
-	  <p>Error al queres guardar los datos en la base ${error}</p>
-	</div>
-</c:if>
-
-<!-- Si se guardo bien, avisa -->
-<c:if test="${not empty ok}">
-	<div class="alert alert-dismissable alert-warning">
-	  <button type="button" class="close" data-dismiss="alert">×</button>
-	  <p>Nuevo registro guardado con id ${ok}</p>
-	</div>
-</c:if>
-
 <div class="row">
 	<div class="col-md-12 column">
 		<form class="form-inline" role="form">
