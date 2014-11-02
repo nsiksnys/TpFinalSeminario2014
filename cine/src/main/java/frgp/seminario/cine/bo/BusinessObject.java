@@ -10,5 +10,5 @@ public interface BusinessObject<E, F> {
 	public boolean desactivar(E registro);
 	public List<E> listarTodos();
 	public boolean verificar(E registro);
-	public E  formToEntityNewObject(F formulario);
+	public E  formToEntity(F formulario);
 }

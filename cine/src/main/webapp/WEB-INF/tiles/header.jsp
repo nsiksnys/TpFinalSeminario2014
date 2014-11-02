@@ -97,16 +97,16 @@
 							</ul>
 						</li>
 						<li class="dropdown">
-							<a href="<s:url value="/promo"/>" class="dropdown-toggle" data-toggle="dropdown">
+							<a href="<s:url value="/promocion"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Promociones</font>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="<s:url value="/promo/lista"/>"><font><font>Lista</font></font></a>
+									<a href="<s:url value="/promocion/lista"/>"><font><font>Lista</font></font></a>
 								</li>
 								<li>
-									<a href='<s:url value="/promo/alta"></s:url>'><font><font>Nuevo</font></font></a>
+									<a href='<s:url value="/promocion/alta"></s:url>'><font><font>Nuevo</font></font></a>
 								</li>
 							</ul>
 						</li>

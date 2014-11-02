@@ -56,6 +56,14 @@ public class Promocion {
 		this.fechaFin = fechaFin;
 		this.activo = true;
 	}
+	
+	public Promocion(String nombre, String descripcion, Date fechaInicio, Date fechaFin) {
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.fechaInicio = fechaInicio;
+		this.fechaFin = fechaFin;
+		this.activo = true;
+	}
 
 	public Long getId() {
 		return id;
@@ -130,8 +138,8 @@ public class Promocion {
 		if (fechaFin.compareTo(item.getFechaFin()) != 0)
 			return false;
 		
-		/*if (activo != item.isActivo())
-			return false;*/
+		if (activo != item.isActivo())
+			return false;
 		
 		return true;
 	}

@@ -113,7 +113,7 @@ public class ComplejoController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/complejo/alta");
-		Complejo item = logicaNegocio.formToEntityNewObject(formulario);
+		Complejo item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			mav.setViewName("redirect:/complejo/alta");

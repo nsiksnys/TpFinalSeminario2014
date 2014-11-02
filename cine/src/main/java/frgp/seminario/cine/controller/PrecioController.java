@@ -14,47 +14,46 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import frgp.seminario.cine.model.Pelicula;
-import frgp.seminario.cine.bo.BusinessObject;
-import frgp.seminario.cine.bo.impl.BoPelicula;
-import frgp.seminario.cine.forms.PeliculaForm;
+import frgp.seminario.cine.model.Precio;
+import frgp.seminario.cine.bo.impl.BoPrecio;
+import frgp.seminario.cine.forms.PrecioForm;
 
-@RequestMapping(value="/pelicula/**")
+@RequestMapping(value="/precio/**")
 @Controller
-public class PeliculaController {
+public class PrecioController {
 	@Autowired
-	@Qualifier("BoPelicula") //aclaro cual es el bean a inyectar
-	BoPelicula logicaNegocio; //aclaro las clases que se utilizan en este caso en particular
+	@Qualifier("BoPrecio") //aclaro cual es el bean a inyectar
+	BoPrecio logicaNegocio; //aclaro las clases que se utilizan en este caso en particular
 	
-	private static final Logger LOG = LoggerFactory.getLogger(PeliculaController.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PrecioController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
-		return new ModelAndView("redirect:/pelicula/lista");
+		return new ModelAndView("redirect:/precio/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
-		ArrayList<Pelicula> lista = (ArrayList<Pelicula>) logicaNegocio.listarTodos();
+		ArrayList<Precio> lista = (ArrayList<Precio>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
-		LOG.info("/pelicula/lista: listando " + lista.size() + " registro(s)");
+		LOG.info("/precio/lista: listando " + lista.size() + " registro(s)");
 		return mav;
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
 	public ModelAndView lista(@RequestParam("ok") String ok,Principal principal)
 	{
-		ArrayList<Pelicula> lista = (ArrayList<Pelicula>) logicaNegocio.listarTodos();
+		ArrayList<Precio> lista = (ArrayList<Precio>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
 		
 		if (!ok.equals(""))
 			mav.getModelMap().addAttribute("ok", ok);
 		
-		LOG.info("/pelicula/lista: listando " + lista.size() + " registro(s)");
+		LOG.info("/precio/lista: listando " + lista.size() + " registro(s)");
 		return mav;
 	}
 		
@@ -76,14 +75,14 @@ public class PeliculaController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");//indico que uso la vista "modificar"
+		ModelAndView mav =new ModelAndView("redirect:/precio/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.desactivar(logicaNegocio.get(id))){//si no se guarda
 			//mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 		}
 		else
 		{
-			LOG.info("/pelicula/borrar: desactivado registro con id " + id);
+			LOG.info("/precio/borrar: desactivado registro con id " + id);
 			//mav.getModelMap().addAttribute("ok", "La pelicula se guardo correctamente");
 		}
 		return mav;
@@ -92,53 +91,53 @@ public class PeliculaController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");//indico que uso la vista "modificar"
+		ModelAndView mav =new ModelAndView("redirect:/precio/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.activar(logicaNegocio.get(id))){//si no se guarda
 			//mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 		}
 		else
 		{
-			LOG.info("/pelicula/activar: activado registro con id " + id);
+			LOG.info("/precio/activar: activado registro con id " + id);
 		}
 		return mav;
 	}
 	
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public ModelAndView guardar(@ModelAttribute PeliculaForm formulario, Principal principal) 
+	public ModelAndView guardar(@ModelAttribute PrecioForm formulario, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
-		//ModelAndView mav =new ModelAndView("redirect:/pelicula/alta");
-		Pelicula item = logicaNegocio.formToEntity(formulario);
+		ModelAndView mav =new ModelAndView("redirect:/precio/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/precio/alta");
+		Precio item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
-			mav.setViewName("redirect:/pelicula/alta");
+			mav.setViewName("redirect:/precio/alta");
 			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 		}
 		else
 		{
-			LOG.info("/pelicula/alta: agregado registro nuevo con id " + item.getId());
-			//mav.getModelMap().addAttribute("ok", "La pelicula se guardo correctamente");
+			LOG.info("/precio/alta: agregado registro nuevo con id " + item.getId());
+			mav.getModelMap().addAttribute("ok", "El precio se guardo correctamente");
 		}
 		return mav;
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@ModelAttribute PeliculaForm formulario, Principal principal) 
+	public ModelAndView modificar(@ModelAttribute PrecioForm formulario, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
+		ModelAndView mav =new ModelAndView("redirect:/precio/lista");
 		//ModelAndView mav =new ModelAndView();
-		Pelicula registro = logicaNegocio.formToEntity(formulario);
+		Precio registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
-			mav.setViewName("redirect:/pelicula/modificar?id="+formulario.getId());
+			mav.setViewName("redirect:/precio/modificar?id="+formulario.getId());
 			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 		}
 		else
 		{
-			LOG.info("/pelicula/modificar: actualizado registro con id " + registro.getId());
-			//mav.getModelMap().addAttribute("ok", "La pelicula se actualizo correctamente");
+			LOG.info("/precio/modificar: actualizado registro con id " + registro.getId());
+			mav.getModelMap().addAttribute("ok", "El precio se actualizo correctamente");
 		}
 		return mav;
 	}

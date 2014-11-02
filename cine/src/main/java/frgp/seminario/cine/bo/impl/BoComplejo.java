@@ -146,7 +146,7 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 	 * @return un objeto Complejo
 	 */
 	@Override
-	public Complejo formToEntityNewObject(ComplejoForm formulario)
+	public Complejo formToEntity(ComplejoForm formulario)
 	{
 		Complejo registro =  new Complejo(formulario.getNombre(), formulario.getDireccion());
 		

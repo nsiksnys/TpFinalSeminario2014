@@ -13,20 +13,28 @@ public class Precio {
 	private Long id;
 	
 	@Column(nullable=false)
-	private String descripcion;
+	private float menor;
 	
 	@Column(nullable=false)
-	private float precio;
+	private float general;
+	
+	@Column(nullable=false)
+	private float mayor;
+	
+	@Column(nullable=false)
+	private boolean activo;
 
-	public Precio(Long id, String descripcion, float precio) {
+	public Precio(Long id, float menor, float general, float mayor) {
 		this.id = id;
-		this.descripcion = descripcion;
-		this.precio = precio;
+		this.menor = menor;
+		this.general = general;
+		this.mayor = mayor;
 	}
 
-	public Precio(String descripcion, float precio) {
-		this.descripcion = descripcion;
-		this.precio = precio;
+	public Precio(float menor, float general, float mayor) {
+		this.menor = menor;
+		this.general = general;
+		this.mayor = mayor;
 	}
 
 	public Long getId() {
@@ -37,30 +45,45 @@ public class Precio {
 		this.id = id;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
+	public float getMenor() {
+		return menor;
 	}
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setMenor(float menor) {
+		this.menor = menor;
 	}
 
-	public float getPrecio() {
-		return precio;
+	public float getGeneral() {
+		return general;
 	}
 
-	public void setPrecio(float precio) {
-		this.precio = precio;
+	public void setGeneral(float general) {
+		this.general = general;
+	}
+
+	public float getMayor() {
+		return mayor;
+	}
+
+	public void setMayor(float mayor) {
+		this.mayor = mayor;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 	
-	public boolean equals(Precio item)
+	 public boolean equals(Precio registro)
+	
 	{
-		if (descripcion.compareTo(item.getDescripcion()) != 0)
-			return false;
-		
-		if (precio != item.getPrecio())
+		if (activo != registro.isActivo())
 			return false;
 		
 		return true;
 	}
+	
 }

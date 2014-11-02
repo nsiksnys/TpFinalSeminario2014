@@ -91,7 +91,7 @@ public class CarteleraController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/cartelera/alta");
-		Cartelera item = logicaNegocio.formToEntityNewObject(formulario);
+		Cartelera item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			mav.setViewName("redirect:/cartelera/alta");
@@ -110,7 +110,7 @@ public class CarteleraController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
 		//ModelAndView mav =new ModelAndView();
-		Cartelera registro = logicaNegocio.formToEntityNewObject(formulario);
+		Cartelera registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
