@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="pelicula" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/pelicula.jsp"></put-attribute>
+	</definition>
+	<definition name="funcion" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/funcion.jsp"></put-attribute>
+	</definition>	
+	<definition name="entradas" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/entradas.jsp"></put-attribute>
+	</definition>
+	<definition name="asientos" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/asientos.jsp"></put-attribute>
+	</definition>	
+	<definition name="confirmacion" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/confirmacion.jsp"></put-attribute>
+	</definition>
+	<definition name="lista" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/lista.jsp"></put-attribute>
+	</definition>
+	<!-- <definition name="baja" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/reserva/baja.jsp"></put-attribute>
+	</definition> -->
+</tiles-definitions>

@@ -48,7 +48,15 @@ public class Reserva {
 	private float importe;
 	
 	@Column(nullable=false)
+	private String codigo;
+	
+	@Column(nullable=false)
 	private boolean activo;
+	
+	public Reserva()
+	{
+		//constructor vacio
+	}
 
 	public Reserva(Long id, Cliente cliente, Funcion funcion,
 			int cantidadEntradas, Entrada entrada, List<Asiento> asientos,
@@ -79,6 +87,22 @@ public class Reserva {
 		this.fechaReserva = fechaReserva;
 		this.fechaCreacion = fechaCreacion;
 		this.importe = importe;
+		this.activo = true;
+	}
+
+	public Reserva(Cliente cliente, Funcion funcion, int cantidadEntradas,
+			Entrada entrada, List<Asiento> asientos, Promocion promo,
+			Date fechaReserva, Date fechaCreacion, float importe, String codigo) {
+		this.cliente = cliente;
+		this.funcion = funcion;
+		this.cantidadEntradas = cantidadEntradas;
+		this.entrada = entrada;
+		this.asientos = asientos;
+		this.promo = promo;
+		this.fechaReserva = fechaReserva;
+		this.fechaCreacion = fechaCreacion;
+		this.importe = importe;
+		this.codigo = codigo;
 		this.activo = true;
 	}
 
@@ -160,6 +184,14 @@ public class Reserva {
 
 	public void setImporte(float importe) {
 		this.importe = importe;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public boolean isActivo() {

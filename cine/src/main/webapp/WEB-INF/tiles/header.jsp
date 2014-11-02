@@ -22,7 +22,20 @@
 	            		<li><a href="#">Complejos y salas</a></li>
 	               		<li><a href="<s:url value="/cartelera"/>">Cartelera</a></li>
 	               		<li><a href="#">Proximos estrenos</a></li>
-	            		<li><a href="<s:url value="/reserva"/>">Reservar entradas</a></li>
+	            		<li class="dropdown">
+							<a href="<s:url value="/reserva"/>" class="dropdown-toggle" data-toggle="dropdown">
+								<font>Reservas</font>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="<s:url value="/reserva/lista"/>"><font><font>Mis reservas</font></font></a>
+								</li>
+								<li>
+									<a href='<s:url value="/reserva/alta"></s:url>'><font><font>Realizar reserva</font></font></a>
+								</li>
+							</ul>
+						</li>
 	               	</security:authorize>
                
 	         		<security:authorize ifAllGranted="A"> <!-- Menues que puede ver un admin -->
@@ -97,16 +110,16 @@
 							</ul>
 						</li>
 						<li class="dropdown">
-							<a href="<s:url value="/promocion"/>" class="dropdown-toggle" data-toggle="dropdown">
+							<a href="<s:url value="/promo"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Promociones</font>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="<s:url value="/promocion/lista"/>"><font><font>Lista</font></font></a>
+									<a href="<s:url value="/promo/lista"/>"><font><font>Lista</font></font></a>
 								</li>
 								<li>
-									<a href='<s:url value="/promocion/alta"></s:url>'><font><font>Nuevo</font></font></a>
+									<a href='<s:url value="/promo/alta"></s:url>'><font><font>Nuevo</font></font></a>
 								</li>
 							</ul>
 						</li>

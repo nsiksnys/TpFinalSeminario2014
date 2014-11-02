@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
 	protected void initialize() {//Usuarios de prueba
 		accountRepository.save(new Account(Long.parseLong("1337"),"admin@frgp.utn.edu.ar", "test", "A"));
 		accountRepository.save(new Account(Long.parseLong("1234"),"gerente@frgp.utn.edu.ar", "test", "G"));
-		accountRepository.save(new Account(Long.parseLong("7893"),"cliente@frgp.edu.ar", "test", "C"));
+		accountRepository.save(new Account(Long.parseLong("7893"),"cliente@frgp.utn.edu.ar", "test", "C"));
 	}
 	
 	@Override
