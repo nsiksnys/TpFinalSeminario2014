@@ -129,7 +129,7 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	 * @return un objeto Cartelera
 	 */
 	@Override
- 	public Cartelera formToEntity(CarteleraForm formulario){
+ 	public Cartelera formToEntityNewObject(CarteleraForm formulario){
 		return new Cartelera(peliculaRepositorio.get(Pelicula.class, Long.parseLong(formulario.getPelicula())),
 							 formulario.getVersion(),
 							 formulario.isSubtitulos(),

@@ -109,7 +109,7 @@ public class PeliculaController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/pelicula/alta");
-		Pelicula item = logicaNegocio.formToEntity(formulario);
+		Pelicula item = logicaNegocio.formToEntityNewObject(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			mav.setViewName("redirect:/pelicula/alta");
@@ -128,7 +128,7 @@ public class PeliculaController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
 		//ModelAndView mav =new ModelAndView();
-		Pelicula registro = logicaNegocio.formToEntity(formulario);
+		Pelicula registro = logicaNegocio.formToEntityNewObject(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda

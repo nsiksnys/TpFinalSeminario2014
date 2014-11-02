@@ -2,8 +2,10 @@ package frgp.seminario.cine.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +23,7 @@ public class Complejo {
 	@Column(nullable = false)
 	private String direccion;
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<Sala> salas;
 	
 	@Column(nullable = false)

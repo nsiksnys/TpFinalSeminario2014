@@ -4,12 +4,12 @@
 	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 	<definition name="lista" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/cartelera/lista.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/views/sala/lista.jsp"></put-attribute>
 	</definition>
-	<definition name="alta" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/cartelera/alta.jsp"></put-attribute>
+<!-- 	<definition name="alta" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/sala/alta.jsp"></put-attribute>
 	</definition>
 	<definition name="modificar" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/cartelera/modificar.jsp"></put-attribute>
-	</definition>	
+		<put-attribute name="body" value="/WEB-INF/views/sala /modificar.jsp"></put-attribute>
+	</definition> -->	
 </tiles-definitions>

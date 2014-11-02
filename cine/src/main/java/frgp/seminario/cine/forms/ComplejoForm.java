@@ -5,6 +5,7 @@ public class ComplejoForm {
 	private String nombre;
 	private String direccion;
 	private int salas;
+	private boolean activo;
 	
 	
 	public String getId() {
@@ -30,5 +31,11 @@ public class ComplejoForm {
 	}
 	public void setSalas(int salas) {
 		this.salas = salas;
+	}
+	public boolean isActivo() {
+		return activo;
+	}
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 }

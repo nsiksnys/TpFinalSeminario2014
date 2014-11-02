@@ -27,6 +27,34 @@
                
 	         		<security:authorize ifAllGranted="A"> <!-- Menues que puede ver un admin -->
 	         			<li class="dropdown">
+							<a href="<s:url value="complejo"/>" class="dropdown-toggle" data-toggle="dropdown">
+								<font>Complejos</font>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="<s:url value="/complejo/lista"/>"><font><font>Lista</font></font></a>
+								</li>
+								<li>
+									<a href='<s:url value="/complejo/alta"></s:url>'><font><font>Agregar</font></font></a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown">
+							<a href="<s:url value="/sala"/>" class="dropdown-toggle" data-toggle="dropdown">
+								<font>Salas</font>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="<s:url value="/sala/lista"/>"><font><font>Lista</font></font></a>
+								</li>
+								<!-- <li>
+									<a href='<s:url value="/complejo/alta"></s:url>'><font><font>Agregar</font></font></a>
+								</li> -->
+							</ul>
+						</li>
+		         		<li class="dropdown">
 							<a href="<s:url value="/cartelera"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Cartelera</font>
 								<b class="caret"></b>

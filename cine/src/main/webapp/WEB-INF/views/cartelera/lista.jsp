@@ -39,7 +39,7 @@
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty lista}">
-			<tr><td colspan="7"><center>No hay peliculas en la cartelera. <a href='<s:url value="/pelicula/lista"/>'>Agregar registros.</a></center></td></tr>
+			<tr><td colspan="7"><center>No hay peliculas en la cartelera. <a href='<s:url value="/cartelera/alta"/>'>Agregar registros.</a></center></td></tr>
 		</c:if>
 	</tbody>
 </table>

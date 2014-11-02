@@ -6,10 +6,10 @@
 	<definition name="lista" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/complejo/lista.jsp"></put-attribute>
 	</definition>
-<!-- 	<definition name="alta" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/cartelera/alta.jsp"></put-attribute>
+ 	<definition name="alta" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/complejo/alta.jsp"></put-attribute>
 	</definition>
 	<definition name="modificar" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/cartelera/modificar.jsp"></put-attribute>
-	</definition>	 -->
+		<put-attribute name="body" value="/WEB-INF/views/complejo/modificar.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

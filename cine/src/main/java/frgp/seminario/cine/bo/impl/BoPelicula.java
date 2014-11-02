@@ -121,7 +121,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	 * @return un objeto Pelicula
 	 */
 	@Override
-	public Pelicula formToEntity(PeliculaForm formulario)
+	public Pelicula formToEntityNewObject(PeliculaForm formulario)
 	{
 		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
 				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),

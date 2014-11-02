@@ -40,7 +40,7 @@ public class ComplejoController {
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
-		ArrayList<Complejo> lista = (ArrayList<Complejo>) logicaNegocio.listarTodos();
+		ArrayList<ComplejoForm> lista = (ArrayList<ComplejoForm>) logicaNegocio.listarTodosForm();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
 		LOG.info("/complejo/lista: listando " + lista.size() + " registro(s)");
@@ -48,14 +48,14 @@ public class ComplejoController {
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
-	public ModelAndView lista(@RequestParam("ok") String ok,Principal principal)
+	public ModelAndView lista(@RequestParam("message") String message,Principal principal)
 	{
-		ArrayList<Complejo> lista = (ArrayList<Complejo>) logicaNegocio.listarTodos();
+		ArrayList<ComplejoForm> lista = (ArrayList<ComplejoForm>) logicaNegocio.listarTodosForm();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
 		
-		if (!ok.equals(""))
-			mav.getModelMap().addAttribute("ok", ok);
+		if (!message.equals(""))
+			mav.getModelMap().addAttribute("message", message);
 		
 		LOG.info("/complejo/lista: listando " + lista.size() + " registro(s)");
 		return mav;
@@ -72,7 +72,7 @@ public class ComplejoController {
 	{
 		//ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
+		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));//FIXME: el registro no tiene salas
 		return mav;
 	}
 	
@@ -113,16 +113,16 @@ public class ComplejoController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/complejo/alta");
-		Complejo item = logicaNegocio.formToEntity(formulario);
+		Complejo item = logicaNegocio.formToEntityNewObject(formulario);
 		
-		if (!logicaNegocio.modificar(item)){//si no se guarda
+		if (!logicaNegocio.guardar(item)){//si no se guarda
 			mav.setViewName("redirect:/complejo/alta");
-			mav.getModelMap().addAttribute("message",  new Message("Por favor revise el formulario", Type.SUCCESS));//agrego el mensaje de error
+			mav.getModelMap().addAttribute("message",  new Message("Por favor revise el formulario", Type.ERROR));//agrego el mensaje de error
 		}
 		else
 		{
 			LOG.info("/complejo/alta: agregado registro nuevo con id " + item.getId());
-			//mav.getModelMap().addAttribute("message",  new Message("El complejo se guardo correctamente", Type.SUCCESS));
+			mav.getModelMap().addAttribute("message",  new Message("El complejo se guardo correctamente", Type.SUCCESS));
 		}
 		return mav;
 	}
@@ -132,17 +132,17 @@ public class ComplejoController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");
 		//ModelAndView mav =new ModelAndView();
-		Complejo registro = logicaNegocio.formToEntity(formulario);
-		registro.setId(Long.parseLong(formulario.getId()));
+		Complejo registro = logicaNegocio.formToEntityUpdate(formulario);
 		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
 			mav.setViewName("redirect:/complejo/modificar?id="+formulario.getId());
+			LOG.info("/complejo/modificar: Por favor revise el formulario");
 			mav.getModelMap().addAttribute("message", new Message("Por favor revise el formulario", Type.ERROR));//agrego el mensaje de error
 		}
 		else
 		{
 			LOG.info("/complejo/modificar: actualizado registro con id " + registro.getId());
-			//mav.getModelMap().addAttribute("message",  new Message("El complejo se guardo correctamente", Type.SUCCESS));
+			mav.getModelMap().addAttribute("message",  new Message("El complejo se guardo correctamente", Type.SUCCESS));
 		}
 		return mav;
 	}
