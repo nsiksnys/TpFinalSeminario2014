@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
-import frgp.seminario.cine.model.Precio;
 import frgp.seminario.cine.model.Promocion;
 
 @Service("PromocionFindItem")//agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero

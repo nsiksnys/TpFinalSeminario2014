@@ -2,13 +2,14 @@ package frgp.seminario.cine.bo.impl;
 
 import java.util.List;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
+import frgp.seminario.cine.findItem.impl.CarteleraFindItem;
 import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.PeliculaForm;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.Repository;
@@ -22,9 +23,15 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	
 	@Autowired
 	@Qualifier("PeliculaFindItem")//aclaro cual es el bean a inyectar
-	PeliculaFindItem findItem;
-	//ReservasFindItem findReservas;//findItem de reservas 
-	//CarteleraFindItem findCartelera;//findItem de peliculas en cartelera
+	PeliculaFindItem busquedaPelicula;
+	
+	@Autowired
+	@Qualifier("ReservaFindItem")//aclaro cual es el bean a inyectar
+	ReservaFindItem busquedaReserva;//findItem de reservas 
+	
+	@Autowired
+	@Qualifier("CarteleraFindItem")//aclaro cual es el bean a inyectar
+	CarteleraFindItem busquedaCartelera;//findItem de peliculas en cartelera
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -70,8 +77,8 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	@Override
 	public boolean desactivar(Pelicula registro) {
 		//verificar que no haya reservas para esta pelicula
-		/*if (boReserva.hasEnabledReservationByMovie(registro.getId()))
-					return false;*/
+		if (busquedaReserva.findActiveByPeliculaBoolean(registro.getId()))
+			return false;
 		
 		if (registro.isActivo())
 			registro.setActivo(false);
@@ -109,7 +116,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		if (!(registro instanceof frgp.seminario.cine.model.Pelicula))
 			return false;
 		
-		if (findItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaPelicula.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		return true;

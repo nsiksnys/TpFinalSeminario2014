@@ -22,16 +22,24 @@ public class Funcion {
 	private Horario horario;
 	private boolean activo;
 	
-	public Funcion(Long id, Sala sala, Pelicula pelicula, boolean activo) {
+	public Funcion()
+	{
+		//constructor vacio
+	}
+	
+	public Funcion(Long id, Sala sala, Pelicula pelicula, Horario horario, boolean activo) {
 		this.id = id;
 		this.sala = sala;
 		this.pelicula = pelicula;
+		this.horario = horario;
 		this.activo = activo;
 	}
 
-	public Funcion(Sala sala, Pelicula pelicula) {
+	public Funcion(Sala sala, Pelicula pelicula, Horario horario) {
 		this.sala = sala;
 		this.pelicula = pelicula;
+		this.horario = horario;
+		this.activo=true;
 	}
 
 	public Long getId() {

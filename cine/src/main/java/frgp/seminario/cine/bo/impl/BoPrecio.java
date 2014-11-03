@@ -1,7 +1,6 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.PrecioFindItem;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.PrecioForm;
 import frgp.seminario.cine.model.Precio;
 import frgp.seminario.cine.repository.Repository;
@@ -22,8 +22,11 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 	
 	@Autowired
 	@Qualifier("PrecioFindItem")//aclaro cual es el bean a inyectar
-	PrecioFindItem findItem;
-	//ReservasFindItem findReservas;//findItem de reservas 
+	PrecioFindItem busquedaPrecio;
+	
+	@Autowired
+	@Qualifier("ReservaFindItem")//aclaro cual es el bean a inyectar
+	ReservaFindItem busquedaReserva;//findItem de reservas 
 	
 	
 	/** 
@@ -106,7 +109,7 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 		if (!(registro instanceof frgp.seminario.cine.model.Precio))
 			return false;
 		
-		if (findItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaPrecio.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		return true;

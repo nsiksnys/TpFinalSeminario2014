@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.ComplejoFindItem;
-import frgp.seminario.cine.findItem.impl.SalaFindItem;
 import frgp.seminario.cine.forms.ComplejoForm;
-import frgp.seminario.cine.forms.SalaForm;
 import frgp.seminario.cine.model.Complejo;
 import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.repository.Repository;
@@ -25,7 +23,7 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 	
 	@Autowired
 	//@Qualifier("ComplejoFindItem") //aclaro cual es el bean a inyectar
-	ComplejoFindItem complejoFindItem;
+	ComplejoFindItem busquedaComplejo;
 	
 	@Autowired
 	BoSala salas;
@@ -132,7 +130,7 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 		if (!(registro instanceof frgp.seminario.cine.model.Complejo))
 			return false;
 		
-		if (complejoFindItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaComplejo.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		//TODO: verificaciones propias de la clase
@@ -200,5 +198,9 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 		form.setSalas(registro.getSalas().size());
 		form.setActivo(registro.isActivo());
 		return form;
+	}
+
+	public ArrayList<Complejo> getAllEnabled() {
+		return busquedaComplejo.getAllEnabled();
 	}
 }

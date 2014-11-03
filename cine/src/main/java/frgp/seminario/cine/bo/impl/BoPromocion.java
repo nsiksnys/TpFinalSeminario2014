@@ -1,15 +1,14 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import org.hamcrest.core.IsInstanceOf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.PromocionFindItem;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.PromocionForm;
 import frgp.seminario.cine.model.Promocion;
 import frgp.seminario.cine.repository.Repository;
@@ -24,8 +23,11 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 	
 	@Autowired
 	@Qualifier("PromocionFindItem")//aclaro cual es el bean a inyectar
-	PromocionFindItem findItem;
-	//ReservasFindItem findReservas;//findItem de reservas 
+	PromocionFindItem busquedaPromocion;
+	
+	@Autowired
+	@Qualifier("ReservaFindItem")//aclaro cual es el bean a inyectar
+	ReservaFindItem busquedaReserva;//findItem de reservas 
 	
 	@Autowired
 	FechaUtils utils;
@@ -108,7 +110,7 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 		if (!(registro instanceof frgp.seminario.cine.model.Promocion))
 			return false;
 		
-		if (findItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaPromocion.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		return true;

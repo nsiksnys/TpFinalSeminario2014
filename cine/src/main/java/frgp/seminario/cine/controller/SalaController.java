@@ -8,16 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.bo.impl.BoSala;
 import frgp.seminario.cine.forms.SalaForm;
-import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.support.web.*;
 import frgp.seminario.cine.support.web.Message.Type;
 

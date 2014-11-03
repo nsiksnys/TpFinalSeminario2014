@@ -1,7 +1,6 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,8 @@ public class BoSala {
 	Repository<Complejo> complejos;
 	
 	@Autowired
-	//@Qualifier("SalaFindItem") //aclaro cual es el bean a inyectar
-	SalaFindItem findItem;
+	@Qualifier("SalaFindItem") //aclaro cual es el bean a inyectar
+	SalaFindItem busquedaSala;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -130,10 +129,10 @@ public class BoSala {
 	}
 
 	public ArrayList<Sala> getByComplejo(Long idComplejo) {
-		return findItem.findByComplejo(idComplejo);
+		return busquedaSala.findByComplejo(idComplejo);
 	}
 
 	public boolean complejoHasAny(Long idComplejo) {
-		return findItem.findByComplejoBoolean(idComplejo);
+		return busquedaSala.findByComplejoBoolean(idComplejo);
 	}
 }

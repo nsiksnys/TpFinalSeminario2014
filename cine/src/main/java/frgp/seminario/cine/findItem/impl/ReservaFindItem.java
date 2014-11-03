@@ -53,6 +53,15 @@ public class ReservaFindItem {
 		}
 		return respuesta;
 	}
+	
+	public boolean findActiveByPeliculaBoolean(Long idPelicula){
+		ArrayList<Reserva> todos = getAllEnabled();
+		
+		for (Reserva item: todos)
+			if (item.getFuncion().getPelicula().getId() == idPelicula)
+				return true;
+		return false;
+	}
 		
 	@SuppressWarnings("unchecked")
 	public boolean findByIdBoolean(int id){

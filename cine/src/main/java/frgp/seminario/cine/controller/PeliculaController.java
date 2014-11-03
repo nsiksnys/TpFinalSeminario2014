@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.seminario.cine.model.Pelicula;
-import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.bo.impl.BoPelicula;
 import frgp.seminario.cine.forms.PeliculaForm;
 

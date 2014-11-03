@@ -1,8 +1,6 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -25,11 +23,11 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	
 	@Autowired
 	@Qualifier("CarteleraFindItem") //aclaro cual es el bean a inyectar
-	CarteleraFindItem carteleraFindItem;
+	CarteleraFindItem busquedaCartelera;
 	
 	@Autowired
 	@Qualifier("PeliculaFindItem") //aclaro cual es el bean a inyectar
-	PeliculaFindItem peliculaFindItem;
+	PeliculaFindItem busquedaPelicula;
 	
 	@Autowired
 	@Qualifier("PeliculaRepository") //aclaro cual es el bean a inyectar
@@ -104,7 +102,7 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	
 	public ArrayList<Pelicula> getAllPeliculasActivas()
 	{
-		return peliculaFindItem.getAllEnabled();
+		return busquedaPelicula.getAllEnabled();
 	}
 
 	/**
@@ -116,7 +114,7 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 		if (!(registro instanceof frgp.seminario.cine.model.Cartelera))
 			return false;
 		
-		if (carteleraFindItem.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaCartelera.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		

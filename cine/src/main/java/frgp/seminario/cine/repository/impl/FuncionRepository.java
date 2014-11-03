@@ -7,36 +7,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
-import frgp.seminario.cine.model.Promocion;
+import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.repository.Repository;
 
-@Service("PromocionRepository")
+@Service("FuncionRepository")
 @Transactional
-public class PromocionRepository implements Repository<Promocion>{
+public class FuncionRepository implements Repository<Funcion> {
 	@Autowired
 	DataAccess dataAccess;
 	
 	/** 
 	 ** Busca un registro en específico.
-	 ** @param entityClass la clase de la entidad Promocion
+	 ** @param entityClass la clase de la entidad Funcion
 	 ** @param id el id del objeto buscado
-	 ** @return el registro Precio buscado (no olvidar de castear!)
+	 ** @return el registro Funcion buscado (no olvidar de castear!)
 	 **/
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Promocion get(Class entityClass, Object id) {
-		return (Promocion) dataAccess.get(entityClass, id);
+	public Funcion get(Class entityClass, Object id) {
+		return (Funcion) dataAccess.get(entityClass, id);
 	}
 
 	/**
-	 ** Recupera todos los registros de la clase Precio. 
-	 ** @param entityClass la clase de la entidad Precio
+	 ** Recupera todos los registros de la clase Funcion. 
+	 ** @param entityClass la clase de la entidad Funcion
 	 ** @return un ArrayList con todos los registros de esta entidad
 	 **/
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public ArrayList<Promocion> getAll(Class entityClass) {
-		return (ArrayList<Promocion>) dataAccess.getAll(entityClass);
+	public ArrayList<Funcion> getAll(Class entityClass) {
+		return (ArrayList<Funcion>) dataAccess.getAll(entityClass);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class PromocionRepository implements Repository<Promocion>{
 	 ** @return true si se realizo con exito, false si hubo una excepcion.
 	 **/
 	@Override
-	public boolean save(Promocion registro) {
+	public boolean save(Funcion registro) {
 		return dataAccess.save(registro);
 	}
 
@@ -55,7 +55,7 @@ public class PromocionRepository implements Repository<Promocion>{
 	 ** @return true si se realizo con exito, false si hubo una excepcion.
 	 **/
 	@Override
-	public boolean merge(Promocion registro) {
+	public boolean merge(Funcion registro) {
 		return dataAccess.merge(registro);
 	}
 
@@ -65,7 +65,8 @@ public class PromocionRepository implements Repository<Promocion>{
 	 ** @param true si se realizo con exito, false si hubo una excepcion.
 	 **/
 	@Override
-	public boolean delete(Promocion registro) {
+	public boolean delete(Funcion registro) {
 		return dataAccess.delete(registro);
 	}
+
 }

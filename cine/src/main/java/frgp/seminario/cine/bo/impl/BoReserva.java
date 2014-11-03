@@ -1,6 +1,5 @@
 package frgp.seminario.cine.bo.impl;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.bo.impl.BoComplejo;
-//import frgp.seminario.cine.findItem.impl.FuncionFindItem;
+import frgp.seminario.cine.findItem.impl.FuncionFindItem;
 import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
 import frgp.seminario.cine.findItem.impl.PromocionFindItem;
 import frgp.seminario.cine.findItem.impl.ReservaFindItem;
@@ -36,23 +35,23 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	
 	@Autowired
 	@Qualifier("ReservaFindItem") //aclaro cual es el bean a inyectar
-	private ReservaFindItem reservas;
+	private ReservaFindItem busquedaReservas;
 	
 	@Autowired
 	@Qualifier("PeliculaFindItem") //aclaro cual es el bean a inyectar
-	private PeliculaFindItem peliculas;
+	private PeliculaFindItem busquedaPeliculas;
 	
 	@Autowired
 	@Qualifier("BoComplejo") //aclaro cual es el bean a inyectar
 	private BoComplejo complejos;
 	
-/*	@Autowired
-	//@Qualifier("FuncionFindItem") //aclaro cual es el bean a inyectar
-	private FuncionFindItem funciones;*/
+	@Autowired
+	@Qualifier("FuncionFindItem") //aclaro cual es el bean a inyectar
+	private FuncionFindItem busquedaFunciones;
 	
 	@Autowired
 	@Qualifier("PromocionFindItem") //aclaro cual es el bean a inyectar
-	private PromocionFindItem promociones;
+	private PromocionFindItem busquedaPromociones;
 	
 	@Autowired
 	private FechaUtils utils;
@@ -114,7 +113,7 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	 ** @return un ArrayList con todos los registros
 	 **/
 	public ArrayList<Reserva> listarTodos(String email) {
-		return reservas.findByClienteEmail(email);
+		return busquedaReservas.findByClienteEmail(email);
 	}
 	
 	/**
@@ -122,8 +121,7 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	 ** @return un ArrayList con todos los registros
 	 **/
 	public ArrayList<Complejo> getComplejosActivos() {
-		//return complejo.getAllEnabled();
-		return new ArrayList<Complejo>();
+		return complejos.getAllEnabled();
 	}
 	
 	/**
@@ -131,16 +129,15 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	 ** @return un ArrayList con todos los registros
 	 **/
 	public ArrayList<Pelicula> getPeliculasActivas() {
-		return peliculas.getAllEnabled();
+		return busquedaPeliculas.getAllEnabled();
 	}
 	
 	/**
 	 ** Recupera todos los registros activos de la clase Funciones
 	 ** @return un ArrayList con todos los registros
 	 **/
-	public ArrayList<Funcion> getFuncionesPorPeliculayComplejo(int idComplejo, int idPelicula) {
-		//return funciones.getAllEnabled(idComplejo, idPelicula);
-		return new ArrayList<Funcion>();
+	public ArrayList<Funcion> getFuncionesPorPeliculayComplejo(Long idComplejo, Long idPelicula) {
+		return busquedaFunciones.findActiveByComplejoPelicula(idComplejo, idPelicula);
 	}
 	
 	/**
