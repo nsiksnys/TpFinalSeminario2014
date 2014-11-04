@@ -1,5 +1,6 @@
 package frgp.seminario.cine.bo.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,6 +133,32 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	{
 		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
 				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
-				formulario.getActores(), formulario.getDirector(), formulario.getDirector());
+				formulario.getActores(), formulario.getDirector(), formulario.getTrailer());
+	}
+	
+	public PeliculaForm entityToForm(Pelicula registro)
+	{
+		PeliculaForm formulario = new PeliculaForm();
+		formulario.setId(registro.getId().toString());
+		formulario.setTitulo(registro.getNombre());
+		formulario.setIdioma(registro.getIdioma());
+		formulario.setSubs(registro.isSubs());
+		formulario.setClasificacion(registro.getClasificacion());
+		formulario.setReposicion(registro.isReposicion());
+		formulario.setSinopsis(registro.getDetalles().getDescripcion());
+		formulario.setActores(registro.getDetalles().getActores());
+		formulario.setDirector(registro.getDetalles().getDirector());
+		formulario.setTrailer(registro.getDetalles().getUrlTrailer());
+		return formulario;
+	}
+
+	public ArrayList<PeliculaForm> listarTodosActivosForm() {
+		ArrayList<PeliculaForm> respuesta = new ArrayList<PeliculaForm>(); 
+		
+		for(Pelicula registro : repositorio.getAll(Pelicula.class))
+			if (registro.isActivo())
+				respuesta.add(entityToForm(registro));
+		
+		return respuesta;
 	}
 }

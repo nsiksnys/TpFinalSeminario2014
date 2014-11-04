@@ -6,6 +6,9 @@ public class FuncionForm {
 	private Long complejo;
 	private Long pelicula;
 	private Long horario;
+/*	private String nombreComplejo;
+	private String nombreSala;
+	private String nombrePelicula;*/
 	private String inicio;
 	private String fin;
 	private boolean activo;
@@ -41,6 +44,24 @@ public class FuncionForm {
 	public void setHorario(Long horario) {
 		this.horario = horario;
 	}
+/*	public String getNombreComplejo() {
+		return nombreComplejo;
+	}
+	public void setNombreComplejo(String nombreComplejo) {
+		this.nombreComplejo = nombreComplejo;
+	}
+	public String getNombreSala() {
+		return nombreSala;
+	}
+	public void setNombreSala(String nombreSala) {
+		this.nombreSala = nombreSala;
+	}
+	public String getNombrePelicula() {
+		return nombrePelicula;
+	}
+	public void setNombrePelicula(String nombrePelicula) {
+		this.nombrePelicula = nombrePelicula;
+	}*/
 	public String getInicio() {
 		return inicio;
 	}

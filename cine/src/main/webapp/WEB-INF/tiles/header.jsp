@@ -68,20 +68,6 @@
 							</ul>
 						</li>
 		         		<li class="dropdown">
-							<a href="<s:url value="/cartelera"/>" class="dropdown-toggle" data-toggle="dropdown">
-								<font>Cartelera</font>
-								<b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="<s:url value="/cartelera/lista"/>"><font><font>Lista</font></font></a>
-								</li>
-								<li>
-									<a href='<s:url value="/cartelera/alta"></s:url>'><font><font>Agregar</font></font></a>
-								</li>
-							</ul>
-						</li>
-		         		<li class="dropdown">
 							<a href="<s:url value="/pelicula"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Peliculas</font>
 								<b class="caret"></b>
@@ -96,6 +82,34 @@
 							</ul>
 						</li>
 						<li class="dropdown">
+							<a href="<s:url value="/cartelera"/>" class="dropdown-toggle" data-toggle="dropdown">
+								<font>Cartelera</font>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="<s:url value="/cartelera/lista"/>"><font><font>Lista</font></font></a>
+								</li>
+								<li>
+									<a href='<s:url value="/cartelera/alta"></s:url>'><font><font>Agregar</font></font></a>
+								</li>
+							</ul>
+						</li>
+		         		<li class="dropdown">
+							<a href="<s:url value="/funcion"/>" class="dropdown-toggle" data-toggle="dropdown">
+								<font>Funciones</font>
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="<s:url value="/funcion/lista"/>"><font><font>Lista</font></font></a>
+								</li>
+								<li>
+									<a href='<s:url value="/funcion/alta"></s:url>'><font><font>Agregar</font></font></a>
+								</li>
+							</ul>
+						</li>
+		         		<li class="dropdown">
 							<a href="<s:url value="/usuario"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Usuarios</font>
 								<b class="caret"></b>

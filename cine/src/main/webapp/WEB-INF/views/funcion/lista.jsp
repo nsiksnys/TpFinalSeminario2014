@@ -1,14 +1,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<table class="table">
+<h3>Funciones</h3>
+<br>
+<table class="table table-bordered table-hover">
 	<thead>
 		<tr>
-			<th>#</th>
+			<th>Id</th>
 			<th>Complejo</th>
 			<th>Sala</th>
 			<th>Pelicula</th>
-			<th>Horarios</th>
-			<th>Opciones</th>
+			<th>Status</th>
+			<th colspan="3">Opciones</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -17,25 +19,23 @@
 				<tr>
 					<td>${item.id}</td>
 					<td>${item.sala.complejo.nombre}</td>
-					<td>${item.sala.id}</td>
+					<td>${item.sala.numeroSala}</td>
 					<td>${item.pelicula.nombre}</td>
-					<td><a href='<s:url value="/view?id=${item.id}"/>'>Ver</a></td>
+					<td>
+						<c:if test="${item.activo == true}"> Activa </c:if>
+						<c:if test="${item.activo == false}"> Inactiva </c:if>
+					</td>
+					<td><a href='<s:url value="/detalles?id=${item.id}"/>'>Ver</a></td>
 					<td><a href='<s:url value="/modificar?id=${item.id}"/>'>Modificar</a></td>
-					<td><a href='<s:url value="/delete?id=${item.id}"/>'>X</a></td>
+					<td>
+						<c:if test="${item.activo == true}"> <a href='<s:url value="/funcion/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
+						<c:if test="${item.activo == false}"> <a href='<s:url value="/funcion/activar?id=${item.id}"/>'>Activar</a> </c:if>
+					</td>
 				</tr>
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty lista}">
 			<tr><td colspan="7"><center>No hay peliculas en la cartelera</center></td></tr>
 		</c:if>
-		<tr>
-		<td>1</td>
-		<td>Complejo</td>
-		<td>Sala</td>
-		<td>Pelicula</td>
-		<td>Horarios</td>
-		<td>Modificar</td>
-		<td>Borrar</td>
-		</tr>
 	</tbody>
 </table>

@@ -37,7 +37,7 @@ public class SalaController {
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
-		ArrayList<SalaForm> lista = (ArrayList<SalaForm>) logicaNegocio.listarTodos();
+		ArrayList<SalaForm> lista = (ArrayList<SalaForm>) logicaNegocio.listarTodasForm();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
 		LOG.info("/sala/lista: listando " + lista.size() + " registro(s)");

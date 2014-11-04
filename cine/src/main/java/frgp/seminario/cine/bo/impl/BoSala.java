@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import frgp.seminario.cine.findItem.FindItem;
 import frgp.seminario.cine.findItem.impl.SalaFindItem;
 import frgp.seminario.cine.forms.SalaForm;
 import frgp.seminario.cine.model.Complejo;
@@ -98,7 +99,7 @@ public class BoSala {
 	 ** Recupera todos los registros de la clase Sala
 	 ** @return un ArrayList con todos los registros
 	 **/
-	public ArrayList<SalaForm> listarTodos() {
+	public ArrayList<SalaForm> listarTodasForm() {
 		List<Sala> todos = repository.getAll(Sala.class);
 		ArrayList<SalaForm> todosForm = new ArrayList<SalaForm>();
 		
@@ -107,6 +108,19 @@ public class BoSala {
 		return todosForm;
 	}
 
+	/**
+	 ** Recupera todos los registros activos de la clase Sala
+	 ** @return un ArrayList con todos los registros
+	 **/
+	public ArrayList<SalaForm> listarTodasActivasForm() {
+		List<Sala> todos = busquedaSala.getAllEnabled();
+		ArrayList<SalaForm> todosForm = new ArrayList<SalaForm>();
+		
+		for(Sala registro : todos)
+			todosForm.add(entityToForm(registro));
+		return todosForm;
+	}
+	
 	private boolean verificar(Sala registro) {
 		if (!(registro instanceof frgp.seminario.cine.model.Sala))
 			return false;

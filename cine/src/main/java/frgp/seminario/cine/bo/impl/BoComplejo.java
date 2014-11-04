@@ -122,6 +122,19 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 	}
 
 	/**
+	 ** Recupera todos los registros activos de la clase Complejo
+	 ** @return un ArrayList con todos los registros
+	 **/
+	public ArrayList<ComplejoForm> listarTodosActivosForm() {
+		List<Complejo> todos = busquedaComplejo.getAllEnabled();
+		ArrayList<ComplejoForm> todosForm = new ArrayList<ComplejoForm>();
+		
+		for(Complejo registro : todos)
+			todosForm.add(entityToForm(registro));
+		return todosForm;
+	}
+	
+	/**
 	 * Verifica que el registro cumpla con las caracteristicas necesarias
 	 * @return true si el registro esta en condiciones de ser guardardo, false si no lo esta
 	 **/

@@ -7,9 +7,9 @@
 		<put-attribute name="body" value="/WEB-INF/views/funcion/lista.jsp"></put-attribute>
 	</definition>
 	<definition name="alta" extends="default">
-		<put-attribute name="body" value="/WEB-INF/views/funcion/asignar.jsp"></put-attribute>
+		<put-attribute name="body" value="/WEB-INF/views/funcion/alta.jsp"></put-attribute>
 	</definition>
-<!-- 	<definition name="modificar" extends="default">
+ 	<definition name="modificar" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/cartelera/modificar.jsp"></put-attribute>
-	</definition> -->	
+	</definition>	
 </tiles-definitions>

@@ -1,19 +1,26 @@
 package frgp.seminario.cine.bo.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.FuncionFindItem;
 import frgp.seminario.cine.findItem.impl.HorarioFindItem;
+import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.forms.FuncionForm;
+import frgp.seminario.cine.forms.PeliculaForm;
+import frgp.seminario.cine.forms.SalaForm;
 import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Horario;
 import frgp.seminario.cine.repository.Repository;
 import frgp.seminario.cine.repository.impl.HorarioRepository;
 
+//Funciones pertenecientes a la logica de negocios
+@Service("BoFuncion") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
 public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Autowired
 	@Qualifier("FuncionRepository") //aclaro cual es el bean a inyectar
@@ -28,8 +35,8 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	FuncionFindItem busquedaFuncion;
 	
 	@Autowired
-	@Qualifier("HorarioFindItem") //aclaro cual es el bean a inyectar
-	HorarioFindItem busquedaHorario;
+	@Qualifier("BoHorario") //aclaro cual es el bean a inyectar
+	BoHorario horarios;
 	
 	@Autowired
 	@Qualifier("BoSala") //aclaro cual es el bean a inyectar
@@ -38,6 +45,10 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Autowired
 	@Qualifier("BoPelicula") //aclaro cual es el bean a inyectar
 	BoPelicula peliculas;
+	
+	@Autowired
+	@Qualifier("BoComplejo") //aclaro cual es el bean a inyectar
+	BoComplejo complejos;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -112,7 +123,39 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	public List<Funcion> listarTodos() {
 		return funcionRepository.getAll(Funcion.class);
 	}
-
+	
+	/**
+	 ** Recupera todos los registros de la clase Complejo
+	 ** @return un ArrayList con todos los registros
+	 **/
+	public ArrayList<ComplejoForm> listarTodosComplejos(){
+		return complejos.listarTodosActivosForm();
+	}
+	
+	/**
+	 ** Recupera todos los registros de la clase Pelicula
+	 ** @return un ArrayList con todos los registros
+	 **/
+	public ArrayList<PeliculaForm> listarTodasPeliculas(){
+		return peliculas.listarTodosActivosForm();
+	}
+	
+	/**
+	 ** Recupera todos los registros de la clase Sala
+	 ** @return un ArrayList con todos los registros
+	 **/
+	public ArrayList<SalaForm> listarTodasSalas(){
+		return salas.listarTodasActivasForm();
+	}
+	
+	/**
+	 ** Recupera todos los registros de la clase Horario
+	 ** @return un ArrayList con todos los registros
+	 **/
+	public ArrayList<Horario> listarTodosHorarios(){
+		return horarios.listarTodos();
+	}
+	
 	/**
 	 * Verifica que el registro cumpla con las caracteristicas necesarias
 	 * @return true si el registro esta en condiciones de ser guardardo, false si no lo esta
