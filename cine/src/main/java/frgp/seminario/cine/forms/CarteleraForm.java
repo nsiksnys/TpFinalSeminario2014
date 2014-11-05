@@ -1,11 +1,19 @@
 package frgp.seminario.cine.forms;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class CarteleraForm {
+	private static final String NOT_BLANK_MESSAGE = "El campo no puede estar vacio.";
+	
 	private String id;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String pelicula;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String version;
 	private boolean subtitulos;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String inicio;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String fin;
 	
 	

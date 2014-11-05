@@ -1,8 +1,14 @@
 package frgp.seminario.cine.forms;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class SalaForm {
+	private static final String NOT_BLANK_MESSAGE = "El campo no puede estar vacio.";
+	
 	private String id;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String complejo;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String numeroSala;
 	private boolean activa;
 	
