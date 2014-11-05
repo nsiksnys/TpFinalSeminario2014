@@ -172,7 +172,7 @@
 						</a>
 						<ul class="dropdown-menu">
 							<li>
-								<a href="#"><font><font>Perfil</font></font></a>
+								<a href='<s:url value="/usuario/actual"></s:url>'><font><font>Perfil</font></font></a>
 							</li>
 							<li>
 								<a href='<s:url value="/logout"></s:url>'><font><font>Cerrar sesion</font></font></a>

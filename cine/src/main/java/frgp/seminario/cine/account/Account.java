@@ -10,63 +10,68 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name = "Usuario")
 @Inheritance(strategy=InheritanceType.JOINED)//una tabla por clase hija
-@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email")
+@NamedQuery(name = Account.FIND_BY_EMAIL, query = "select a from Account a where a.email = :email and a.active=1")
 public class Account implements java.io.Serializable {
 
 	public static final String FIND_BY_EMAIL = "Account.findByEmail";
 
 	@Id
-	@Column(unique = true)
-	private Long dni;
-
-	@Column(unique = true)
-	private String nombre;
-	
-	@Column(unique = true)
-	private String apellido;
-	
-	@Column(unique = true)
-	private String sexo;
-	
-	@Column(unique = true)
-	private Date fechaNacimiento;
-	
-	@Column(unique = true)
-	private String preguntaSeguridad;
-	
-	@Column(unique = true)
 	private String email;//Username
 	
-	@Column(unique = true)
+	@Column(nullable = false)
+	private Long dni;
+
+	@Column(nullable = false)
+	private String nombre;
+	
+	@Column(nullable = false)
+	private String apellido;
+	
+	@Column(nullable = true)
+	private String sexo;
+	
+	@Column(nullable = true)
+	private Date fechaNacimiento;
+	
+	@Column(nullable = true)
+	private String preguntaSeguridad;
+	
+	@Column(nullable = true)
+	private String respuestaSeguridad;
+	
+	@Column(nullable = false)
 	@JsonIgnore
 	private String password;
 
-	@Column(unique = true)
+	@Column(nullable = false)
 	private String role = "ROLE_USER";//TODO: reemplazar por el rol que corresponda
 	//ROLES DISPONIBLES: A=Administrador, G=Gerente, C=Cliente
 
 	private boolean active;
 	
     protected Account() {
-
+    	//constructor vacio
 	}
 	
 	public Account(String email, String password, String role) {
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.active = true;
 	}
 
-	public Account(Long dni, String email, String password, String role) {
-		super();
+	public Account(Long dni, String nombre, String apellido, String email, String password, String role) {
 		this.dni = dni;
+		this.nombre = nombre;
+		this.apellido = apellido;
 		this.email = email;
 		this.password = password;
 		this.role = role;
+		this.active = true;
 	}
 
 	public Account(Long dni, String nombre, String apellido, String sexo,
-			Date fechaNacimiento, String preguntaSeguridad, String email,
+			Date fechaNacimiento, String preguntaSeguridad, String respuestaSeguridad, String email,
 			String password, String role) {
 		this.dni = dni;
 		this.nombre = nombre;
@@ -74,6 +79,7 @@ public class Account implements java.io.Serializable {
 		this.sexo = sexo;
 		this.fechaNacimiento = fechaNacimiento;
 		this.preguntaSeguridad = preguntaSeguridad;
+		this.respuestaSeguridad = respuestaSeguridad;
 		this.email = email;
 		this.password = password;
 		this.role = role;

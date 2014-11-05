@@ -1,5 +1,7 @@
 package frgp.seminario.cine.account;
 
+import java.util.ArrayList;
+
 import javax.persistence.*;
 import javax.inject.Inject;
 
@@ -24,6 +26,17 @@ public class AccountRepository {
 		return account;
 	}
 	
+	public boolean merge(Account account) {
+		try {
+			entityManager.merge(account);
+			entityManager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	public Account findByEmail(String email) {
 		try {
 			return entityManager.createNamedQuery(Account.FIND_BY_EMAIL, Account.class)
@@ -33,6 +46,10 @@ public class AccountRepository {
 			return null;
 		}
 	}
-
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<Account> getAll()
+	{
+		return (ArrayList<Account>) entityManager.createQuery("from Account item").getResultList();
+	}	
 }

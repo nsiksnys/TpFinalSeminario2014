@@ -12,27 +12,30 @@ import frgp.seminario.cine.account.Account;
 @Entity
 @PrimaryKeyJoinColumn(name="usuarioDNI")
 public class Cliente extends Account{
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String direccion;
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String generoPreferido;
 
 	public Cliente(Long dni, String nombre, String apellido, String sexo,
-			Date fechaNacimiento, String preguntaSeguridad, String email,
+			Date fechaNacimiento, String preguntaSeguridad, String respuestaSeguridad, String email,
 			String password, String direccion,
 			String generoPreferido) {
-		super(dni, nombre, apellido, sexo, fechaNacimiento, preguntaSeguridad,
-				email, password, "C");
+		super(dni, nombre, apellido, sexo, fechaNacimiento, preguntaSeguridad, respuestaSeguridad, email, password, "C");
 		this.direccion = direccion;
 		this.generoPreferido = generoPreferido;
 	}
 
-	public Cliente(Long dni, String email, String password,
+	public Cliente(Long dni, String nombre, String apellido, String email, String password,
 			String direccion, String generoPreferido) {
-		super(dni, email, password, "C");
+		super(dni, nombre, apellido, email, password, "C");
 		this.direccion = direccion;
 		this.generoPreferido = generoPreferido;
+	}
+	
+	public Cliente(Long dni, String nombre, String apellido, String email, String password) {
+		super(dni, nombre, apellido, email, password, "C");
 	}
 
 	public String getDireccion() {
