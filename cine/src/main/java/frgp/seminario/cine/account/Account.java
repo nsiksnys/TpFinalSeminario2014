@@ -134,6 +134,14 @@ public class Account implements java.io.Serializable {
 		this.preguntaSeguridad = preguntaSeguridad;
 	}
 
+	public String getRespuestaSeguridad() {
+		return respuestaSeguridad;
+	}
+
+	public void setRespuestaSeguridad(String respuestaSeguridad) {
+		this.respuestaSeguridad = respuestaSeguridad;
+	}
+
 	public String getEmail() {
 		return email;
 	}

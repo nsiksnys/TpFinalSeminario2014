@@ -5,14 +5,18 @@ import java.util.ArrayList;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.account.Account;
 import frgp.seminario.cine.account.AccountRepository;
 import frgp.seminario.cine.bo.BusinessObject;
+import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.repository.impl.ClienteRepository;
 import frgp.seminario.cine.signup.SignupForm;
 import frgp.seminario.cine.utils.FechaUtils;
 
+//Funciones pertenecientes a la logica de negocios
+@Service("BoAccount") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
 public class BoAccount implements BusinessObject<Account, SignupForm> {
 	@Autowired
 	AccountRepository accounts;
@@ -26,6 +30,10 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	@Override
 	public Account get(Object email) {
 		return accounts.findByEmail((String) email);
+	}
+	
+	public Cliente getCliente(Object email){
+		return clientes.get(Cliente.class, email);
 	}
 
 	@Override
@@ -87,6 +95,19 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 							formulario.getEmail(),
 							formulario.getPassword(),
 							formulario.getRole());
+	}
+	
+	public SignupForm entityToForm(Account registro){
+		SignupForm formulario = new SignupForm();
+		formulario.setNombre(registro.getNombre());
+		formulario.setApellido(registro.getApellido());
+		formulario.setSexo(registro.getSexo());
+		formulario.setFechaNacimiento(utils.getFormatoDiaMesAnio(registro.getFechaNacimiento()));
+		formulario.setPreguntaSeguridad(registro.getPreguntaSeguridad());
+		formulario.setRespuestaSeguridad(registro.getRespuestaSeguridad());
+		formulario.setEmail(registro.getEmail());
+		formulario.setRole(registro.getRole());
+		return formulario;
 	}
 	
 }

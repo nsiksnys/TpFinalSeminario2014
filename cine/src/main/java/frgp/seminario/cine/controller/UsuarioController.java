@@ -3,9 +3,12 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,27 +18,50 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.account.Account;
 import frgp.seminario.cine.bo.impl.BoAccount;
+import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.signup.SignupForm;
 import frgp.seminario.cine.support.web.MessageHelper;
 
+@RequestMapping(value="/usuario/**")
+@Controller
 public class UsuarioController {
 	@Autowired
 	BoAccount boAccount;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(UsuarioController.class);
 	
-	@RequestMapping(value = "usuario/actual", method = RequestMethod.GET)
+	@RequestMapping(value = "/actual", method = RequestMethod.GET)
 	public ModelAndView current (Principal principal, RedirectAttributes ra) {
 		ModelAndView mav =new ModelAndView();
+		LOG.info("/usuario/actual: se quieren mostrar detalles del usuario " + principal.getName());
 		Account account = boAccount.get(principal.getName());
+		
 		if (account == null)
 		{
 			LOG.error("/usuario/actual: No se encontro el usuario principal.getName()= " + principal.getName());
 			MessageHelper.addErrorAttribute(ra, "No se encontro el usuario.");
-			return null;
+			mav.setViewName("redirect: /");
+			return mav;
 		}
-		LOG.info("usuario/actual: mostrando detalles del usuario" + principal.getName());
-		mav.getModelMap().addAttribute("account", account);
+		
+		SignupForm form = boAccount.entityToForm(account);//FIXME: NullPOinterException
+		Cliente cliente = null;
+		if (form == null)
+		{
+			LOG.error("/usuario/actual: No se encontro el usuario principal.getName()= " + principal.getName());
+			MessageHelper.addErrorAttribute(ra, "No se encontro el usuario.");
+			mav.setViewName("redirect: /");
+			return mav;
+		}
+		mav.getModelMap().addAttribute("command", new SignupForm());
+		mav.getModelMap().addAttribute("registro", form);
+		if (form.getRole().equals("C"))//si el usuario es un cliente
+		{
+			cliente = boAccount.getCliente(principal.getName());
+			mav.getModelMap().addAttribute("direccion", cliente.getDireccion());
+			mav.getModelMap().addAttribute("genero", cliente.getGeneroPreferido());
+		}
+		LOG.info("/usuario/actual: mostrando detalles del usuario" + principal.getName());
 		return mav;
 	}
 	
@@ -51,6 +77,7 @@ public class UsuarioController {
 	@RequestMapping(value = "/usuario/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal) {
 		ModelAndView mav =new ModelAndView();
+		mav.getModelMap().addAttribute("command", new SignupForm());
 		return mav;
 	}
 	
@@ -58,6 +85,7 @@ public class UsuarioController {
 	public ModelAndView modificar(@RequestParam("id") String email, Principal principal) 
 	{
 		ModelAndView mav =new ModelAndView();
+		mav.getModelMap().addAttribute("command", new SignupForm());
 		mav.getModelMap().addAttribute("registro", boAccount.get(email));
 		return mav;
 	}
@@ -93,7 +121,7 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public ModelAndView guardar(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
+	public ModelAndView guardar(@Valid @ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/usuario/alta");
@@ -114,7 +142,7 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
+	public ModelAndView modificar(@Valid @ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView();
