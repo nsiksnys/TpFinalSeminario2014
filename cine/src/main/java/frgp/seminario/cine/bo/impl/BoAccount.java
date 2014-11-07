@@ -1,7 +1,9 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.management.relation.RoleStatus;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	@Autowired
 	FechaUtils utils;
 	
+	private HashMap<String, String> roles;
+	
+	
 	@Override
 	public Account get(Object email) {
 		return accounts.findByEmail((String) email);
@@ -40,7 +45,10 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	public boolean guardar(Account registro) {
 		try
 		{
-			accounts.save(registro);
+			if (registro.getRole().equals("C"))//si el usuario es un cliente
+				clientes.save(new Cliente(registro));
+			else
+				accounts.save(registro);
 		}
 		catch (PersistenceException e)
 		{
@@ -99,6 +107,7 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	
 	public SignupForm entityToForm(Account registro){
 		SignupForm formulario = new SignupForm();
+		formulario.setDni(registro.getDni().toString());
 		formulario.setNombre(registro.getNombre());
 		formulario.setApellido(registro.getApellido());
 		formulario.setSexo(registro.getSexo());
@@ -110,4 +119,11 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		return formulario;
 	}
 	
+	public HashMap<String, String> getRoles(){
+		roles = new HashMap<String, String>();
+		roles.put("A", "Administrador");
+		roles.put("C", "Cliente");
+		roles.put("G", "Gerente");
+		return roles;
+	}
 }

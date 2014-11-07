@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
-<h3>Modificar un usuario</h3>
+<h3>Datos del usuario</h3>
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
@@ -41,13 +41,15 @@
             <label for="role">Rol</label>
             <input class="form-control" id="role" name="role" value="${registro.role}" disabled/>
         </div>
-        <div class="form-group">
-            <label for="direccion">Direccion</label>
-            <input class="form-control" id="direccion" name="direccion" value="${direccion}" disabled/>
-        </div>
-        <div class="form-group">
-            <label for="genero">Rol</label>
-            <input class="form-control" id="genero" name="genero" value="${genero}" disabled/>
-        </div>
+        <c:if test="${registro.role == 'C' }">
+	        <div class="form-group">
+	            <label for="direccion">Direccion</label>
+	            <input class="form-control" id="direccion" name="direccion" value="${direccion}" disabled/>
+	        </div>
+	        <div class="form-group">
+	            <label for="genero">Genero preferido</label>
+	            <input class="form-control" id="genero" name="genero" value="${genero}" disabled/>
+	        </div>
+        </c:if>
 	</div>
 </div>

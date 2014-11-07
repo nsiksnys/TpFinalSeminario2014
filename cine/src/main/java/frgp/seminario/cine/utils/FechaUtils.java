@@ -55,6 +55,8 @@ public class FechaUtils {
  */
 	public String getFormatoDiaMesAnio(Date fecha){
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		if (fecha == null)
+			return null;
 		return format.format(fecha);
 	}
 	

@@ -6,9 +6,11 @@ import javax.persistence.*;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Service("AccountRepository")
 @Repository
 @Transactional(readOnly = true)
 public class AccountRepository {
@@ -22,6 +24,8 @@ public class AccountRepository {
 	@Transactional
 	public Account save(Account account) {
 		account.setPassword(passwordEncoder.encode(account.getPassword()));
+		if (!account.getRespuestaSeguridad().equals(""))
+			account.setRespuestaSeguridad(passwordEncoder.encode(account.getRespuestaSeguridad()));
 		entityManager.persist(account);
 		return account;
 	}

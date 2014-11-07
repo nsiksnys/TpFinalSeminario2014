@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +45,7 @@ public class UsuarioController {
 			return mav;
 		}
 		
-		SignupForm form = boAccount.entityToForm(account);//FIXME: NullPOinterException
+		SignupForm form = boAccount.entityToForm(account);
 		Cliente cliente = null;
 		if (form == null)
 		{
@@ -77,7 +78,7 @@ public class UsuarioController {
 	@RequestMapping(value = "/usuario/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal) {
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("command", new SignupForm());
+		mav.getModelMap().addAttribute("signupForm", new SignupForm());
 		return mav;
 	}
 	
@@ -85,8 +86,16 @@ public class UsuarioController {
 	public ModelAndView modificar(@RequestParam("id") String email, Principal principal) 
 	{
 		ModelAndView mav =new ModelAndView();
+		SignupForm registro = boAccount.entityToForm(boAccount.get(email));
 		mav.getModelMap().addAttribute("command", new SignupForm());
-		mav.getModelMap().addAttribute("registro", boAccount.get(email));
+		mav.getModelMap().addAttribute("registro", registro);
+		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
+		if (registro.getRole().equals("C"))//si el usuario es un cliente
+		{
+			Cliente cliente = boAccount.getCliente(principal.getName());//FIXME: ClienteRepository.get no encuentra el registro
+			mav.getModelMap().addAttribute("direccion", cliente.getDireccion());
+			mav.getModelMap().addAttribute("genero", cliente.getGeneroPreferido());
+		}
 		return mav;
 	}
 	
@@ -120,11 +129,18 @@ public class UsuarioController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public ModelAndView guardar(@Valid @ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
+	@RequestMapping(value = "/guardar", method = RequestMethod.POST)//TODO: testear
+	public ModelAndView alta(@Valid @ModelAttribute SignupForm formulario, Principal principal, Errors errors, RedirectAttributes ra) 
 	{
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/usuario/alta");
+		
+		if (errors.hasErrors())
+		{
+			LOG.error("/usuario/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
+		}
 		Account item = boAccount.formToEntity(formulario);
 		
 		if (!boAccount.guardar(item)){//si no se guarda

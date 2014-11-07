@@ -10,13 +10,17 @@ import frgp.seminario.cine.account.Account;
 
 @SuppressWarnings("serial")
 @Entity
-@PrimaryKeyJoinColumn(name="usuarioDNI")
+@PrimaryKeyJoinColumn(name="email")
 public class Cliente extends Account{
 	@Column(nullable=true)
-	private String direccion;
+	private String direccion="";
 	
 	@Column(nullable=true)
-	private String generoPreferido;
+	private String generoPreferido="";
+	
+	public Cliente(){
+		//Constructor vacio
+	}
 
 	public Cliente(Long dni, String nombre, String apellido, String sexo,
 			Date fechaNacimiento, String preguntaSeguridad, String respuestaSeguridad, String email,
@@ -36,6 +40,14 @@ public class Cliente extends Account{
 	
 	public Cliente(Long dni, String nombre, String apellido, String email, String password) {
 		super(dni, nombre, apellido, email, password, "C");
+		this.direccion = "";
+		this.generoPreferido = "";
+	}
+
+	public Cliente(Account registro) {
+		super(registro.getDni(), registro.getNombre(), registro.getApellido(), registro.getEmail(), registro.getPassword(), "C");
+		this.direccion = "";
+		this.generoPreferido = "";
 	}
 
 	public String getDireccion() {

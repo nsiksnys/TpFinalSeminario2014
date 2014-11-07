@@ -23,6 +23,7 @@ class ExceptionHandler {
 		modelAndView.addObject("errorMessage", Throwables.getRootCause(exception));
 		String fromUrl = request.getContextPath();//TODO: probar
 		LOG.error(Throwables.getRootCause(exception).toString());
+		System.out.println(Throwables.getStackTraceAsString(exception));
 		return modelAndView;
 	}
 }

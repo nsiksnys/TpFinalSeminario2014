@@ -28,16 +28,16 @@ public class Account implements java.io.Serializable {
 	private String apellido;
 	
 	@Column(nullable = true)
-	private String sexo;
+	private String sexo = "";
 	
 	@Column(nullable = true)
 	private Date fechaNacimiento;
 	
 	@Column(nullable = true)
-	private String preguntaSeguridad;
+	private String preguntaSeguridad ="";
 	
 	@Column(nullable = true)
-	private String respuestaSeguridad;
+	private String respuestaSeguridad ="";
 	
 	@Column(nullable = false)
 	@JsonIgnore
