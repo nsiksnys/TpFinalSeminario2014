@@ -23,6 +23,7 @@ public class SignupForm {
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String password;
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String sexo;
     
     private String preguntaSeguridad;
@@ -31,7 +32,12 @@ public class SignupForm {
     
     private String role;
     
+    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String fechaNacimiento;
+    
+    private String genero;
+    
+    private String direccion;
 
     public String getEmail() {
 		return email;
@@ -111,5 +117,21 @@ public class SignupForm {
 
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 }

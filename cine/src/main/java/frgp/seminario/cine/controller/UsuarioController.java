@@ -87,12 +87,12 @@ public class UsuarioController {
 	{
 		ModelAndView mav =new ModelAndView();
 		SignupForm registro = boAccount.entityToForm(boAccount.get(email));
-		mav.getModelMap().addAttribute("command", new SignupForm());
+		mav.getModelMap().addAttribute("signupForm", new SignupForm());
 		mav.getModelMap().addAttribute("registro", registro);
 		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
 		if (registro.getRole().equals("C"))//si el usuario es un cliente
 		{
-			Cliente cliente = boAccount.getCliente(principal.getName());//FIXME: ClienteRepository.get no encuentra el registro
+			Cliente cliente = boAccount.getCliente(email);
 			mav.getModelMap().addAttribute("direccion", cliente.getDireccion());
 			mav.getModelMap().addAttribute("genero", cliente.getGeneroPreferido());
 		}
@@ -129,10 +129,10 @@ public class UsuarioController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/guardar", method = RequestMethod.POST)//TODO: testear
-	public ModelAndView alta(@Valid @ModelAttribute SignupForm formulario, Principal principal, Errors errors, RedirectAttributes ra) 
+	@RequestMapping(value = "/alta", method = RequestMethod.POST)//TODO: testear
+	public String alta(@Valid @ModelAttribute SignupForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/usuario/alta");
 		
 		if (errors.hasErrors())
@@ -154,14 +154,21 @@ public class UsuarioController {
 			LOG.info("/usuario/alta: agregado registro para " + item.getEmail());
 			MessageHelper.addSuccessAttribute(ra, "El registro se guardo correctamente");
 		}
-		return mav;
+		return "redirect:/usuario/lista";
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@Valid @ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
+	public String modificar(@Valid @ModelAttribute SignupForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView();
+		if (errors.hasErrors())//FIXME: tira error porque busca el password que no se ingresa
+		{
+			LOG.error("/usuario/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
+		}
+		
 		Account registro = boAccount.formToEntity(formulario);
 		
 		if (!boAccount.modificar(registro)){//si no se guarda
@@ -174,7 +181,7 @@ public class UsuarioController {
 			LOG.info("/usuario/modificar: actualizado registro para " + registro.getEmail());
 			MessageHelper.addSuccessAttribute(ra, "El usuario se guardo correctamente");
 		}
-		return mav;
+		return "redirect:/usuario/lista";
 	}
 
 }

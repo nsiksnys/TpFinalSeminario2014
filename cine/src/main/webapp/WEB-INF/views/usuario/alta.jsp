@@ -32,10 +32,27 @@
 		            </div>
 		        </div>
 		        <div class="form-group">
+		            <label for="sexo">Sexo</label>
+		            <div class="form-group">
+		                <select class="form-control" id="sexo" name="sexo">
+							<option value="F">Femenino</option>
+							<option value="M">Masculino</option>
+						</select>
+		                <form:errors path="sexo" element="span" class="help-block"/>
+		            </div>
+		        </div>
+		        <div class="form-group">
 		            <label for="email">Email</label>
 		            <div class="form-group">
 		                <form:input path="email" class="form-control" cssErrorClass="form-control" id="email" placeholder="email"/>
 		                <form:errors path="email" element="span" class="help-block"/>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+		            <div class="form-group">
+		                <form:input path="fechaNacimiento" class="form-control" cssErrorClass="form-control" id="fechaNacimiento" placeholder="dd/mm/aaaa" alt="date"/>
+		                <form:errors path="fechaNacimiento" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
@@ -58,14 +75,14 @@
 		        </div>
 		        <!-- Estos dos inputs solo se ven si el administrador selecciona la opcion "cliente" -->
 		        <div class="form-group" id="direccionDiv">
-		            <label for="direccion">Direccion</label>
+		            <label for="direccion">Direccion (opcional)</label>
 		            <div class="form-group">
 		                <form:input path="direccion" class="form-control" cssErrorClass="form-control" id="direccion" placeholder="direccion"/>
 		                <form:errors path="direccion" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group" name="generoDiv">
-		            <label for="genero">Genero preferido</label>
+		            <label for="genero">Genero preferido (opcional)</label>
 		            <div class="form-group">
 		                <form:input path="genero" class="form-control" cssErrorClass="form-control" id="genero" placeholder="genero"/>
 		                <form:errors path="genero" element="span" class="help-block"/>

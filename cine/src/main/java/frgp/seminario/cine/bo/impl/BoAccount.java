@@ -93,29 +93,52 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 
 	@Override
 	public Account formToEntity(SignupForm formulario) {
-		return new Account(	Long.parseLong(formulario.getDni()), 
-							formulario.getNombre(), 
-							formulario.getApellido(), 
-							formulario.getSexo(),
-							utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()),
-							formulario.getPreguntaSeguridad(),
-							formulario.getRespuestaSeguridad(),
-							formulario.getEmail(),
-							formulario.getPassword(),
-							formulario.getRole());
+		//parametros no nulleables
+		Account entity = new Account(	Long.parseLong(formulario.getDni()), 
+										formulario.getNombre(), 
+										formulario.getApellido(), 
+										formulario.getEmail(),
+										formulario.getPassword(),
+										formulario.getRole());
+		//parametros nulleables
+		if (formulario.getSexo() != null)
+			entity.setSexo(formulario.getSexo());
+		
+		if (!formulario.getFechaNacimiento().equals(","))
+			entity.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
+		
+		if (formulario.getPreguntaSeguridad() != null)
+			entity.setPreguntaSeguridad(formulario.getPreguntaSeguridad());
+		
+		if (formulario.getRespuestaSeguridad() != null)
+			entity.setRespuestaSeguridad(formulario.getRespuestaSeguridad());
+		
+		return entity;
 	}
 	
 	public SignupForm entityToForm(Account registro){
 		SignupForm formulario = new SignupForm();
+		
+		//parametros no nulleables
 		formulario.setDni(registro.getDni().toString());
 		formulario.setNombre(registro.getNombre());
 		formulario.setApellido(registro.getApellido());
-		formulario.setSexo(registro.getSexo());
-		formulario.setFechaNacimiento(utils.getFormatoDiaMesAnio(registro.getFechaNacimiento()));
-		formulario.setPreguntaSeguridad(registro.getPreguntaSeguridad());
-		formulario.setRespuestaSeguridad(registro.getRespuestaSeguridad());
 		formulario.setEmail(registro.getEmail());
 		formulario.setRole(registro.getRole());
+		
+		//parametros nulleables
+		if (registro.getSexo() != null)
+			formulario.setSexo(registro.getSexo());
+		
+		if (registro.getFechaNacimiento() != null)
+		formulario.setFechaNacimiento(utils.getFormatoDiaMesAnio(registro.getFechaNacimiento()));
+		
+		if (registro.getPreguntaSeguridad() != null)
+		formulario.setPreguntaSeguridad(registro.getPreguntaSeguridad());
+		
+		if (registro.getRespuestaSeguridad() != null)
+		formulario.setRespuestaSeguridad(registro.getRespuestaSeguridad());
+		
 		return formulario;
 	}
 	

@@ -44,7 +44,7 @@ public class Account implements java.io.Serializable {
 	private String password;
 
 	@Column(nullable = false)
-	private String role = "ROLE_USER";//TODO: reemplazar por el rol que corresponda
+	private String role = "";//TODO: reemplazar por el rol que corresponda
 	//ROLES DISPONIBLES: A=Administrador, G=Gerente, C=Cliente
 
 	private boolean active;

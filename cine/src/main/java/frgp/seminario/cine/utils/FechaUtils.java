@@ -15,6 +15,9 @@ public class FechaUtils {
  * @return un Date con la fecha
  **/
 	public Date getFechaUnMesMas(Date fecha) {
+		if (fecha == null)
+			return null;
+		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(fecha);
 		calendar.add(GregorianCalendar.MONTH, 1);
@@ -28,6 +31,9 @@ public class FechaUtils {
 * @return un Date con la fecha
 **/
 	public Date getFechaUnDiaMenos(Date fecha) {
+		if (fecha == null)
+			return null;
+		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(fecha);
 		calendar.add(GregorianCalendar.MONTH, -1);
@@ -42,6 +48,9 @@ public class FechaUtils {
  * @return un Date con la fecha calculada
  **/
 	public Date getFechaUnDiaMas(Date fecha) {
+		if (fecha == null)
+			return null;
+		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(fecha);
 		calendar.add(GregorianCalendar.DAY_OF_MONTH, 1); 
@@ -56,7 +65,7 @@ public class FechaUtils {
 	public String getFormatoDiaMesAnio(Date fecha){
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		if (fecha == null)
-			return null;
+			return "";
 		return format.format(fecha);
 	}
 	
@@ -66,6 +75,9 @@ public class FechaUtils {
  * @return String con la fecha con el formato indicado
  */
 	public String getFormatoHoraMinuto(Date fecha){
+		if (fecha == null)
+			return "";
+		
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 		return format.format(fecha);
 	}
@@ -77,6 +89,9 @@ public class FechaUtils {
  */
 	public Date getFechaFormatoDiaMesAnio(String fecha){
 		int dia, mes, anio;
+		
+		if (fecha == null)
+			return null;
 		
 		dia=Integer.parseInt(fecha.substring(0, 2));
 		mes=Integer.parseInt(fecha.substring(3, 5))-1;

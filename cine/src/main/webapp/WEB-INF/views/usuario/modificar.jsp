@@ -6,7 +6,7 @@
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form:form class="form" action="guardar" method="post">
+		<form:form class="form" action="modificar" method="post" modelAttribute="signupForm">
 			<fieldset>
 		        <div class="form-group">
 		            <label for="dni">DNI</label>
@@ -21,13 +21,6 @@
 		            <div class="form-group">
 		                <form:input path="email" class="form-control" cssErrorClass="form-control" id="email" value="${registro.email}" placeholder="email"/>
 		                <form:errors path="email" element="span" class="help-block"/>
-		            </div>
-		        </div>
-		        <div class="form-group">
-		            <label for="password">Clave</label>
-		            <div class="form-group">
-		                <form:password path="password" class="form-control" id="password" value="${registro.password}" placeholder="Clave"/>
-		                <form:errors path="password" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
@@ -57,19 +50,19 @@
 		        <div class="form-group">
 		            <label for="fechaNacimiento">Fecha de nacimiento</label>
 		            <div class="form-group">
-		                <form:input path="fechaNacimiento" class="form-control" cssErrorClass="form-control" id="fechaNacimiento" value="${registro.fechaNacimiento}" placeholder="dd/mm/aaaa"/>
+		                <form:input path="fechaNacimiento" class="form-control" cssErrorClass="form-control" id="fechaNacimiento" value="${registro.fechaNacimiento}" placeholder="dd/mm/aaaa" alt="date" />
 		                <form:errors path="fechaNacimiento" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
-		            <label for="preguntaSeguridad">Pregunta de seguridad</label>
+		            <label for="preguntaSeguridad">Pregunta de seguridad (opcional)</label>
 		            <div class="form-group">
 		                <form:input path="preguntaSeguridad" class="form-control" cssErrorClass="form-control" id="preguntaSeguridad" value="${registro.preguntaSeguridad}"/>
 		                <form:errors path="preguntaSeguridad" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
-		            <label for="respuestaSeguridad">Respuesta a la pregunta de seguridad</label>
+		            <label for="respuestaSeguridad">Respuesta a la pregunta de seguridad (opcional)</label>
 		            <div class="form-group">
 		                <form:input path="respuestaSeguridad" class="form-control" cssErrorClass="form-control" id="respuestaSeguridad" value="${registro.respuestaSeguridad}"/>
 		                <form:errors path="respuestaSeguridad" element="span" class="help-block"/>
@@ -90,26 +83,16 @@
 						</select>
 		            </div>
 		        </div>
-		        <c:if test="${registro.role == 'C' }">
-			        <div class="form-group">
-			            <label for="direccion">Direccion</label>
-			            <input class="form-control" id="direccion" name="direccion" value="${direccion}"/>
-			        </div>
-			        <div class="form-group">
-			            <label for="genero">Genero preferido</label>
-			            <input class="form-control" id="genero" name="genero" value="${genero}"/>
-			        </div>
-		        </c:if>
 		        <!-- Estos dos inputs solo se ven si el administrador selecciona la opcion "cliente" -->
 		        <div class="form-group" id="direccionDiv">
-		            <label for="direccion">Direccion</label>
+		            <label for="direccion">Direccion (opcional)</label>
 		            <div class="form-group">
 		                <form:input path="direccion" class="form-control" cssErrorClass="form-control" id="direccion" placeholder="direccion"/>
 		                <form:errors path="direccion" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group" name="generoDiv">
-		            <label for="genero">Genero preferido</label>
+		            <label for="genero">Genero preferido (opcional)</label>
 		            <div class="form-group">
 		                <form:input path="genero" class="form-control" cssErrorClass="form-control" id="genero" placeholder="genero"/>
 		                <form:errors path="genero" element="span" class="help-block"/>
