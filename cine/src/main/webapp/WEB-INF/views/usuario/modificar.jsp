@@ -100,6 +100,21 @@
 			            <input class="form-control" id="genero" name="genero" value="${genero}"/>
 			        </div>
 		        </c:if>
+		        <!-- Estos dos inputs solo se ven si el administrador selecciona la opcion "cliente" -->
+		        <div class="form-group" id="direccionDiv">
+		            <label for="direccion">Direccion</label>
+		            <div class="form-group">
+		                <form:input path="direccion" class="form-control" cssErrorClass="form-control" id="direccion" placeholder="direccion"/>
+		                <form:errors path="direccion" element="span" class="help-block"/>
+		            </div>
+		        </div>
+		        <div class="form-group" name="generoDiv">
+		            <label for="genero">Genero preferido</label>
+		            <div class="form-group">
+		                <form:input path="genero" class="form-control" cssErrorClass="form-control" id="genero" placeholder="genero"/>
+		                <form:errors path="genero" element="span" class="help-block"/>
+		            </div>
+		        </div>
 		        <button type="submit" class="btn btn-default">Guardar</button>
 		    </fieldset>
 		</form:form>

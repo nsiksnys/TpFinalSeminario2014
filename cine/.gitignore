@@ -1,7 +1,8 @@
 # Directories #
 /build/
 /bin/
-target/
+*/target/**
+/home/**
 
 *.class
 
@@ -30,3 +31,4 @@ local.properties
 .externalToolBuilders/
 # Locally stored "Eclipse launch configurations"
 *.launch
+/target
