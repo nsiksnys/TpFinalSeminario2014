@@ -24,7 +24,7 @@ public class DataAccessImpl implements DataAccess{
 	 **/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Object get(Class entityClass, int id) {
+	public Object get(Class entityClass, Object id) {
 		return entityManager.find(entityClass, id);
 	}
 

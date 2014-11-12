@@ -4,7 +4,7 @@ import java.util.List;
 
 //Funciones pertenecientes a la logica de negocios
 public interface BusinessObject<E, F> {
-	public E get(int id);
+	public E get(Object id);
 	public boolean guardar(E registro);
 	public boolean modificar(E registro);
 	public boolean desactivar(E registro);

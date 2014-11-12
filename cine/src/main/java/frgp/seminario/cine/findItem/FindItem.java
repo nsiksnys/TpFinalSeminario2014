@@ -9,7 +9,7 @@ public interface FindItem<E> {
 	 * @param E el objeto a buscar en la base de datos
 	 * @return el id del objeto, o 0 si no fue encontrado  
 	 */
-	public int findIdByObject(E item);
+	public Long findIdByObject(E item);
 	
 	/**
 	 * Busca registros segun su fecha de creacion

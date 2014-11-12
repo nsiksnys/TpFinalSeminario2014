@@ -8,15 +8,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-	<title>Hello World!</title>
+	<title>Cine - </title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet" media="screen" />
 	<link href="<c:url value="/resources/css/core.css" />" rel="stylesheet" media="screen" />
 	
-	<tilesx:useAttribute id="styles" name="styles" classname="java.util.List" ignore="true" />
+<!-- 	<tilesx:useAttribute id="styles" name="styles" classname="java.util.List" ignore="true" />
 	<c:forEach var="cssName" items="${styles}">
 		<link type="text/css" href="<c:url value="/resources/css/${cssName}"/>" rel="stylesheet" media="screen" />
-	</c:forEach>
+	</c:forEach> -->
 	
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -50,7 +50,13 @@
 	<!-- End of page content -->
 	<tiles:insertAttribute name="footer"  defaultValue="" />
 	
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="<c:url value="/resources/js/jQuery.js" />"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
+    <script src="<c:url value="/resources/js/general.js" />"></script>
+    
+    <!-- script que agrega otros scripts segun la pagina en la que este -->
+    <script type="text/javascript" src="<c:url value="/resources/js/agregarScripts.js"/>"  rel="stylesheet" media="screen"></script>
+    
+    <!-- scripts propios de las clases -->
 </body>
 </html>

@@ -1,8 +1,12 @@
 package frgp.seminario.cine.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.springframework.stereotype.Service;
+
+@Service("FechaUtils")
 public class FechaUtils {
  /**
  * Calcula una fecha nueva cuyo mes tenga una diferencia de una unidad con respecto al mes de la fecha inicial.
@@ -11,6 +15,9 @@ public class FechaUtils {
  * @return un Date con la fecha
  **/
 	public Date getFechaUnMesMas(Date fecha) {
+		if (fecha == null)
+			return null;
+		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(fecha);
 		calendar.add(GregorianCalendar.MONTH, 1);
@@ -24,6 +31,9 @@ public class FechaUtils {
 * @return un Date con la fecha
 **/
 	public Date getFechaUnDiaMenos(Date fecha) {
+		if (fecha == null)
+			return null;
+		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(fecha);
 		calendar.add(GregorianCalendar.MONTH, -1);
@@ -38,9 +48,55 @@ public class FechaUtils {
  * @return un Date con la fecha calculada
  **/
 	public Date getFechaUnDiaMas(Date fecha) {
+		if (fecha == null)
+			return null;
+		
 		GregorianCalendar calendar = new GregorianCalendar();
 		calendar.setTime(fecha);
 		calendar.add(GregorianCalendar.DAY_OF_MONTH, 1); 
 		return calendar.getTime();
+	}
+	
+/**
+ * Devuelve una fecha con el formato dia-mes-anio	
+ * @param fecha Date a formatear
+ * @return String con la fecha con el formato indicado
+ */
+	public String getFormatoDiaMesAnio(Date fecha){
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		if (fecha == null)
+			return "";
+		return format.format(fecha);
+	}
+	
+/**
+ * Devuelve una fecha con el formato hora:minutos
+ * @param fecha Date a formatear
+ * @return String con la fecha con el formato indicado
+ */
+	public String getFormatoHoraMinuto(Date fecha){
+		if (fecha == null)
+			return "";
+		
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		return format.format(fecha);
+	}
+	
+/**
+ * Devuelve una fecha con el fomato dia-mes-anio
+ * @param fecha String con la fecha indicada en formato dd/MM/yyyy
+ * @return Date con la fecha con el formato indicado
+ */
+	public Date getFechaFormatoDiaMesAnio(String fecha){
+		int dia, mes, anio;
+		
+		if (fecha == null)
+			return null;
+		
+		dia=Integer.parseInt(fecha.substring(0, 2));
+		mes=Integer.parseInt(fecha.substring(3, 5))-1;
+		anio=Integer.parseInt(fecha.substring(6, 10));
+		
+		return new GregorianCalendar(anio,mes,dia).getTime();
 	}
 }
