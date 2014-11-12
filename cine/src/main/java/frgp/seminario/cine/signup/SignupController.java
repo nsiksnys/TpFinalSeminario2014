@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.account.*;
-import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.repository.impl.ClienteRepository;
 import frgp.seminario.cine.support.web.*;
 

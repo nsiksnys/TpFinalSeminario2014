@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.FuncionFindItem;
-import frgp.seminario.cine.findItem.impl.HorarioFindItem;
 import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.forms.FuncionForm;
 import frgp.seminario.cine.forms.PeliculaForm;

@@ -3,7 +3,6 @@ package frgp.seminario.cine.bo.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.management.relation.RoleStatus;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import frgp.seminario.cine.account.Account;
 import frgp.seminario.cine.account.AccountRepository;
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.model.Cliente;
-import frgp.seminario.cine.repository.impl.ClienteRepository;
 import frgp.seminario.cine.signup.SignupForm;
 import frgp.seminario.cine.utils.FechaUtils;
 

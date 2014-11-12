@@ -26,6 +26,7 @@ class CustomErrorController {
 		Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
 		Throwable throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
 		// String servletName = (String) request.getAttribute("javax.servlet.error.servlet_name");
+		@SuppressWarnings("unused")
 		String fromUrl = request.getRequestURI();//TODO: probar
 		String exceptionMessage = getExceptionMessage(throwable, statusCode);
 		

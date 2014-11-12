@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.findItem.FindItem;
 import frgp.seminario.cine.findItem.impl.SalaFindItem;
 import frgp.seminario.cine.forms.SalaForm;
 import frgp.seminario.cine.model.Complejo;

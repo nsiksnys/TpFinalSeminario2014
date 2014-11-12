@@ -9,7 +9,6 @@ public interface DataAccess {
 	public Object get(Class entityClass, Object id);
 	@SuppressWarnings("rawtypes")
 	public List getAll(Class entityClass);
-	@SuppressWarnings("rawtypes")
 	public boolean save(Object registro);
 	public boolean merge(Object registro);
 //	public void saveOrUpdate(Object registro);
