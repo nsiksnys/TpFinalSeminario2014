@@ -45,7 +45,9 @@ public class Cliente extends Account{
 	}
 
 	public Cliente(Account registro) {
-		super(registro.getDni(), registro.getNombre(), registro.getApellido(), registro.getEmail(), registro.getPassword(), "C");
+		super(registro.getDni(), registro.getNombre(), registro.getApellido(), registro.getSexo(), registro.getFechaNacimiento(), 
+				registro.getPreguntaSeguridad(), registro.getRespuestaSeguridad(), registro.getEmail(), registro.getPassword(), "C");
+		
 		this.direccion = "";
 		this.generoPreferido = "";
 	}

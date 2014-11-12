@@ -134,6 +134,9 @@ public class UsuarioController {
 	{
 		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/usuario/alta");
+		Account usuario;
+		Cliente cliente;
+		boolean status;
 		
 		if (errors.hasErrors())
 		{
@@ -141,9 +144,18 @@ public class UsuarioController {
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
 			return null;
 		}
-		Account item = boAccount.formToEntity(formulario);
+		if (formulario.getRole().equals("C"))
+		{
+			cliente = boAccount.formToClienteEntity(formulario);
+			status = boAccount.guardar(cliente);
+		}
+		else
+		{
+			usuario = boAccount.formToEntity(formulario);
+			status = boAccount.guardar(usuario);
+		}
 		
-		if (!boAccount.guardar(item)){//si no se guarda
+		if (!status){//si no se guarda
 			//mav.setViewName("redirect:/usuario/alta");
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
@@ -151,7 +163,7 @@ public class UsuarioController {
 		}
 		else
 		{
-			LOG.info("/usuario/alta: agregado registro para " + item.getEmail());
+			LOG.info("/usuario/alta: agregado registro para " + formulario.getEmail());
 			MessageHelper.addSuccessAttribute(ra, "El registro se guardo correctamente");
 		}
 		return "redirect:/usuario/lista";
@@ -162,16 +174,27 @@ public class UsuarioController {
 	{
 		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
 		//ModelAndView mav =new ModelAndView();
-		if (errors.hasErrors())//FIXME: tira error porque busca el password que no se ingresa
+		Boolean status;
+		
+		if (errors.hasErrors())
 		{
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
 			return null;
 		}
 		
-		Account registro = boAccount.formToEntity(formulario);
+		if (formulario.getRole().equals("C"))
+		{
+			status = boAccount.modificar(boAccount.formToClienteEntity(formulario));
+		}
+		else
+		{
+			status = boAccount.modificar(boAccount.formToEntity(formulario));
+		}
 		
-		if (!boAccount.modificar(registro)){//si no se guarda
+		Account registro = boAccount.formToEntityModificar(formulario);
+		
+		if (!status){//si no se guarda
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
 			return null;

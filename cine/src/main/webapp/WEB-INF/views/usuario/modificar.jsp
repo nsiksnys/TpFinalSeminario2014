@@ -54,6 +54,7 @@
 		                <form:errors path="fechaNacimiento" element="span" class="help-block"/>
 		            </div>
 		        </div>
+		        <input type="hidden" name="password" id="password" value="N/A">
 		        <div class="form-group">
 		            <label for="preguntaSeguridad">Pregunta de seguridad (opcional)</label>
 		            <div class="form-group">
@@ -87,14 +88,14 @@
 		        <div class="form-group" id="direccionDiv">
 		            <label for="direccion">Direccion (opcional)</label>
 		            <div class="form-group">
-		                <form:input path="direccion" class="form-control" cssErrorClass="form-control" id="direccion" placeholder="direccion"/>
+		                <form:input path="direccion" class="form-control" cssErrorClass="form-control" id="direccion" placeholder="direccion" value="${direccion}"/>
 		                <form:errors path="direccion" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group" name="generoDiv">
 		            <label for="genero">Genero preferido (opcional)</label>
 		            <div class="form-group">
-		                <form:input path="genero" class="form-control" cssErrorClass="form-control" id="genero" placeholder="genero"/>
+		                <form:input path="genero" class="form-control" cssErrorClass="form-control" id="genero" placeholder="genero" value="${genero}"/>
 		                <form:errors path="genero" element="span" class="help-block"/>
 		            </div>
 		        </div>

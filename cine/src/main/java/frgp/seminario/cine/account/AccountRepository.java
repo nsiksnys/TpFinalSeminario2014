@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service("AccountRepository")
 @Repository
-@Transactional(readOnly = true)
+@Transactional//(readOnly = false)
 public class AccountRepository {
 	
 	@PersistenceContext

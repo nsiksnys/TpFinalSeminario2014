@@ -24,7 +24,7 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	AccountRepository accounts;
 	
 	@Autowired
-	ClienteRepository clientes;
+	BoCliente clientes;
 	
 	@Autowired
 	FechaUtils utils;
@@ -38,17 +38,14 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	}
 	
 	public Cliente getCliente(Object email){
-		return clientes.get(Cliente.class, email);
+		return clientes.get(email);
 	}
 
 	@Override
 	public boolean guardar(Account registro) {
 		try
 		{
-			if (registro.getRole().equals("C"))//si el usuario es un cliente
-				clientes.save(new Cliente(registro));
-			else
-				accounts.save(registro);
+			accounts.save(registro);
 		}
 		catch (PersistenceException e)
 		{
@@ -57,10 +54,25 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		}
 		return true;
 	}
+	
+	public boolean guardar(Cliente registro){
+		return clientes.guardar(registro);
+	}
 
 	@Override
 	public boolean modificar(Account registro) {
+		Account registroActual = this.get(registro.getEmail());
+		
+		if (registroActual.equals(registro))
+			return true;
+		
+		registro.setPassword(registroActual.getPassword());//la password no cambia aca
+		
 		return accounts.merge(registro);
+	}
+	
+	public boolean modificar(Cliente registro){		
+		return clientes.modificar(registro);
 	}
 
 	@Override
@@ -104,7 +116,7 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		if (formulario.getSexo() != null)
 			entity.setSexo(formulario.getSexo());
 		
-		if (!formulario.getFechaNacimiento().equals(","))
+		if (formulario.getFechaNacimiento() != null)
 			entity.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
 		
 		if (formulario.getPreguntaSeguridad() != null)
@@ -114,6 +126,39 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 			entity.setRespuestaSeguridad(formulario.getRespuestaSeguridad());
 		
 		return entity;
+	}
+	
+	public Cliente formToClienteEntity(SignupForm formulario) {
+        return clientes.formToEntity(formulario);
+	}
+	
+	public Account formToEntityModificar(SignupForm formulario) {
+		//parametros no nulleables
+		Account entity = new Account(	Long.parseLong(formulario.getDni()), 
+										formulario.getNombre(), 
+										formulario.getApellido(), 
+										formulario.getEmail(),
+										"",//como es una modificacion el password no va
+										formulario.getRole());
+		//parametros nulleables
+		if (formulario.getSexo() != null)
+			entity.setSexo(formulario.getSexo());
+		
+		if (formulario.getFechaNacimiento() != null)
+			entity.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
+		
+		if (formulario.getPreguntaSeguridad() != null)
+			entity.setPreguntaSeguridad(formulario.getPreguntaSeguridad());
+		
+		if (formulario.getRespuestaSeguridad() != null)
+			entity.setRespuestaSeguridad(formulario.getRespuestaSeguridad());
+		
+		return entity;
+	}
+	
+	public Cliente formToClienteEntityModificar(SignupForm formulario)
+	{
+		return clientes.formToEntityModificar(formulario);
 	}
 	
 	public SignupForm entityToForm(Account registro){
