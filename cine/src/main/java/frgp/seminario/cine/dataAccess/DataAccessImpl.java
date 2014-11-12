@@ -3,6 +3,7 @@ package frgp.seminario.cine.dataAccess;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DataAccessImpl implements DataAccess{
+	@PersistenceContext
 	private EntityManager entityManager;
 	
 	/** 
@@ -22,7 +24,7 @@ public class DataAccessImpl implements DataAccess{
 	 **/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Object get(Class entityClass, int id) {
+	public Object get(Class entityClass, Object id) {
 		return entityManager.find(entityClass, id);
 	}
 

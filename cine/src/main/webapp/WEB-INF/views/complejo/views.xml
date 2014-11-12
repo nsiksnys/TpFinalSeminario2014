@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+	"-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+	"http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+	<definition name="lista" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/complejo/lista.jsp"></put-attribute>
+	</definition>
+ 	<definition name="alta" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/complejo/alta.jsp"></put-attribute>
+	</definition>
+	<definition name="modificar" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/complejo/modificar.jsp"></put-attribute>
+	</definition>
+</tiles-definitions>

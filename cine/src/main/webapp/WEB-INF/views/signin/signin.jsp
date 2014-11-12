@@ -4,11 +4,11 @@
 <form class="form-narrow form-horizontal" action='<s:url value="/j_spring_security_check"/>' method="post">
     <c:if test="${not empty param['error']}">
         <div class="alert alert-error">
-            Sign in error. Please try again.
+            Ocurrio un error. Por favor intente de nuevo.
         </div>
     </c:if>
     <fieldset>
-        <legend>Please Sign In</legend>
+        <legend>Inicio de sesion</legend>
         <div class="form-group">
             <label for="inputEmail" class="col-lg-2 control-label">Email</label>
             <div class="col-lg-10">
@@ -25,19 +25,19 @@
             <div class="col-lg-offset-2 col-lg-10">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="_spring_security_remember_me"> Remember me
+                        <input type="checkbox" name="_spring_security_remember_me"> Recuerdame
                     </label>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-                <button type="submit" class="btn btn-default">Sign in</button>
+                <button type="submit" class="btn btn-default">Iniciar sesion</button>
             </div>
         </div>
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-                <p>New here? <a href='<s:url value="/signup"/>'>Sign Up</a></p>
+                <p>Nuevo? <a href='<s:url value="/signup"/>'>Registrarse.</a></p>
             </div>
         </div>
     </fieldset>
