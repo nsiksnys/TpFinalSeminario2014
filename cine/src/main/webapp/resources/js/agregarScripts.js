@@ -21,14 +21,18 @@ $( document ).ready(function() {
     {
 	agregarScript('googleCharts');
     }
-    	
     
-    function agregarScript($nombre){
+    if ($pathname.search("reserva/alta"))
+    {
+	agregarScript('jquery.countdown');
+    }
+});
+
+function agregarScript($nombre){
 	var script = document.createElement( 'script' );
 	script.type = 'text/javascript';
 	script.media= 'screen';
 	script.rel= 'stylesheet';
 	script.src = "/" + $context + "/resources/js/" + $nombre + ".js";
 	$("body").append( script );
-    };
-});
+}

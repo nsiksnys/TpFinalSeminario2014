@@ -117,7 +117,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		if (!(registro instanceof frgp.seminario.cine.model.Pelicula))
 			return false;
 		
-		if (busquedaPelicula.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaPelicula.getActiveIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		return true;
