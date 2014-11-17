@@ -1,5 +1,6 @@
 package frgp.seminario.cine.utils;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -98,5 +99,21 @@ public class FechaUtils {
 		anio=Integer.parseInt(fecha.substring(6, 10));
 		
 		return new GregorianCalendar(anio,mes,dia).getTime();
+	}
+	
+	/**
+	 * Devuelve la diferencia entre dos objetos Time
+	 * @param timeMayor objeto time mayor
+	 * @param timeMenor objeto time menor
+	 * @return un objeto time con la diferencia entre timeUno y timeDos
+	 */
+	public Time getDiferenciaTime(Time timeMayor, Time timeMenor)
+	{
+		long c = timeMayor.getTime() - timeMenor.getTime();
+		
+		if (c < 0)//si se ingresaron los Time en el orden incorrecto o la diferencia es negativa
+			c = timeMenor.getTime() - timeMayor.getTime();
+		
+		return new Time(c);
 	}
 }

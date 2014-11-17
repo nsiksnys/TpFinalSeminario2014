@@ -57,6 +57,10 @@
 					<label for="clasificacion">Clasificacion</label>
 					<input class="form-control" id="clasificacion" name="clasificacion" type="text" placeholder="ATP, 13, 16, 18"/>
 				</div>
+				<div class="form-group">
+					<label for="duracion">Duracion</label>
+					<input class="form-control" id="duracion" name="duracion" type="text" placeholder="HH:MM" alt="time"/>
+				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
 		</form>

@@ -133,7 +133,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	{
 		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
 				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
-				formulario.getActores(), formulario.getDirector(), formulario.getTrailer());
+				formulario.getActores(), formulario.getDirector(), formulario.getTrailer(), formulario.getDuracion());
 	}
 	
 	public PeliculaForm entityToForm(Pelicula registro)
@@ -149,6 +149,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		formulario.setActores(registro.getDetalles().getActores());
 		formulario.setDirector(registro.getDetalles().getDirector());
 		formulario.setTrailer(registro.getDetalles().getUrlTrailer());
+		formulario.setDuracion(registro.getDuracion());
 		return formulario;
 	}
 
