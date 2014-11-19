@@ -84,6 +84,23 @@ public class FechaUtils {
 	}
 	
 /**
+ * Devuelve una fecha con el formato hora:minutos
+ * @param fecha Date a formatear
+ * @return String con la fecha con el formato indicado
+ */
+	public Time getFormatoHoraMinuto(String hora){
+		int horas, minutos;
+		
+		if (hora.equals(""))
+			return new Time(0);
+		
+		horas = Integer.parseInt(hora.substring(0, 2));
+		minutos=Integer.parseInt(hora.substring(3, 5));
+		
+		return new Time(new GregorianCalendar(0,0,0,horas,minutos,0).getTimeInMillis());
+	}
+	
+/**
  * Devuelve una fecha con el fomato dia-mes-anio
  * @param fecha String con la fecha indicada en formato dd/MM/yyyy
  * @return Date con la fecha con el formato indicado
@@ -109,9 +126,11 @@ public class FechaUtils {
 	 */
 	public Time getDiferenciaTime(Time timeMayor, Time timeMenor)
 	{
-		long c = timeMayor.getTime() - timeMenor.getTime();
+		long c;
+		if (timeMayor.compareTo(timeMenor) > 0)
+			c = timeMayor.getTime() - timeMenor.getTime();
 		
-		if (c < 0)//si se ingresaron los Time en el orden incorrecto o la diferencia es negativa
+		else //si se ingresaron los Time en el orden incorrecto
 			c = timeMenor.getTime() - timeMayor.getTime();
 		
 		return new Time(c);

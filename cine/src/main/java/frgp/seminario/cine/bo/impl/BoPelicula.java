@@ -14,6 +14,7 @@ import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.PeliculaForm;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.Repository;
+import frgp.seminario.cine.utils.FechaUtils;
 
 //Funciones pertenecientes a la logica de negocios
 @Service("BoPelicula") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
@@ -33,6 +34,9 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	@Autowired
 	@Qualifier("CarteleraFindItem")//aclaro cual es el bean a inyectar
 	CarteleraFindItem busquedaCartelera;//findItem de peliculas en cartelera
+	
+	@Autowired
+	FechaUtils utils;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -133,7 +137,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	{
 		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
 				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
-				formulario.getActores(), formulario.getDirector(), formulario.getTrailer(), formulario.getDuracion());
+				formulario.getActores(), formulario.getDirector(), formulario.getTrailer(), utils.getFormatoHoraMinuto(formulario.getDuracion()));
 	}
 	
 	public PeliculaForm entityToForm(Pelicula registro)
@@ -149,7 +153,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		formulario.setActores(registro.getDetalles().getActores());
 		formulario.setDirector(registro.getDetalles().getDirector());
 		formulario.setTrailer(registro.getDetalles().getUrlTrailer());
-		formulario.setDuracion(registro.getDuracion());
+		formulario.setDuracion(utils.getFormatoHoraMinuto(registro.getDuracion()));
 		return formulario;
 	}
 

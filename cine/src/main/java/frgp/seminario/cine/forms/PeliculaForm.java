@@ -1,7 +1,5 @@
 package frgp.seminario.cine.forms;
 
-import java.sql.Time;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class PeliculaForm {
@@ -25,7 +23,7 @@ public class PeliculaForm {
 	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String clasificacion;
 	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Time duracion;
+	private String duracion;
 	
 	//getters y setters
 	public String getId() {
@@ -88,10 +86,10 @@ public class PeliculaForm {
 	public void setClasificacion(String clasificacion) {
 		this.clasificacion = clasificacion;
 	}
-	public Time getDuracion() {
+	public String getDuracion() {
 		return duracion;
 	}
-	public void setDuracion(Time duracion) {
+	public void setDuracion(String duracion) {
 		this.duracion = duracion;
 	}
 }

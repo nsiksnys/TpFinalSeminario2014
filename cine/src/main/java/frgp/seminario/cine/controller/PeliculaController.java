@@ -3,18 +3,23 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.model.Pelicula;
+import frgp.seminario.cine.support.web.MessageHelper;
 import frgp.seminario.cine.bo.impl.BoPelicula;
 import frgp.seminario.cine.forms.PeliculaForm;
 
@@ -60,15 +65,19 @@ public class PeliculaController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
 	{
-		return new ModelAndView();
+		ModelAndView mav =new ModelAndView();
+		mav.getModelMap().addAttribute("peliculaForm", new PeliculaForm());
+		return mav;
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
 		//ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
+		Pelicula registro = logicaNegocio.get(id);
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
+		mav.getModelMap().addAttribute("peliculaForm", logicaNegocio.entityToForm(registro));
+		mav.getModelMap().addAttribute("registro", registro);//FIXME: esto queda o se va?
 		return mav;
 	}
 	
@@ -103,42 +112,58 @@ public class PeliculaController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public ModelAndView guardar(@ModelAttribute PeliculaForm formulario, Principal principal) 
+	@RequestMapping(value = "/alta", method = RequestMethod.POST)
+	public String alta(@Valid @ModelAttribute PeliculaForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/pelicula/alta");
 		Pelicula item = logicaNegocio.formToEntity(formulario);
 		
+		if (errors.hasErrors())
+		{
+			LOG.error("/pelicula/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
+		}
+		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
-			mav.setViewName("redirect:/pelicula/alta");
-			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
+			LOG.error("/pelicula/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
 		}
 		else
 		{
 			LOG.info("/pelicula/alta: agregado registro nuevo con id " + item.getId());
-			//mav.getModelMap().addAttribute("ok", "La pelicula se guardo correctamente");
+			MessageHelper.addSuccessAttribute(ra, "La pelicula se guardo correctamente");
 		}
-		return mav;
+		return "redirect:/pelicula/lista";
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@ModelAttribute PeliculaForm formulario, Principal principal) 
+	public String modificar(@Valid @ModelAttribute PeliculaForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
 		//ModelAndView mav =new ModelAndView();
 		Pelicula registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		
+		if (errors.hasErrors())
+		{
+			LOG.error("/pelicula/modificar: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
+		}
+		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
-			mav.setViewName("redirect:/pelicula/modificar?id="+formulario.getId());
-			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
+			LOG.error("/pelicula/modificar: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
 		}
 		else
 		{
 			LOG.info("/pelicula/modificar: actualizado registro con id " + registro.getId());
-			//mav.getModelMap().addAttribute("ok", "La pelicula se actualizo correctamente");
+			MessageHelper.addSuccessAttribute(ra, "El usuario se guardo correctamente");
 		}
-		return mav;
+		return "redirect:/pelicula/lista";
 	}
 }

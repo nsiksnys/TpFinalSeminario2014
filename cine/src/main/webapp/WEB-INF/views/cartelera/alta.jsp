@@ -30,10 +30,12 @@
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
 					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa" alt="date"/>
+					<span id="inicioSpan" class="help-block"></span>
 				</div>
 				<div class="form-group">
 					<label for="fin">Fin de proyeccion</label>
 					<input class="form-control" id="fin" name="fin" type="text" placeholder="dd/mm/aaaa" alt="date"/>
+					<span id="finSpan" class="help-block"></span>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
