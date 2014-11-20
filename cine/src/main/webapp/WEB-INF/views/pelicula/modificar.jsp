@@ -11,10 +11,6 @@
 			<fieldset>
 				 <form:errors path="" element="p" class="text-error"/>
 				<div class="form-group">
-					<label for="titulo">Id: ${registro.id} </label>
-					<input class="form-control" id="id" name="id" type="hidden" value="${registro.id}"/>
-				</div>
-				<div class="form-group">
 					<label for="titulo">Titulo</label>
 					<div class="form-group">
 		                <form:input path="titulo" class="form-control" cssErrorClass="form-control" id="titulo" value="${registro.nombre}"/>

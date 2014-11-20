@@ -2,8 +2,11 @@ package frgp.seminario.cine.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.validation.Valid;
+import org.codehaus.jackson.map.ObjectMapper;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -162,8 +166,15 @@ public class PeliculaController {
 		else
 		{
 			LOG.info("/pelicula/modificar: actualizado registro con id " + registro.getId());
-			MessageHelper.addSuccessAttribute(ra, "El usuario se guardo correctamente");
+			MessageHelper.addSuccessAttribute(ra, "El usuario se actualizo correctamente");
 		}
 		return "redirect:/pelicula/lista";
+	}
+	
+	@RequestMapping(value = "/getpeliculas", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getPeliculasDisponibles(Principal principal)
+	{
+		LOG.info("/pelicula/getpeliculas: pedidas peliculas activas");
+		return logicaNegocio.getAllActiveMap();
 	}
 }

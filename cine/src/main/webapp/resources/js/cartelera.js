@@ -1,6 +1,9 @@
 $( document ).ready(function() {    
-    $("#inicioSpan").hide();
-    $("#finSpan").hide();
+    //cuando la verificacion falla y se recarga la pagina con el select vacio
+    if ($( "#pelicula option:selected" ).val() == "0")
+    {
+	getPeliculasDisponibles();
+    }
     
     //cuando se ingresa una fecha de inicio
     $("#inicio").change(function() {
@@ -11,13 +14,11 @@ $( document ).ready(function() {
 	
 	if (isFechaInicioOk(fecha))
 	{
-	    $("#inicioSpan").text("");
-	    $("#inicioSpan").hide();
+	    $("#inicio").parent('div').removeClass("has-error");
 	}
 	else
 	{
-	    $("#inicioSpan").text("Por favor revise la fecha.");
-	    $("#inicioSpan").show();
+	    $("#inicio").parent('div').addClass("has-error");
 	}
    });
     
@@ -30,13 +31,11 @@ $( document ).ready(function() {
 	
 	if (isFechaFinOk($("#inicio").val(), fecha))
 	{
-	    $("#finSpan").text("");
-	    $("#finSpan").hide();
+	    $("#fin").parent('div').removeClass("has-error");
 	}
 	else
 	{
-	    $("#finSpan").text("Por favor revise la fecha.");
-	    $("#finSpan").show();
+	    $("#fin").parent('div').addClass("has-error");
 	}
    }); 
     
@@ -51,7 +50,7 @@ $( document ).ready(function() {
 	if (fechaInicio.getDay() != 4)//si la fecha igresada no corresponde a un jueves
 	    return false;
 	
-	if (getDiferenciaDia(fechaInicio, new Date()) <= 0)//si la fecha ingresada es igual o anterior al dia de la fecha
+	if (getDiferenciaMilis(fechaInicio, new Date()) <= 0)//si la fecha ingresada es igual o anterior al dia de la fecha
 	    return false;
 	
 	return true;
@@ -67,18 +66,36 @@ $( document ).ready(function() {
 	var fechaFinDate = new Date(getAnio(fechaFin), getMes(fechaFin)-1, getDia(fechaFin));
 	var fechaInicioDate = new Date(getAnio(fechaInicio), getMes(fechaInicio)-1, getDia(fechaInicio));
 	
-	if (getDiferenciaDia(fechaFinDate, new Date() ) <= 0)//si la fecha ingresada es igual o anterior al dia de la fecha
+	if (getDiferenciaMilis(fechaFinDate, new Date() ) <= 0)//si la fecha ingresada es igual o anterior al dia de la fecha
 	    return false;
 	
-	if (getDiferenciaDia(fechaFinDate, fechaInicioDate) <= 0)//si la fecha de fin es igual o anterior a la fecha de inicio
+	if (getDiferenciaMilis(fechaFinDate, fechaInicioDate) <= 0)//si la fecha de fin es igual o anterior a la fecha de inicio
 	    return false;
 	
-	if (getDiferenciaDia(fechaFinDate, fechaInicioDate) < 6)//si la fecha de fin es igual o anterior a la fecha de inicio
+	if (getDiferenciaMilis(fechaFinDate, fechaInicioDate) < getDiaEnMilis(6))//si la fecha de fin es igual o anterior a la fecha de inicio
 	    return false;
 	
 	return true;
     }
     
+    function getDiaEnMilis(dias)
+    {
+	return dias * 24 * 60 * 60 * 1000;//dias * horas * minutos * segundos * 1000
+    }
+    
+    /**
+     * Calcula la diferencia en milisegundos que existe entre dos fechas
+     * @param mayor Date mayor
+     * @param menor Date menor
+     */
+    function getDiferenciaMilis(mayor, menor)
+    {
+	var diferencia = mayor.getTime() - menor.getTime(); /*milisegundos*/
+	
+	console.log('Diferencia entre ' + mayor + ' y ' + menor + ': ' + diferencia + ' milisegundo(s).');
+	return diferencia;
+    }
+        
     /**
      * Calcula la diferencia en dias que existe entre dos fechas
      * @param mayor Date mayor
@@ -90,6 +107,7 @@ $( document ).ready(function() {
 	var milisegundosDia = 24 * 60 * 60 * 1000;//horas * minutos * segundos * 1000
 	var dias = Math.floor( diferencia / milisegundosDia );
 	
+	console.log('Diferencia entre ' + mayor + ' y ' + menor + ': ' + dias + ' dias.');
 	return dias;
     }
     
@@ -122,4 +140,25 @@ $( document ).ready(function() {
     {
 	return fecha.split('/')[2];
     }
+    
+    function getPeliculasDisponibles(){
+        var host =document.location.host;
+        var url = "http://" + host + "/" + getContext() + "/pelicula/getpeliculas";//url de la funcion getPeliculasDisponibles en controller de Peliculas
+        return $.getJSON(url, function(json) {
+            if (typeof json === "undefined" || json=="" || json.length == 0)
+            {
+        	return;
+            }
+    	
+            $("#pelicula").empty();
+            
+            $.each(json, function (key, value) {
+        	$("#pelicula").append(parseOpcion(key, value));
+            });
+        });
+    };
+    
+    function parseOpcion(key, value){
+        return '<option value="' + key + '">' + value + '</option>';
+    };
 });

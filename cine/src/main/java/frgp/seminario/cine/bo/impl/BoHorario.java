@@ -1,5 +1,6 @@
 package frgp.seminario.cine.bo.impl;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class BoHorario {
 	
 	public ArrayList<Horario> listarTodos(){
 		return repository.getAll(Horario.class);
+	}
+	
+	public ArrayList<Horario> findByDiferencia(Time periodo)
+	{
+		return busqueda.findByDiferencia(periodo);
 	}
 }

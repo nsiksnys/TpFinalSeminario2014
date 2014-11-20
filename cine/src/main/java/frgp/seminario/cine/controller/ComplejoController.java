@@ -1,7 +1,11 @@
 package frgp.seminario.cine.controller;
 
 import java.security.Principal;
+
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.seminario.cine.bo.impl.BoComplejo;
@@ -144,5 +149,12 @@ public class ComplejoController {
 			mav.getModelMap().addAttribute("message",  new Message("El complejo se guardo correctamente", Type.SUCCESS));
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/getcomplejos", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getPeliculasDisponibles(Principal principal)
+	{
+		LOG.info("/complejo/getcomplejos: pedidos complejos activos");
+		return logicaNegocio.getAllActiveMap();
 	}
 }

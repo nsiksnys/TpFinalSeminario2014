@@ -21,8 +21,8 @@ public class SignupController {
 	private UserService userService;
 	
 	@RequestMapping(value = "signup")
-	public SignupForm signup() {
-		return new SignupForm();
+	public SignupClientForm signup() {
+		return new SignupClientForm();
 	}
 	
 	@RequestMapping(value = "signup", method = RequestMethod.POST)
@@ -34,7 +34,7 @@ public class SignupController {
 		Account account = accountRepository.save(signupForm.createAccount());
 		userService.signin(account);
 
-        MessageHelper.addSuccessAttribute(ra, "Congratulations! You have successfully signed up.");
+        MessageHelper.addSuccessAttribute(ra, "El usuario fue creado.");
 		
 		return "redirect:/";
 	}

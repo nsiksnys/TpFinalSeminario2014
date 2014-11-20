@@ -108,8 +108,8 @@ public class FechaUtils {
 	public Date getFechaFormatoDiaMesAnio(String fecha){
 		int dia, mes, anio;
 		
-		if (fecha == null)
-			return null;
+		if (fecha == null || fecha.equals(""))
+			return new Date(0);
 		
 		dia=Integer.parseInt(fecha.substring(0, 2));
 		mes=Integer.parseInt(fecha.substring(3, 5))-1;

@@ -1,7 +1,8 @@
 package frgp.seminario.cine.model;
 
-import java.util.Date;
+import java.sql.Time;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,17 +13,22 @@ public class Horario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private Date horaInicio;
-	private Date horaFin;
+	@Column(nullable=false)
+	private Time horaInicio;
+	@Column(nullable=false)
+	private Time horaFin;
 	
+	public Horario(){
+		//constructor vacio
+	}
 	
-	public Horario(Long id, Date horaInicio, Date horaFin) {
+	public Horario(Long id, Time horaInicio, Time horaFin) {
 		this.id = id;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 	}
 	
-	public Horario(Date horaInicio, Date horaFin) {
+	public Horario(Time horaInicio, Time horaFin) {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
 	}
@@ -33,16 +39,16 @@ public class Horario {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Date getHoraInicio() {
+	public Time getHoraInicio() {
 		return horaInicio;
 	}
-	public void setHoraInicio(Date horaInicio) {
+	public void setHoraInicio(Time horaInicio) {
 		this.horaInicio = horaInicio;
 	}
-	public Date getHoraFin() {
+	public Time getHoraFin() {
 		return horaFin;
 	}
-	public void setHoraFin(Date horaFin) {
+	public void setHoraFin(Time horaFin) {
 		this.horaFin = horaFin;
 	}
 	

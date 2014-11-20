@@ -7,11 +7,11 @@ function getPathname(){
     var accion = pathname.split('/')[3];
     var respuesta ="";
     
-    if (!(typeof carpeta === "undefined"))
-	respuesta += carpeta;
+    if (!(typeof carpeta === "undefined") && carpeta != "")
+	respuesta += " > " + carpeta;
     
-    if (!(typeof accion === "undefined"))
-	respuesta += " - " + accion;
+    if (!(typeof accion === "undefined") && accion != "")
+	respuesta += " > " + accion;
     
     return respuesta;
 };

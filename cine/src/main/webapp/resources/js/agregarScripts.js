@@ -23,7 +23,7 @@ $( document ).ready(function() {
     
     if (pathname.search("funcion/alta") != -1)
     {
-	//agregarScript('funcion');
+	agregarScript('funcion');
     }
     
     if (pathname.search("reserva/alta") != -1)

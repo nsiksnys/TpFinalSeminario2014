@@ -1,8 +1,11 @@
 package frgp.seminario.cine.controller;
 
 import java.security.Principal;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.seminario.cine.bo.impl.BoFuncion;
 import frgp.seminario.cine.forms.FuncionForm;
 import frgp.seminario.cine.model.Funcion;
+import frgp.seminario.cine.model.Horario;
 
 @RequestMapping(value="/funcion/**")
 @Controller
@@ -129,7 +134,14 @@ public class FuncionController {
 		}
 		return mav;
 	}
-
+	
+	@RequestMapping(value = "/gethorarios", method = RequestMethod.GET)
+	
+	public @ResponseBody HashMap<String, String> getHorariosDisponibles(@RequestParam Long pelicula , @RequestParam Long complejo, Principal principal)
+	{
+		LOG.info("/funcion/gethorarios: pedidos horarios para pelicula=" + pelicula + ", complejo=" + complejo);
+		return logicaNegocio.getHorariosDisponiblesByComplejo(pelicula, complejo);
+	}
 /*
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@ModelAttribute FuncionForm formulario, Principal principal) 

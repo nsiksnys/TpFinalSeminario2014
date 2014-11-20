@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,6 +164,19 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		for(Pelicula registro : repositorio.getAll(Pelicula.class))
 			if (registro.isActivo())
 				respuesta.add(entityToForm(registro));
+		
+		return respuesta;
+	}
+
+	public HashMap<String, String> getAllActiveMap() {
+		ArrayList<Pelicula> activas = busquedaPelicula.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(activas.size());
+		
+		if (activas.isEmpty())
+			return null;
+		
+		for (Pelicula item : activas)
+			respuesta.put(item.getId().toString(), item.getNombre());
 		
 		return respuesta;
 	}
