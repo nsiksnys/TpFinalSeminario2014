@@ -11,30 +11,30 @@
 		<form:form class="form" method="post" modelAttribute="carteleraForm">
 			<fieldset>
 				<div class="form-group">
-					<label for="pelicula">Titulo: ${registro.pelicula.nombre}</label>
-					<input class="form-control" id="pelicula" name="pelicula" type="hidden" value="${registro.pelicula.id}"/>
+					<label for="pelicula">Titulo: ${titulo}</label>
+					<input class="form-control" id="pelicula" name="pelicula" type="hidden" value="${registro.pelicula}"/>
 				</div>
 				<div class="form-group">
 					<label for="version">Version a proyectar</label>
 					<div class="form-group">
-		                <form:input path="version" class="form-control" cssErrorClass="form-control" id="version" placeholder="2D, 3D" value="${registro.proyeccion}" alt="3a"/>
+		                <form:input path="version" class="form-control" cssErrorClass="form-control" id="version" placeholder="2D, 3D" value="${registro.version}" alt="3a"/>
 		                <form:errors path="version" element="span" class="help-block"/>
 		            </div>
 		        </div>
 				<div class="checkbox">
-					<label>Subtitulos? <input type="checkbox" id="subtitulos" name="subtitulos" value="${registro.subtitulada}"/></label>
+					<label>Subtitulos? <input type="checkbox" id="subtitulos" name="subtitulos" value="${registro.subtitulos}"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
 					<div class="form-group">
-		                <form:input path="inicio" class="form-control" cssErrorClass="form-control" id="inicio" placeholder="dd/mm/aaaa"  alt="date" value="<fmt:formatDate value="${registro.fechaInicio}" pattern="dd-MM-yyyy" />"/>
+		                <form:input path="inicio" class="form-control" cssErrorClass="form-control" id="inicio" placeholder="dd/mm/aaaa"  alt="date" value="${registro.inicio}"/>
 		                <form:errors path="inicio" element="span" class="help-block"/>
 		            </div>
 		        </div>
 				<div class="form-group">
 					<label for="fin">Fin de proyeccion</label>
 					<div class="form-group">
-		                <form:input path="fin" class="form-control" cssErrorClass="form-control" id="fin" placeholder="dd/mm/aaaa"  alt="date" value="<fmt:formatDate value="${registro.fechaFin}" pattern="dd-MM-yyyy" />" />
+		                <form:input path="fin" class="form-control" cssErrorClass="form-control" id="fin" placeholder="dd/mm/aaaa"  alt="date" value="${registro.fin}" />
 		                <form:errors path="fin" element="span" class="help-block"/>
 		            </div>
 		        </div>

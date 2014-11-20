@@ -137,4 +137,17 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 							 utils.getFechaFormatoDiaMesAnio(formulario.getInicio()),
 							 utils.getFechaFormatoDiaMesAnio(formulario.getFin()));
 	}
+	
+	public CarteleraForm entityToForm(Cartelera registro)
+	{
+		CarteleraForm formulario = new CarteleraForm();
+		
+		formulario.setPelicula(registro.getPelicula().getId().toString());
+		formulario.setVersion(registro.getProyeccion());
+		formulario.setSubtitulos(registro.isSubtitulada());
+		formulario.setInicio(utils.getFormatoDiaMesAnio(registro.getFechaInicio()));
+		formulario.setFin(utils.getFormatoDiaMesAnio(registro.getFechaFin()));
+		
+		return formulario;
+	}
 }

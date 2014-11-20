@@ -56,9 +56,11 @@ public class CarteleraController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
+		Cartelera registro = logicaNegocio.get(id); 
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
-		mav.getModelMap().addAttribute("registro",  logicaNegocio.get(id));//FIXME: arreglar error en las lineas 30 y 37
+		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(registro));//FIXME: arreglar error en las lineas 30 y 37
+		mav.getModelMap().addAttribute("titulo", registro.getPelicula().getNombre());
 		return mav;
 	}
 	

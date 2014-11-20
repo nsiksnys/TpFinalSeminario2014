@@ -32,7 +32,7 @@ $( document ).ready(function() {
 	agregarScript('jquery.countdown');
     }
     
-    if (pathname.search("cartelera/alta") != -1)
+    if (pathname.search("cartelera/alta") != -1 || pathname.search("cartelera/modificar") != -1)
     {
 	agregarScript('cartelera');
     }
