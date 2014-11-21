@@ -49,8 +49,25 @@
 		                <form:errors path="idioma" element="span" class="help-block"/>
 		            </div>
 		        </div>
+		        <div class="checkbox">
+					<label>Subtitulos? 
+						<c:if test="${registro.subs == true }">
+							<input type="checkbox" name="subs" id="subs"  checked="checked"/>
+						</c:if>
+						<c:if test="${registro.subs == false }">
+							<input type="checkbox" name="subs" id="subs"/>
+						</c:if>					
+					</label>
+				</div>
 				<div class="checkbox">
-					<label>Reposicion? <input type="checkbox" id="reposicion" name="reposicion" value="${registro.reposicion}"/></label>
+					<label>Reposicion? 
+							<c:if test="${registro.reposicion == true }">
+								<input type="checkbox" name="reposicion" id="reposicion"  checked="checked"/>
+							</c:if>
+							<c:if test="${registro.reposicion == false }">
+								<input type="checkbox" name="reposicion" id="reposicion"/>
+							</c:if>					
+					</label>
 				</div>
 				<div class="form-group">
 					<label for="clasificacion">Clasificacion</label>

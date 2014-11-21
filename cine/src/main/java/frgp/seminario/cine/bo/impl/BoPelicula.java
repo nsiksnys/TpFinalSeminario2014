@@ -69,7 +69,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	 **/
 	@Override
 	public boolean modificar(Pelicula registro) {
-		if (!verificar(registro))
+		if (!(registro instanceof frgp.seminario.cine.model.Pelicula))
 			return false;
 		
 		return repositorio.merge(registro);

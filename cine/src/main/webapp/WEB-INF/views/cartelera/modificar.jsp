@@ -22,7 +22,14 @@
 		            </div>
 		        </div>
 				<div class="checkbox">
-					<label>Subtitulos? <input type="checkbox" id="subtitulos" name="subtitulos" value="${registro.subtitulos}"/></label>
+					<label>Subtitulos? 
+					<c:if test="${registro.subtitulos == true }">
+							<input type="checkbox" name="subtitulos" id="subtitulos"  checked="checked"/>
+						</c:if>
+						<c:if test="${registro.subtitulos == false }">
+							<input type="checkbox" name="subtitulos" id="subtitulos"/>
+						</c:if>
+					</label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>

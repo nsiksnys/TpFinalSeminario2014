@@ -30,7 +30,7 @@
 		            </div>
 		        </div>
 				<div class="checkbox">
-					<label>Subtitulos? <input type="checkbox" id="subtitulo" name="subtitulo"/></label>
+					<label>Subtitulos? <input type="checkbox" id="subtitulos" name="subtitulos"/></label>
 				</div>
 				<div class="form-group">
 					<label for="inicio">Inicio de proyeccion</label>
