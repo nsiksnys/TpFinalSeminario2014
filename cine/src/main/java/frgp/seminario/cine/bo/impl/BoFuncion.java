@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Horario;
 import frgp.seminario.cine.repository.Repository;
 import frgp.seminario.cine.repository.impl.HorarioRepository;
+import frgp.seminario.cine.utils.FechaUtils;
 
 //Funciones pertenecientes a la logica de negocios
 @Service("BoFuncion") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
@@ -48,6 +50,9 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Autowired
 	@Qualifier("BoComplejo") //aclaro cual es el bean a inyectar
 	BoComplejo complejos;
+	
+	@Autowired
+	FechaUtils fechaUtils;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -153,6 +158,35 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	 **/
 	public ArrayList<Horario> listarTodosHorarios(){
 		return horarios.listarTodos();
+	}
+	
+	/**
+	 * Busca los horarios disponibles segun la duracion de la pelicula
+	 * @param duracion duracion de la pelicula, en HH:MM:SS
+	 * @param idComplejo id del complejo en el que se busca
+	 * @return un HashMap con la forma "Horario.id, Horario.horaInicio - Horario.horaFin"
+	 */
+	public HashMap<String, String> getHorariosDisponiblesByComplejo(Long pelicula, Long idComplejo)
+	{
+		ArrayList<Horario> horariosSugeridos = horarios.findByDiferencia(peliculas.get(pelicula).getDuracion());
+		ArrayList<Funcion> funcionesActivasComplejo = busquedaFuncion.findActiveByComplejo(idComplejo);
+		HashMap<String, String> respuesta = new HashMap<String, String>();
+		
+		//se saca de la lista de sugeridos los horarios que no estan disponibles
+		for (Funcion item : funcionesActivasComplejo)
+		{
+			if (horariosSugeridos.contains(item.getHorario()))
+				horariosSugeridos.remove(item.getHorario());
+		}
+		
+		//cargo los horarios restantes en el hashmap
+		for (Horario item : horariosSugeridos)
+			respuesta.put(item.getId().toString(), fechaUtils.getFormatoHoraMinuto(item.getHoraInicio()) + " - " + fechaUtils.getFormatoHoraMinuto(item.getHoraFin()));
+		
+		if (respuesta.isEmpty())
+			return null;
+		
+		return respuesta;
 	}
 	
 	/**

@@ -1,24 +1,23 @@
 package frgp.seminario.cine.model;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name="Entrada_reserva")
-public class Entrada implements Serializable{
-	@Transient
-	private static final long serialVersionUID = 1L;
-
+public class Entrada{
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="idReserva")
 	private Reserva reserva;
@@ -39,6 +38,14 @@ public class Entrada implements Serializable{
 		this.precio = precio;
 		this.tipoEntrada = tipoEntrada;
 		this.cantidadEntrada = cantidadEntrada;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Reserva getReserva() {

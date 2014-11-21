@@ -44,7 +44,7 @@ public class PromocionFindItem {
 	
 	@SuppressWarnings("unchecked")
 	public boolean findByNameBoolean(String name){
-		String titulo = name.toUpperCase();
+		name.toUpperCase();
 		ArrayList<Promocion> todos = (ArrayList<Promocion>) dataAccess.getAll(Promocion.class);
 		
 		for (Promocion item : todos) {

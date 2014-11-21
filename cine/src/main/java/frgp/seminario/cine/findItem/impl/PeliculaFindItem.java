@@ -29,6 +29,20 @@ public class PeliculaFindItem /* implements FindItemWithFlag<Pelicula> */ {
 		return (long) 0;
 	}
 
+	/**
+	 * Busca un registro activo con las mismas caracteristicas en la base de datos
+	 * @param item Pelicula que buscamos en la base
+	 * @return id del registro, 0 si no se encontro ninguno
+	 **/
+	public Long getActiveIdByObject(Pelicula item){
+		ArrayList<Pelicula> todos = getAllEnabled();
+		
+		for (Pelicula registro : todos) {
+			if (registro.equals(item))
+				return registro.getId();
+		}
+		return (long) 0;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public Pelicula findByName(String name){

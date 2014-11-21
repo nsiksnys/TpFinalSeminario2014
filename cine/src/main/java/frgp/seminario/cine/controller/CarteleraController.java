@@ -3,19 +3,24 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.bo.impl.BoCartelera;
 import frgp.seminario.cine.forms.CarteleraForm;
 import frgp.seminario.cine.model.Cartelera;
+import frgp.seminario.cine.support.web.MessageHelper;
 
 @RequestMapping(value="/cartelera/**")
 @Controller
@@ -40,9 +45,10 @@ public class CarteleraController {
 		return mav;
 	}
 		
-	@RequestMapping(value = "/cartelera/alta", method = RequestMethod.GET)
+	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal) {
 		ModelAndView mav =new ModelAndView();
+		mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
 		mav.getModelMap().addAttribute("peliculas", logicaNegocio.getAllPeliculasActivas());
 		return mav;
 	}
@@ -50,8 +56,11 @@ public class CarteleraController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
+		Cartelera registro = logicaNegocio.get(id); 
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
+		mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
+		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(registro));//FIXME: arreglar error en las lineas 30 y 37
+		mav.getModelMap().addAttribute("titulo", registro.getPelicula().getNombre());
 		return mav;
 	}
 	
@@ -85,42 +94,57 @@ public class CarteleraController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
-	public ModelAndView guardar(@ModelAttribute CarteleraForm formulario, Principal principal) 
+	@RequestMapping(value = "/alta", method = RequestMethod.POST)
+	public String alta(@Valid @ModelAttribute CarteleraForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/cartelera/alta");
+		
 		Cartelera item = logicaNegocio.formToEntity(formulario);
 		
+		if (errors.hasErrors())
+		{
+			LOG.error("/cartelera/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
+		}
+		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
-			mav.setViewName("redirect:/cartelera/alta");
-			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
+			LOG.error("/cartelera/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
 		}
 		else
 		{
 			LOG.info("/cartelera/alta: agregado registro nuevo con id " + item.getId());
-			//mav.getModelMap().addAttribute("ok", "El registro se guardo correctamente");
+			MessageHelper.addSuccessAttribute(ra, "El registro se guardo correctamente");
 		}
-		return mav;
+		return "redirect:/cartelera/lista";
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@ModelAttribute CarteleraForm formulario, Principal principal) 
+	public String modificar(@Valid @ModelAttribute CarteleraForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
 	{
-		ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
+		//ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
 		//ModelAndView mav =new ModelAndView();
 		Cartelera registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		
+		if (errors.hasErrors())
+		{
+			LOG.error("/cartelera/modificar: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			return null;
+		}
+		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
-			mav.setViewName("redirect:/pelicula/modificar?id="+formulario.getId());
-			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
+			LOG.error("/cartelera/modificar: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario");//agrego el mensaje de error
 		}
 		else
 		{
 			LOG.info("/cartelera/modificar: actualizado registro con id " + registro.getId());
-			//mav.getModelMap().addAttribute("ok", "La pelicula se guardo correctamente");
+			MessageHelper.addSuccessAttribute(ra, "La pelicula se actualizo correctamente");
 		}
-		return mav;
+		return "redirect:/cartelera/lista";
 	}
 }

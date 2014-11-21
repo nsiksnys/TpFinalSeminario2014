@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.PeliculaForm;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.Repository;
+import frgp.seminario.cine.utils.FechaUtils;
 
 //Funciones pertenecientes a la logica de negocios
 @Service("BoPelicula") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
@@ -33,6 +35,9 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	@Autowired
 	@Qualifier("CarteleraFindItem")//aclaro cual es el bean a inyectar
 	CarteleraFindItem busquedaCartelera;//findItem de peliculas en cartelera
+	
+	@Autowired
+	FechaUtils utils;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -117,7 +122,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		if (!(registro instanceof frgp.seminario.cine.model.Pelicula))
 			return false;
 		
-		if (busquedaPelicula.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaPelicula.getActiveIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		return true;
@@ -133,7 +138,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 	{
 		return new Pelicula(formulario.getTitulo(), formulario.getIdioma(), formulario.isSubs(),
 				formulario.getClasificacion(), formulario.isReposicion(), formulario.getSinopsis(),
-				formulario.getActores(), formulario.getDirector(), formulario.getTrailer());
+				formulario.getActores(), formulario.getDirector(), formulario.getTrailer(), utils.getFormatoHoraMinuto(formulario.getDuracion()));
 	}
 	
 	public PeliculaForm entityToForm(Pelicula registro)
@@ -149,6 +154,7 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		formulario.setActores(registro.getDetalles().getActores());
 		formulario.setDirector(registro.getDetalles().getDirector());
 		formulario.setTrailer(registro.getDetalles().getUrlTrailer());
+		formulario.setDuracion(utils.getFormatoHoraMinuto(registro.getDuracion()));
 		return formulario;
 	}
 
@@ -158,6 +164,19 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		for(Pelicula registro : repositorio.getAll(Pelicula.class))
 			if (registro.isActivo())
 				respuesta.add(entityToForm(registro));
+		
+		return respuesta;
+	}
+
+	public HashMap<String, String> getAllActiveMap() {
+		ArrayList<Pelicula> activas = busquedaPelicula.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(activas.size());
+		
+		if (activas.isEmpty())
+			return null;
+		
+		for (Pelicula item : activas)
+			respuesta.put(item.getId().toString(), item.getNombre());
 		
 		return respuesta;
 	}

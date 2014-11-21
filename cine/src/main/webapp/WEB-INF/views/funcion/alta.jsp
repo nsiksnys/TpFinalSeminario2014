@@ -45,17 +45,14 @@
 						</c:if>
 					</select>
 				</div>
+				<div>
+					<label id="buscarHorario" name="buscarHorario" class="btn btn-success">Buscar Horarios</label>
+				</div>
+				<br>
 				<div class="form-group">
 					<label for="horarios">Horarios</label> </br>
 					<select id="horarios" name="horarios" class="form-control">
-						<c:if test="${not empty horarios}">
-							<c:forEach items="${horarios}" var="horario">
-								<option value="${horario.id}">${horario.horaInicio} - ${horario.horaFin}</option>
-							</c:forEach>
-						</c:if>
-						<c:if test="${empty horarios}">
-							<option value="0">No hay horarios</option>
-						</c:if>
+						<option value="0">Elija complejo, sala y pelicula</option>
 					</select>
 				</div>
 			</fieldset>

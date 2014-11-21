@@ -30,6 +30,21 @@ public class CarteleraFindItem /*implements FindItemWithFlag<Cartelera>*/ {
 	}
 	
 	/**
+	 * Determina si existe un registro activo con las mismas caracteristicas en la base de datos
+	 * @param item Pelicula que buscamos en la base
+	 * @return true si existe un registro, false si no
+	 **/
+	public Long getActiveIdByObject(Cartelera item) {
+		ArrayList<Cartelera> todos = getAllEnabled();
+		
+		for (Cartelera registro : todos) {
+			if (registro.equals(item))
+				return registro.getId();
+		}
+		return (long) 0;
+	}
+	
+	/**
 	 * Busca todos los registros de cartelera en los que figura una pelicula 
 	 * @param name Titulo de la pelicula
 	 * @return un ArrayList con los registros

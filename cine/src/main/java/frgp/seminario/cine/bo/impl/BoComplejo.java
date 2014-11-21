@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,5 +216,18 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 
 	public ArrayList<Complejo> getAllEnabled() {
 		return busquedaComplejo.getAllEnabled();
+	}
+
+	public HashMap<String, String> getAllActiveMap() {
+		ArrayList<Complejo> activos = getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(activos.size());
+		
+		if (activos.isEmpty())
+			return null;
+		
+		for (Complejo item : activos)
+			respuesta.put(item.getId().toString(), item.getNombre());
+		
+		return respuesta;
 	}
 }

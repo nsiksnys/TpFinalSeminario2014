@@ -1,6 +1,7 @@
-INSERT INTO `Complejo` (`id`, `activo`, `direccion`, `nombre`) VALUES (1, 0, 'direccion', 'complejo');
+INSERT INTO `Complejo` (`id`, `activo`, `direccion`, `nombre`) VALUES (1, 1, 'direccion', 'complejo');
 INSERT INTO `Sala` (`id`, `activa`, `idComplejo`, `numeroSala`) VALUES (1, 1, 1, 1),(2, 1, 1, 2);
 INSERT INTO `Complejo_Sala` (`Complejo_id`, `salas_id`) VALUES (1, 1),(1, 2);
 INSERT INTO `FichaTecnica` (`id`, `actores`, `descripcion`, `director`, `urlTrailer`) VALUES (1, 'Actor1, Actor2', 'sinopsis', 'Director', 'Director');
-INSERT INTO `Pelicula` (`id`, `activo`, `clasificacion`, `fechaCreacion`, `idioma`, `nombre`, `reposicion`, `subs`, `detalles_id`) VALUES (1, 1, '13', '2014-11-01 16:02:35', 'ES', 'RELATOS SALVAJES', 0, 0, 1);
+INSERT INTO `Pelicula` (`id`, `activo`, `clasificacion`, `fechaCreacion`, `idioma`, `nombre`, `reposicion`, `subs`, `detalles_id`, `duracion`) VALUES (1, 1, '13', '2014-11-01 16:02:35', 'ES', 'RELATOS SALVAJES', 0, 0, 1, '02:01');
 INSERT INTO `Cartelera` (`id`, `activo`, `fechaFin`, `fechaInicio`, `proyeccion`, `subtitulada`, `pelicula_id`) VALUES (1, 1, '2014-12-31 00:00:00', '2014-08-14 00:00:00', '2D', 0, 1);
+INSERT INTO `Horario`(`horaInicio`, `horaFin`) VALUES ('11:00:00', '13:00:00'), ('13:00:00', '15:00:00'), ('15:00:00', '17:00:00'), ('17:00:00', '19:00:00'), ('09:00:00', '21:00:00'), ('21:00:00', '23:00:00'), ('23:00:00', '01:00:00'), ('10:00:00', '12:00:00'), ('12:00:00', '14:00:00'), ('14:00:00', '16:00:00'), ('16:00:00', '18:00:00'), ('18:00:00', '20:00:00'), ('20:00:00', '22:00:00'), ('22:00:00', '00:00:00'), ('10:00:00', '12:30:00'), ('12:30:00', '15:00:00'), ('15:00:00', '17:30:00'), ('17:30:00', '20:00:00'), ('20:00:00', '22:30:00'), ('22:30:00', '01:00:00'), ('10:00:00', '13:00:00'),('13:00:00', '16:00:00'),('16:00:00', '19:00:00'),('19:00:00', '22:00:00'),('22:00:00', '01:00:00');

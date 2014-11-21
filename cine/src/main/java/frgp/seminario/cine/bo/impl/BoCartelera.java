@@ -114,7 +114,10 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 		if (!(registro instanceof frgp.seminario.cine.model.Cartelera))
 			return false;
 		
-		if (busquedaCartelera.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (!peliculaRepositorio.get(Pelicula.class, registro.getPelicula().getId()).isActivo())//si la pelicula no esta activa
+			return false;
+		
+		if (busquedaCartelera.getActiveIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		
@@ -133,5 +136,18 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 							 formulario.isSubtitulos(),
 							 utils.getFechaFormatoDiaMesAnio(formulario.getInicio()),
 							 utils.getFechaFormatoDiaMesAnio(formulario.getFin()));
+	}
+	
+	public CarteleraForm entityToForm(Cartelera registro)
+	{
+		CarteleraForm formulario = new CarteleraForm();
+		
+		formulario.setPelicula(registro.getPelicula().getId().toString());
+		formulario.setVersion(registro.getProyeccion());
+		formulario.setSubtitulos(registro.isSubtitulada());
+		formulario.setInicio(utils.getFormatoDiaMesAnio(registro.getFechaInicio()));
+		formulario.setFin(utils.getFormatoDiaMesAnio(registro.getFechaFin()));
+		
+		return formulario;
 	}
 }

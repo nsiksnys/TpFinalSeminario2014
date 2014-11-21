@@ -1,46 +1,36 @@
 package frgp.seminario.cine.model;
 
-import java.io.Serializable;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 @Entity
-public class Asiento implements Serializable{
-	@Transient
-	private static final long serialVersionUID = 1L;
-
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="idReserva")
-	private Reserva reserva;
-	
+public class Asiento{
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
 	private String fila;
 	
-	@Id
 	private String columna;
+	
+	public Asiento()
+	{
+		//constructor vacio
+	}
 
 	public Asiento(String fila, String columna) {
 		this.fila = fila;
 		this.columna = columna;
 	}
 
-	public Asiento(Reserva reserva, String fila, String columna) {
-		this.reserva = reserva;
-		this.fila = fila;
-		this.columna = columna;
+	public Long getId() {
+		return id;
 	}
 
-	public Reserva getReserva() {
-		return reserva;
-	}
-
-	public void setReserva(Reserva reserva) {
-		this.reserva = reserva;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getFila() {
@@ -60,10 +50,7 @@ public class Asiento implements Serializable{
 	}
 	
 	public boolean equals(Asiento item)
-	{
-		if(reserva.getId() != item.getReserva().getId())
-			return false;
-		
+	{		
 		if (fila.compareTo(item.getFila()) != 0)
 			return false;
 		

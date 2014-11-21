@@ -1,5 +1,6 @@
 package frgp.seminario.cine.model;
 
+import java.sql.Time;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -39,16 +40,17 @@ public class Pelicula {
 	private Date fechaCreacion;
 	
 	@Column(nullable=false)
+	private Time duracion = new Time(0);
+	
+	@Column(nullable=false)
 	private boolean activo=true;
 
-	
-	
 	public Pelicula() {
 		//constructor por defecto
 	}
 
 	public Pelicula(String nombre, String idioma, boolean subs,
-			String clasificacion, boolean reposicion, FichaTecnica detalles,
+			String clasificacion, boolean reposicion, FichaTecnica detalles, Time duracion,
 			Date fechaCreacion) {
 		super();
 		this.nombre = nombre.toUpperCase();
@@ -57,12 +59,13 @@ public class Pelicula {
 		this.clasificacion = clasificacion.toUpperCase();
 		this.reposicion = reposicion;
 		this.detalles = detalles;
+		this.duracion = duracion;
 		this.fechaCreacion = fechaCreacion;
 	}
 	
 	public Pelicula(String nombre, String idioma, boolean subs,
 			String clasificacion, boolean reposicion, String descripcion, String actores, String director,
-			String urlTrailer) {
+			String urlTrailer, Time duracion) {
 		super();
 		this.nombre = nombre.toUpperCase();
 		this.idioma = idioma.toUpperCase();
@@ -70,12 +73,13 @@ public class Pelicula {
 		this.clasificacion = clasificacion.toUpperCase();
 		this.reposicion = reposicion;
 		this.detalles = new FichaTecnica(descripcion, actores, director, urlTrailer);
+		this.duracion = duracion;
 		this.fechaCreacion = new Date();
 	}
 
 	public Pelicula(String nombre, String idioma, boolean subs,
 			String clasificacion, boolean reposicion, FichaTecnica detalles,
-			Date fechaCreacion, boolean activo) {
+			Date fechaCreacion, Time duracion, boolean activo) {
 		super();
 		this.nombre = nombre.toUpperCase();
 		this.idioma = idioma.toUpperCase();
@@ -84,6 +88,7 @@ public class Pelicula {
 		this.reposicion = reposicion;
 		this.detalles = detalles;
 		this.fechaCreacion = fechaCreacion;
+		this.duracion = duracion;
 		this.activo = activo;
 	}
 
@@ -151,6 +156,14 @@ public class Pelicula {
 		this.fechaCreacion = fechaCreacion;
 	}
 
+	public Time getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(Time duracion) {
+		this.duracion = duracion;
+	}
+
 	public boolean isActivo() {
 		return activo;
 	}
@@ -176,6 +189,9 @@ public class Pelicula {
 			return false;
 		
 		if (!detalles.equals(registro.getDetalles()))
+			return false;
+		
+		if (duracion.compareTo(registro.getDuracion()) != 0)
 			return false;
 		
 		if (fechaCreacion.compareTo(registro.getFechaCreacion()) != 0)

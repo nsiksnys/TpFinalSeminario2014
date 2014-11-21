@@ -21,6 +21,7 @@ import frgp.seminario.cine.model.Promocion;
 import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.repository.Repository;
 import frgp.seminario.cine.utils.FechaUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 //Funciones pertenecientes a la logica de negocios
 @Service("BoReserva") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
@@ -197,5 +198,15 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 			registro.setActivo(true);
 		
 		return reservaRepository.merge(registro);
+	}
+
+	/**
+	 * Genera un codigo que se utilizara para identificar la reserva
+	 * @param longitud un int indicando la longitud del codigo
+	 * @return un String con el codigo generado
+	 */
+	public String generarCodigo(int longitud)
+	{
+		return RandomStringUtils.random(longitud);
 	}
 }

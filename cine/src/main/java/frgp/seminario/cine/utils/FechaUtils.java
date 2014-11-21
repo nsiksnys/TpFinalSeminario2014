@@ -1,5 +1,6 @@
 package frgp.seminario.cine.utils;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -83,6 +84,23 @@ public class FechaUtils {
 	}
 	
 /**
+ * Devuelve una fecha con el formato hora:minutos
+ * @param fecha Date a formatear
+ * @return String con la fecha con el formato indicado
+ */
+	public Time getFormatoHoraMinuto(String hora){
+		int horas, minutos;
+		
+		if (hora.equals(""))
+			return new Time(0);
+		
+		horas = Integer.parseInt(hora.substring(0, 2));
+		minutos=Integer.parseInt(hora.substring(3, 5));
+		
+		return new Time(new GregorianCalendar(0,0,0,horas,minutos,0).getTimeInMillis());
+	}
+	
+/**
  * Devuelve una fecha con el fomato dia-mes-anio
  * @param fecha String con la fecha indicada en formato dd/MM/yyyy
  * @return Date con la fecha con el formato indicado
@@ -90,13 +108,31 @@ public class FechaUtils {
 	public Date getFechaFormatoDiaMesAnio(String fecha){
 		int dia, mes, anio;
 		
-		if (fecha == null)
-			return null;
+		if (fecha == null || fecha.equals(""))
+			return new Date(0);
 		
 		dia=Integer.parseInt(fecha.substring(0, 2));
 		mes=Integer.parseInt(fecha.substring(3, 5))-1;
 		anio=Integer.parseInt(fecha.substring(6, 10));
 		
 		return new GregorianCalendar(anio,mes,dia).getTime();
+	}
+	
+	/**
+	 * Devuelve la diferencia entre dos objetos Time
+	 * @param timeMayor objeto time mayor
+	 * @param timeMenor objeto time menor
+	 * @return un objeto time con la diferencia entre timeUno y timeDos
+	 */
+	public Time getDiferenciaTime(Time timeMayor, Time timeMenor)
+	{
+		long c;
+		if (timeMayor.compareTo(timeMenor) > 0)
+			c = timeMayor.getTime() - timeMenor.getTime();
+		
+		else //si se ingresaron los Time en el orden incorrecto
+			c = timeMenor.getTime() - timeMayor.getTime();
+		
+		return new Time(c);
 	}
 }

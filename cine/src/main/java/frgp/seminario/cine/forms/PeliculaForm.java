@@ -22,6 +22,8 @@ public class PeliculaForm {
 	private boolean reposicion;
 	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String clasificacion;
+	@NotBlank(message = NOT_BLANK_MESSAGE)
+	private String duracion;
 	
 	//getters y setters
 	public String getId() {
@@ -83,5 +85,11 @@ public class PeliculaForm {
 	}
 	public void setClasificacion(String clasificacion) {
 		this.clasificacion = clasificacion;
+	}
+	public String getDuracion() {
+		return duracion;
+	}
+	public void setDuracion(String duracion) {
+		this.duracion = duracion;
 	}
 }

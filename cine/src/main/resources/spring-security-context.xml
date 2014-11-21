@@ -16,6 +16,75 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:intercept-url pattern="/signup" access="permitAll" />
 		<security:intercept-url pattern="/default/**" access="permitAll" />
 		<security:intercept-url pattern="/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/usuario/actual" access="isAuthenticated()" />
+		
+		<!-- URLs permitidas para un admin -->
+		<security:intercept-url pattern="/cartelera/lista" access="A" />
+		<security:intercept-url pattern="/cartelera/alta" access="A" />
+		<security:intercept-url pattern="/cartelera/modificar" access="A" />
+		<security:intercept-url pattern="/cartelera/borrar**" access="A" />
+		<security:intercept-url pattern="/cartelera/activar**" access="A" />
+		
+		<security:intercept-url pattern="/complejo/lista" access="A" />
+		<security:intercept-url pattern="/complejo/alta" access="A" />
+		<security:intercept-url pattern="/complejo/guardar" access="A"/>
+		<security:intercept-url pattern="/complejo/modificar" access="A" />
+		<security:intercept-url pattern="/complejo/borrar**" access="A" />
+		<security:intercept-url pattern="/complejo/activar**" access="A" />
+		
+		<security:intercept-url pattern="/funcion/lista" access="A" />
+		<security:intercept-url pattern="/funcion/alta" access="A" />
+		<security:intercept-url pattern="/funcion/guardar" access="A"/>
+		<security:intercept-url pattern="/funcion/modificar" access="A" />
+		<security:intercept-url pattern="/funcion/borrar**" access="A" />
+		<security:intercept-url pattern="/funcion/activar**" access="A" />
+
+		<security:intercept-url pattern="/pelicula/lista" access="A" />
+		<security:intercept-url pattern="/pelicula/alta" access="A" />
+		<security:intercept-url pattern="/pelicula/modificar" access="A" />
+		<security:intercept-url pattern="/pelicula/borrar**" access="A" />
+		<security:intercept-url pattern="/pelicula/activar**" access="A" />
+		
+		<security:intercept-url pattern="/precio/lista" access="A" />
+		<security:intercept-url pattern="/precio/alta" access="A" />
+		<security:intercept-url pattern="/precio/guardar" access="A"/>
+		<security:intercept-url pattern="/precio/modificar" access="A" />
+		<security:intercept-url pattern="/precio/borrar**" access="A" />
+		<security:intercept-url pattern="/precio/activar**" access="A" />
+		
+		<security:intercept-url pattern="/promocion/lista" access="A" />
+		<security:intercept-url pattern="/promocion/alta" access="A" />
+		<security:intercept-url pattern="/promocion/guardar" access="A"/>
+		<security:intercept-url pattern="/promocion/modificar" access="A" />
+		<security:intercept-url pattern="/promocion/borrar**" access="A" />
+		<security:intercept-url pattern="/promocion/activar**" access="A" />
+		
+		<security:intercept-url pattern="/reserva/activar**" access="A" />
+		
+		<security:intercept-url pattern="/sala/lista" access="A" />
+		<security:intercept-url pattern="/sala/alta" access="A" />
+		<security:intercept-url pattern="/sala/guardar" access="A"/>
+		<security:intercept-url pattern="/sala/modificar" access="A" />
+		<security:intercept-url pattern="/sala/borrar**" access="A" />
+		<security:intercept-url pattern="/sala/activar**" access="A" />
+		
+		<security:intercept-url pattern="/usuario/lista" access="A" />
+		<security:intercept-url pattern="/usuario/alta" access="A" />
+		<security:intercept-url pattern="/usuario/modificar" access="A" />
+		<security:intercept-url pattern="/usuario/borrar**" access="A" />
+		<security:intercept-url pattern="/usuario/activar**" access="A" />
+		
+		<!-- URLs permitidas para un gerente -->
+		<security:intercept-url pattern="/stats" access="isAuthenticated()" />
+		
+		<!-- URLs permitidas para un cliente -->
+		<security:intercept-url pattern="/reserva/lista" access="C" />
+		<security:intercept-url pattern="/reserva/alta**" access="C" />
+		<security:intercept-url pattern="/reserva/guardar" access="C"/>
+		<security:intercept-url pattern="/reserva/modificar" access="C" />
+		<security:intercept-url pattern="/reserva/borrar**" access="C" />
+		
+		<security:intercept-url pattern="/cartelera/activo" access="C"/>
 	</security:http>
 	
 	<security:authentication-manager erase-credentials="true" >

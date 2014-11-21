@@ -21,7 +21,7 @@ class ExceptionHandler {
 	public ModelAndView exception(Exception exception, WebRequest request) {
 		ModelAndView modelAndView = new ModelAndView("generalError");
 		modelAndView.addObject("errorMessage", Throwables.getRootCause(exception));
-		String fromUrl = request.getContextPath();//TODO: probar
+		request.getContextPath();
 		LOG.error(Throwables.getRootCause(exception).toString());
 		exception.printStackTrace();
 		return modelAndView;
