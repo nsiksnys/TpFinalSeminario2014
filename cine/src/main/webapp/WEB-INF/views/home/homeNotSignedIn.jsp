@@ -2,12 +2,12 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
 <div class="hero-unit">
-    <h1><s:message code="view.index.title" /></h1>
+    <h1>Cine</h1>
     <p>
-        Welcome to the Spring MVC Quickstart application!
-        Get started quickly	by signing up.
+        Bienvenido.
+        Inicie sesion o cree un usuario nuevo.
     </p>
     <p>
-        <a href='<s:url value="/signup" />'class="btn btn-large btn-success">Sign up</a>
+        <a href='<s:url value="/signup" />'class="btn btn-large btn-success">Registrarse</a>
     </p>
 </div>

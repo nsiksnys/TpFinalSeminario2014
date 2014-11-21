@@ -2,6 +2,7 @@ package frgp.seminario.cine.utils;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -97,7 +98,7 @@ public class FechaUtils {
 		horas = Integer.parseInt(hora.substring(0, 2));
 		minutos=Integer.parseInt(hora.substring(3, 5));
 		
-		return new Time(new GregorianCalendar(0,0,0,horas,minutos,0).getTimeInMillis());
+		return new Time(new GregorianCalendar(1970,Calendar.JANUARY,1,horas,minutos,0).getTimeInMillis());
 	}
 	
 /**

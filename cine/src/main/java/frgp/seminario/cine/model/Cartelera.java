@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Cartelera {
 	@Column(nullable=false)
 	private boolean subtitulada;
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
 	List<Funcion> funciones;
 	
 	@Column(nullable=false)
@@ -144,16 +145,16 @@ public class Cartelera {
 	
 	public boolean equals(Cartelera registro)
 	{
-		if (!this.pelicula.equals(registro.getPelicula()))
+		if (pelicula.getId() != registro.getPelicula().getId())
 			return false;
 		
-		if (this.proyeccion.compareTo(registro.getProyeccion()) != 0)
+		if (proyeccion.compareTo(registro.getProyeccion()) != 0)
 			return false;
 		
-		if (this.subtitulada != registro.isSubtitulada())
+		if (subtitulada != registro.isSubtitulada())
 			return false;
 		
-		if (!isMismaLista(this.funciones, registro.getFunciones()))
+		if (!isMismaLista(funciones, registro.getFunciones()))
 			return false;
 		
 		if (fechaInicio.compareTo(registro.getFechaInicio()) != 0)
@@ -171,13 +172,21 @@ public class Cartelera {
 	public boolean isMismaLista(List<Funcion> thisFunciones, List<Funcion> registroFunciones)
 	{
 		int cuenta = 0;
+		
+		if (registroFunciones == null)
+		{
+			if (funciones.size() == 0)
+				return true;
+			return false;
+		}
+		
 		for (int i = 0; i < thisFunciones.size(); i++) {// uso un for tradicional para evitar que busque un null en elementos
 			for (int j = 0; j < thisFunciones.size(); j++) {
 				if (thisFunciones.get(i).getId() == registroFunciones.get(j).getId())// comparo los ids de las funciones
 					cuenta++;
 			}
 		}
-		if (cuenta == thisFunciones.size())
+		if (cuenta == registroFunciones.size())
 			return true;
 		return false;
 	}
