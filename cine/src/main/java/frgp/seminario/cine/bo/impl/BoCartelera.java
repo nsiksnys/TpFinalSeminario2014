@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.CarteleraFindItem;
 import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.CarteleraForm;
 import frgp.seminario.cine.model.Cartelera;
 import frgp.seminario.cine.model.Pelicula;
@@ -34,6 +36,10 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	Repository<Pelicula> peliculaRepositorio; //aclaro la clase que se utiliza en este caso en particular
 	
 	@Autowired
+	@Qualifier("ReservaFindItem")//aclaro cual es el bean a inyectar
+	ReservaFindItem busquedaReserva;//findItem de reservas 
+	
+	@Autowired
 	FechaUtils utils;
 	
 	/** 
@@ -53,6 +59,9 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	 **/
 	@Override
 	public boolean guardar(Cartelera registro) {
+		if (!verificar(registro))
+			return false;
+		
 		return repositorio.save(registro);
 	}
 
@@ -75,6 +84,10 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	public boolean desactivar(Cartelera registro) {		
 		if (registro.isActivo())
 			registro.setActivo(false);
+		
+		//si hay por lo menos una reserva activa para por lo menos una de las funciones asociadas a este registro
+		if (busquedaReserva.findActiveByFuncionesCarteleraBoolean(registro.getId()))
+			return false;
 		
 		return repositorio.merge(registro);
 	}
@@ -114,13 +127,12 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 		if (!(registro instanceof frgp.seminario.cine.model.Cartelera))
 			return false;
 		
-		if (!peliculaRepositorio.get(Pelicula.class, registro.getPelicula().getId()).isActivo())//si la pelicula no esta activa
-			return false;
-		
 		if (busquedaCartelera.getActiveIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
-		
+		if (!peliculaRepositorio.get(Pelicula.class, registro.getPelicula().getId()).isActivo())//si la pelicula no esta activa
+			return false;
+				
 		return true;
 	}
 	

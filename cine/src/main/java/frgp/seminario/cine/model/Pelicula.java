@@ -191,10 +191,7 @@ public class Pelicula {
 		if (!detalles.equals(registro.getDetalles()))
 			return false;
 		
-		if (duracion.compareTo(registro.getDuracion()) != 0)
-			return false;
-		
-		if (fechaCreacion.compareTo(registro.getFechaCreacion()) != 0)
+		if ((duracion.getTime()-registro.getDuracion().getTime()) != 0)
 			return false;
 		
 		if (activo != registro.isActivo())

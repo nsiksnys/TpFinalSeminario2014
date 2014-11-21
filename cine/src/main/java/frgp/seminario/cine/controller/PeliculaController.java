@@ -132,8 +132,8 @@ public class PeliculaController {
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			LOG.error("/pelicula/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
+			MessageHelper.addErrorAttribute(ra, "Por favor, vuelva a llenar el formulario.");
+			return "redirect:/pelicula/alta";
 		}
 		else
 		{

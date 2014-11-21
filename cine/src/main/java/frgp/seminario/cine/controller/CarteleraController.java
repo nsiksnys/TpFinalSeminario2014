@@ -111,7 +111,8 @@ public class CarteleraController {
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			LOG.error("/cartelera/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor, vuelva a llenar el formulario.");
+			return "redirect:/cartelera/alta";
 		}
 		else
 		{

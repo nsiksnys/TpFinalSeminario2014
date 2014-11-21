@@ -2,6 +2,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 
-<p>
-	Hello <security:authentication property="principal.username" />! Welcome to the Spring MVC Quickstart application! 	
-</p>
+<div class="alert alert-success">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                Bienvenido <security:authentication property="principal.username" />
+</div>

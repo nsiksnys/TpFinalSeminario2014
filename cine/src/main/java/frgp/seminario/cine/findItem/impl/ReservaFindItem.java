@@ -3,15 +3,23 @@ package frgp.seminario.cine.findItem.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
+import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Reserva;
+import frgp.seminario.cine.model.Cartelera;
+import frgp.seminario.cine.repository.Repository;
 
 @Service("ReservaFindItem")
 public class ReservaFindItem {
 	@Autowired
 	DataAccess dataAccess;
+	
+	@Autowired
+	@Qualifier("CarteleraRepository")
+	Repository<Cartelera> carteleras;
 	
 	/**
 	 * Determina si existe un registro con las mismas caracteristicas en la base de datos
@@ -101,6 +109,20 @@ public class ReservaFindItem {
 	 **/
 	public ArrayList<Reserva> getAllDisabled(){
 		return getAllByFlag(false);
+	}
+
+
+	public boolean findActiveByFuncionesCarteleraBoolean(Long idCartelera) {
+		ArrayList<Reserva> todos = getAllEnabled();
+		Cartelera registro = carteleras.get(Cartelera.class, idCartelera);
+		
+		for (Reserva item: todos){
+			for (Funcion funcion : registro.getFunciones()){
+				if (item.getFuncion().getId() == funcion.getId())
+					return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -87,9 +87,6 @@ public class FichaTecnica {
 	
 	public boolean equals(FichaTecnica item)
 	{
-		if (id != item.getId())
-			return false;
-		
 		if (descripcion.compareTo(item.getDescripcion()) != 0)
 			return false;
 		
