@@ -72,6 +72,9 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	 **/
 	@Override
 	public boolean modificar(Cartelera registro) {
+		if (!(registro instanceof frgp.seminario.cine.model.Cartelera))
+			return false;
+		
 		return repositorio.merge(registro);
 	}
 
