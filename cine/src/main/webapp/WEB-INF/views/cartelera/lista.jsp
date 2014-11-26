@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 
 <h3>Peliculas</h3>
 <br>
@@ -13,8 +14,10 @@
 			<td>Fin</td>
 			<td>Proyeccion</td>
 			<td>Subtitulos</td>
+			<security:authorize access="isAuthenticated()"> <security:authorize ifAllGranted="A">
 			<td>Modificar</td>
 			<td>Eliminar</td>
+			</security:authorize> </security:authorize>
 		</tr>
 	</thead>
 	<tbody>
@@ -30,11 +33,13 @@
 						<c:if test="${item.subtitulada == true}"> Si </c:if>
 						<c:if test="${item.subtitulada == false}"> No </c:if>
 					</td>
+					<security:authorize access="isAuthenticated()"> <security:authorize ifAllGranted="A">
 					<td><a href='<s:url value="/cartelera/modificar?id=${item.id}"/>'>Modificar</a></td>
 					<td>
 						<c:if test="${item.activo == true}"> <a href='<s:url value="/cartelera/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
 						<c:if test="${item.activo == false}"> <a href='<s:url value="/cartelera/activar?id=${item.id}"/>'>Activar</a> </c:if>
 					</td>
+					</security:authorize> </security:authorize>
 				</tr>
 			</c:forEach>
 		</c:if>

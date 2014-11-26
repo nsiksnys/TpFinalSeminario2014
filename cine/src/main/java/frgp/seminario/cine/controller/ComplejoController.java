@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import frgp.seminario.cine.bo.impl.BoComplejo;
 import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.model.Complejo;
+import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.support.web.*;
 import frgp.seminario.cine.support.web.Message.Type;
 
@@ -156,5 +157,25 @@ public class ComplejoController {
 	{
 		LOG.info("/complejo/getcomplejos: pedidos complejos activos");
 		return logicaNegocio.getAllActiveMap();
+	}
+	
+	@RequestMapping(value = "/getsala", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getSalaCOmplejo(@RequestParam("complejo") Long complejo,Principal principal)
+	{
+		//LOG.info("/complejo/getcomplejos: pedidos complejos activos");
+		//return logicaNegocio.getAllEnabled();
+		
+		ArrayList<Complejo> activos =  logicaNegocio.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(activos.size());
+		
+		for (Complejo item : activos){
+			
+			if(item.getId() == complejo){
+				for(Sala sala : item.getSalas()){
+					respuesta.put(sala.getId().toString(), Integer.toString(sala.getNumeroSala()));
+				}	
+			}	
+		}
+		return respuesta;
 	}
 }

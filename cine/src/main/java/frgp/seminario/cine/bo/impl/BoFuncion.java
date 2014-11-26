@@ -214,9 +214,27 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Override
 	public Funcion formToEntity(FuncionForm formulario)
 	{
-		return new Funcion(salas.get(formulario.getSala()), 
-							peliculas.get(formulario.getPelicula()), 
-							horarioRepository.get(Horario.class, formulario.getHorario()));
+		return new Funcion(salas.get(formulario.getsalas()), 
+							peliculas.get(formulario.getPeliculas()), 
+							horarioRepository.get(Horario.class, formulario.getHorarios()));
+	}
+
+	public HashMap<String, String> getFuncionesDisponibles(Long pelicula,
+			Long complejo) {
+		ArrayList<Funcion> funcionesActivasComplejo = busquedaFuncion.findActiveByComplejo(complejo);
+		HashMap<String, String> respuesta = new HashMap<String, String>();
+		
+		//cargo los horarios restantes en el hashmap
+		for (Funcion item : funcionesActivasComplejo)
+		{
+			if (item.getPelicula().getId() == pelicula)
+				respuesta.put(item.getId().toString(), fechaUtils.getFormatoHoraMinuto(item.getHorario().getHoraInicio()) + " - " + fechaUtils.getFormatoHoraMinuto(item.getHorario().getHoraFin()));
+		}
+		
+		if (respuesta.isEmpty())
+			return null;
+		
+		return respuesta;
 	}
 
 }

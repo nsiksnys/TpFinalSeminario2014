@@ -13,7 +13,44 @@ $( document ).ready(function() {
     {
 	getComplejosDisponibles();
     }
-*/    
+*/   
+    var idcomplejo = $( "#complejos option:selected" ).val();
+	
+	
+	if (idcomplejo != 0){
+		getComplejo(idcomplejo);
+	}
+    $("#complejos").change(function () {
+    	var idcomplejo = $( "#complejos option:selected" ).val();
+    	
+    	
+    	if (idcomplejo != 0){
+    		getComplejo(idcomplejo);
+    	}
+     });
+    
+    function getComplejo(complejo){
+        var host =document.location.host;
+        var url = "http://" + host + "/" + getContext() + "/complejo/getsala?complejo=" + complejo;//url de la funcion getComplejosDisponibles en controller de Complejos
+        return $.getJSON(url, function(json) {
+            if (typeof json === "undefined" || json=="" || json.length == 0)
+            {
+        	return;
+            }
+    	
+            $("#salas").empty();
+            
+            $.each(json, function (key, value) {
+//            	alert(key);
+//            	alert(value);
+            	$("#salas").append(parseOpcion(key, value));
+            });
+        });
+    };
+    
+    
+    
+    
     $("#buscarHorario").click(function () {
 	complejo = $( "#complejos option:selected" ).val();
 	pelicula = $( "#peliculas option:selected" ).val();

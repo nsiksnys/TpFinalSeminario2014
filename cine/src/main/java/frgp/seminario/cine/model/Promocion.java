@@ -24,7 +24,7 @@ public class Promocion {
 	private String descripcion;
 	
 	@OneToMany
-	private List<Complejo> cines;
+	private List<Complejo> complejo;
 	
 	@Column(nullable=false)
 	private Date fechaInicio;
@@ -36,12 +36,12 @@ public class Promocion {
 	private boolean activo;
 
 	public Promocion(Long id, String nombre, String descripcion,
-			List<Complejo> cines, Date fechaInicio, Date fechaFin,
+			List<Complejo> complejo, Date fechaInicio, Date fechaFin,
 			boolean activo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.cines = cines;
+		this.complejo = complejo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = activo;
@@ -51,7 +51,7 @@ public class Promocion {
 			Date fechaInicio, Date fechaFin) {
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.cines = cines;
+		this.complejo = complejo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = true;
@@ -90,11 +90,11 @@ public class Promocion {
 	}
 
 	public List<Complejo> getCines() {
-		return cines;
+		return complejo;
 	}
 
-	public void setCines(List<Complejo> cines) {
-		this.cines = cines;
+	public void setCines(List<Complejo> complejo) {
+		this.complejo = complejo;
 	}
 
 	public Date getFechaInicio() {
@@ -129,7 +129,7 @@ public class Promocion {
 		if (descripcion.compareTo(item.getDescripcion()) != 0)
 			return false;
 		
-		if (!isMismaLista(this.cines, item.getCines()))
+		if (!isMismaLista(this.complejo, item.getCines()))
 			return false;
 		
 		if (fechaInicio.compareTo(item.getFechaInicio()) != 0)

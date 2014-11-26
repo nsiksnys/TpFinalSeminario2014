@@ -47,6 +47,8 @@ public class ReservaController {
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("complejos", logicaNegocio.getComplejosActivos());
 		mav.getModelMap().addAttribute("peliculas", logicaNegocio.getPeliculasActivas());
+	//	mav.getModelMap().addAttribute("funciones", logicaNegocio.ggetPeliculasActivas());
+		
 		return mav;
 	}
 	

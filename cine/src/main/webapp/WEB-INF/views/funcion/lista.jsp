@@ -18,7 +18,7 @@
 			<c:forEach items="${lista}" var="item">
 				<tr>
 					<td>${item.id}</td>
-					<td>${item.sala.complejo.nombre}</td>
+					<td>${item.sala.idComplejo}</td>
 					<td>${item.sala.numeroSala}</td>
 					<td>${item.pelicula.nombre}</td>
 					<td>
@@ -35,7 +35,7 @@
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty lista}">
-			<tr><td colspan="7"><center>No hay peliculas en la cartelera</center></td></tr>
+			<tr><td colspan="7"><center>No hay funciones en la cartelera</center></td></tr>
 		</c:if>
 	</tbody>
 </table>

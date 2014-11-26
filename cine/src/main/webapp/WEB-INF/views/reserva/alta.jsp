@@ -6,7 +6,7 @@
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form action="pelicula" method="post">
+		<form action="guardar" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="complejo">Elija el complejo</label>

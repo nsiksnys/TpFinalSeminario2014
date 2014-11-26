@@ -11,3 +11,6 @@
         <a href='<s:url value="/signup" />'class="btn btn-large btn-success">Registrarse</a>
     </p>
 </div>
+<div>
+	<img src="imagenes/slide33.jpg"/>
+</div>

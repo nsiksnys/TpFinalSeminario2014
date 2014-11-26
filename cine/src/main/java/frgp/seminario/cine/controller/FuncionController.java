@@ -142,6 +142,13 @@ public class FuncionController {
 		LOG.info("/funcion/gethorarios: pedidos horarios para pelicula=" + pelicula + ", complejo=" + complejo);
 		return logicaNegocio.getHorariosDisponiblesByComplejo(pelicula, complejo);
 	}
+	
+	@RequestMapping(value = "/getfunciones", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getFuncionesDisponibles(@RequestParam Long pelicula , @RequestParam Long complejo, Principal principal)
+	{
+		LOG.info("/funcion/getfunciones: pedidos funciones para pelicula=" + pelicula + ", complejo=" + complejo);
+		return logicaNegocio.getFuncionesDisponibles(pelicula, complejo);
+	}
 /*
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@ModelAttribute FuncionForm formulario, Principal principal) 

@@ -7,15 +7,15 @@ public class FuncionForm {
 	
 	private Long id;
 	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Long sala;
+	private Long salas;
+	//@NotBlank(message = NOT_BLANK_MESSAGE)
+	private Long complejos;
 	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Long complejo;
+	private Long peliculas;
 	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Long pelicula;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Long horario;
+	private Long horarios;
 /*	private String nombreComplejo;
-	private String nombreSala;
+	private String nombresala;
 	private String nombrePelicula;*/
 	private String inicio;
 	private String fin;
@@ -28,29 +28,29 @@ public class FuncionForm {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getSala() {
-		return sala;
+	public Long getsalas() {
+		return salas;
 	}
-	public void setSala(Long sala) {
-		this.sala = sala;
+	public void setsalas(Long salas) {
+		this.salas = salas;
 	}
-	public Long getComplejo() {
-		return complejo;
+	public Long getComplejos() {
+		return complejos;
 	}
-	public void setComplejo(Long complejo) {
-		this.complejo = complejo;
+	public void setComplejos(Long complejos) {
+		this.complejos = complejos;
 	}
-	public Long getPelicula() {
-		return pelicula;
+	public Long getPeliculas() {
+		return peliculas;
 	}
-	public void setPelicula(Long pelicula) {
-		this.pelicula = pelicula;
+	public void setPeliculas(Long peliculas) {
+		this.peliculas = peliculas;
 	}
-	public Long getHorario() {
-		return horario;
+	public Long getHorarios() {
+		return horarios;
 	}
-	public void setHorario(Long horario) {
-		this.horario = horario;
+	public void setHorarios(Long horarios) {
+		this.horarios = horarios;
 	}
 /*	public String getNombreComplejo() {
 		return nombreComplejo;
@@ -58,11 +58,11 @@ public class FuncionForm {
 	public void setNombreComplejo(String nombreComplejo) {
 		this.nombreComplejo = nombreComplejo;
 	}
-	public String getNombreSala() {
-		return nombreSala;
+	public String getNombresala() {
+		return nombresala;
 	}
-	public void setNombreSala(String nombreSala) {
-		this.nombreSala = nombreSala;
+	public void setNombresala(String nombresala) {
+		this.nombresala = nombresala;
 	}
 	public String getNombrePelicula() {
 		return nombrePelicula;

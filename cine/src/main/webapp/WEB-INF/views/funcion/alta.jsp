@@ -55,9 +55,8 @@
 						<option value="0">Elija complejo, sala y pelicula</option>
 					</select>
 				</div>
+			<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
-
-			<button type="button" class="btn btn-success">Guardar</button>
 		</form>
 	</div>
 </div>

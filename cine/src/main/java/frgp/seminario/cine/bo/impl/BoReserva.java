@@ -168,6 +168,8 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	@Override
 	public Reserva formToEntity(ReservaForm formulario) {
 		// TODO Escribir funcion
+		
+		
 		return null;
 	}
 
