@@ -39,7 +39,7 @@ $( document ).ready(function() {
 	validacion.validarTodosNormal();//valido todos
 	validacion.validar(this.id, this.value, "select");//valido este select
     });
-    
+
     $("#buscarHorario").click(function () {
 	complejo = $( "#complejos option:selected" ).val();
 	pelicula = $( "#peliculas option:selected" ).val();
