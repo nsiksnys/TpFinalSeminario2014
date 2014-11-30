@@ -1,40 +1,38 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <h3>Modificar un usuario</h3>
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form:form class="form" action="modificar" method="post" modelAttribute="signupForm">
+		<form class="form" action="modificar" method="post">
 			<fieldset>
 		        <div class="form-group">
 		            <label for="dni">DNI</label>
 		            <div class="form-group">
-		                <form:input path="dni" class="form-control" cssErrorClass="form-control" id="dni" value="${registro.dni}" placeholder="DNI"/>
-		                <form:errors path="dni" element="span" class="help-block"/>
+		                <input name="dni" class="form-control" type="text" id="dni" value="${registro.dni}" placeholder="DNI" required/>
+		                <span id="dni.errors" class="help-block"></span>
 		            </div>
 		        </div>
-		        <form:errors path="" element="p" class="text-error"/>
 		        <div class="form-group">
 		            <label for="email">Email</label>
 		            <div class="form-group">
-		                <form:input path="email" class="form-control" cssErrorClass="form-control" id="email" value="${registro.email}" placeholder="email"/>
-		                <form:errors path="email" element="span" class="help-block"/>
+		                <input name="email" class="form-control" id="email" value="${registro.email}" placeholder="email" alt="email" required/>
+		                <span id="mail.errors" class="help-block"></span>
 		            </div>
 		        </div>
 		        <div class="form-group">
 		            <label for="nombre">Nombre</label>
 		            <div class="form-group">
-		                <form:input path="nombre" class="form-control" cssErrorClass="form-control" id="nombre" value="${registro.nombre}" placeholder="Nombre"/>
-		                <form:errors path="nombre" element="span" class="help-block"/>
+		                <input name="nombre" class="form-control" type="text" id="nombre" value="${registro.nombre}" placeholder="Nombre" required/>
+		                <span id="nombre.errors" class="help-block"></span>
 		            </div>
 		        </div>
 		        <div class="form-group">
 		            <label for="apellido">Apellido</label>
 		            <div class="form-group">
-		                <form:input path="apellido" class="form-control" cssErrorClass="form-control" id="apellido" value="${registro.apellido}" placeholder="Apellido"/>
-		                <form:errors path="apellido" element="span" class="help-block"/>
+		                <input name="apellido" class="form-control" type="text" id="apellido" value="${registro.apellido}" placeholder="Apellido" required/>
+		                <span id="apellido.errors" class="help-block"></span>
 		            </div>
 		        </div>
 		        <div class="form-group">
@@ -44,29 +42,26 @@
 							<option value="F">Femenino</option>
 							<option value="M">Masculino</option>
 						</select>
-		                <form:errors path="sexo" element="span" class="help-block"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
-		            <label for="fechaNacimiento">Fecha de nacimiento</label>
+		            <label for="pasada">Fecha de nacimiento</label>
 		            <div class="form-group">
-		                <form:input path="fechaNacimiento" class="form-control" cssErrorClass="form-control" id="fechaNacimiento" value="${registro.fechaNacimiento}" placeholder="dd/mm/aaaa" alt="date" />
-		                <form:errors path="fechaNacimiento" element="span" class="help-block"/>
+		                <input name="fechaNacimiento" class="form-control" type="text" id="fechaNacimiento" value="${registro.fechaNacimiento}" placeholder="dd/mm/aaaa" alt="date" />
+		                <span id="fechaNacimiento.errors" class="help-block"></span>
 		            </div>
 		        </div>
 		        <input type="hidden" name="password" id="password" value="N/A">
 		        <div class="form-group">
 		            <label for="preguntaSeguridad">Pregunta de seguridad (opcional)</label>
 		            <div class="form-group">
-		                <form:input path="preguntaSeguridad" class="form-control" cssErrorClass="form-control" id="preguntaSeguridad" value="${registro.preguntaSeguridad}"/>
-		                <form:errors path="preguntaSeguridad" element="span" class="help-block"/>
+		                <input name="preguntaSeguridad" class="form-control" type="text" id="preguntaSeguridad" value="${registro.preguntaSeguridad}"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
 		            <label for="respuestaSeguridad">Respuesta a la pregunta de seguridad (opcional)</label>
 		            <div class="form-group">
-		                <form:input path="respuestaSeguridad" class="form-control" cssErrorClass="form-control" id="respuestaSeguridad" value="${registro.respuestaSeguridad}"/>
-		                <form:errors path="respuestaSeguridad" element="span" class="help-block"/>
+		                <input name="respuestaSeguridad" class="form-control" type="text" id="respuestaSeguridad" value="${registro.respuestaSeguridad}"/>
 		            </div>
 		        </div>
 		        <div class="form-group">
@@ -88,19 +83,17 @@
 		        <div class="form-group" id="direccionDiv">
 		            <label for="direccion">Direccion (opcional)</label>
 		            <div class="form-group">
-		                <form:input path="direccion" class="form-control" cssErrorClass="form-control" id="direccion" placeholder="direccion" value="${direccion}"/>
-		                <form:errors path="direccion" element="span" class="help-block"/>
+		                <input name="direccion" class="form-control" type="text" id="direccion" placeholder="direccion" value="${direccion}"/>
 		            </div>
 		        </div>
-		        <div class="form-group" name="generoDiv">
+		        <div class="form-group" id="generoDiv">
 		            <label for="genero">Genero preferido (opcional)</label>
 		            <div class="form-group">
-		                <form:input path="genero" class="form-control" cssErrorClass="form-control" id="genero" placeholder="genero" value="${genero}"/>
-		                <form:errors path="genero" element="span" class="help-block"/>
+		                <input name="genero" class="form-control" type="text" id="genero" placeholder="genero" value="${genero}"/>
 		            </div>
 		        </div>
 		        <button type="submit" class="btn btn-default">Guardar</button>
 		    </fieldset>
-		</form:form>
+		</form>
 	</div>
 </div>

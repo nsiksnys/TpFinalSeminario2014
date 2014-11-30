@@ -1,6 +1,5 @@
 package frgp.seminario.cine.bo.impl;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.FuncionFindItem;
-import frgp.seminario.cine.findItem.impl.HorarioFindItem;
 import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.forms.FuncionForm;
 import frgp.seminario.cine.forms.PeliculaForm;
@@ -214,9 +212,42 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Override
 	public Funcion formToEntity(FuncionForm formulario)
 	{
-		return new Funcion(salas.get(formulario.getSala()), 
-							peliculas.get(formulario.getPelicula()), 
-							horarioRepository.get(Horario.class, formulario.getHorario()));
+		return new Funcion(salas.get(formulario.getsalas()), 
+							peliculas.get(formulario.getPeliculas()), 
+							horarioRepository.get(Horario.class, formulario.getHorarios()));
+	}
+	
+	public FuncionForm entityToForm(Funcion registro)
+	{
+		FuncionForm formulario = new FuncionForm();
+		
+		formulario.setId(registro.getId());
+		formulario.setNombreComplejo(complejos.get(registro.getSala().getIdComplejo()).getNombre());
+		formulario.setComplejos(registro.getSala().getIdComplejo());
+		formulario.setNombreSala(Integer.toString(registro.getSala().getNumeroSala()));
+		formulario.setsalas(registro.getSala().getId());
+		formulario.setPeliculas(registro.getPelicula().getId());
+		formulario.setHorarios(registro.getHorario().getId());
+		
+		return formulario;
+	}
+
+	public HashMap<String, String> getFuncionesDisponibles(Long pelicula,
+			Long complejo) {
+		ArrayList<Funcion> funcionesActivasComplejo = busquedaFuncion.findActiveByComplejo(complejo);
+		HashMap<String, String> respuesta = new HashMap<String, String>();
+		
+		//cargo los horarios restantes en el hashmap
+		for (Funcion item : funcionesActivasComplejo)
+		{
+			if (item.getPelicula().getId() == pelicula)
+				respuesta.put(item.getId().toString(), fechaUtils.getFormatoHoraMinuto(item.getHorario().getHoraInicio()) + " - " + fechaUtils.getFormatoHoraMinuto(item.getHorario().getHoraFin()));
+		}
+		
+		if (respuesta.isEmpty())
+			return null;
+		
+		return respuesta;
 	}
 
 }

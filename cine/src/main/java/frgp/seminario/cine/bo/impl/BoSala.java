@@ -1,13 +1,13 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import frgp.seminario.cine.findItem.FindItem;
 import frgp.seminario.cine.findItem.impl.SalaFindItem;
 import frgp.seminario.cine.forms.SalaForm;
 import frgp.seminario.cine.model.Complejo;
@@ -148,5 +148,21 @@ public class BoSala {
 
 	public boolean complejoHasAny(Long idComplejo) {
 		return busquedaSala.findByComplejoBoolean(idComplejo);
+	}
+
+	public HashMap<String, String> getSalasComplejoMap(Long idComplejo) {
+		ArrayList<Sala> salas =  busquedaSala.findByComplejo(idComplejo);
+		HashMap<String, String> respuesta = new HashMap<String, String>(salas.size());
+		
+		if (salas.isEmpty())
+			return null;
+		
+		for (Sala item : salas){
+			if(item.getIdComplejo() == idComplejo){
+				respuesta.put(item.getId().toString(), Integer.toString(item.getNumeroSala()));
+			}	
+		}
+		return respuesta;
+
 	}
 }

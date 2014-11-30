@@ -3,13 +3,10 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -87,9 +84,9 @@ public class UsuarioController {
 	{
 		ModelAndView mav =new ModelAndView();
 		SignupForm registro = boAccount.entityToForm(boAccount.get(email));
-		mav.getModelMap().addAttribute("signupForm", new SignupForm());
 		mav.getModelMap().addAttribute("registro", registro);
 		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
+		
 		if (registro.getRole().equals("C"))//si el usuario es un cliente
 		{
 			Cliente cliente = boAccount.getCliente(email);
@@ -129,21 +126,13 @@ public class UsuarioController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/alta", method = RequestMethod.POST)//TODO: testear
-	public String alta(@Valid @ModelAttribute SignupForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	@RequestMapping(value = "/alta", method = RequestMethod.POST)
+	public String alta(@ModelAttribute SignupForm formulario, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
-		//ModelAndView mav =new ModelAndView("redirect:/usuario/alta");
 		Account usuario;
 		Cliente cliente;
 		boolean status;
 		
-		if (errors.hasErrors())
-		{
-			LOG.error("/usuario/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
 		if (formulario.getRole().equals("C"))
 		{
 			cliente = boAccount.formToClienteEntity(formulario);
@@ -156,10 +145,9 @@ public class UsuarioController {
 		}
 		
 		if (!status){//si no se guarda
-			//mav.setViewName("redirect:/usuario/alta");
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
+			return "redirect:/usuario/alta";
 		}
 		else
 		{
@@ -170,18 +158,9 @@ public class UsuarioController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@Valid @ModelAttribute SignupForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute SignupForm formulario, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
-		//ModelAndView mav =new ModelAndView();
 		Boolean status;
-		
-		if (errors.hasErrors())
-		{
-			LOG.error("/usuario/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
 		
 		if (formulario.getRole().equals("C"))
 		{
@@ -197,7 +176,7 @@ public class UsuarioController {
 		if (!status){//si no se guarda
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
+			return "redirect:/usuario/modificar?id=" + formulario.getEmail();
 		}
 		else
 		{

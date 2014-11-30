@@ -1,7 +1,10 @@
 package frgp.seminario.cine.controller;
 
+import org.codehaus.jackson.map.ObjectMapper;
+
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.seminario.cine.bo.impl.BoSala;
 import frgp.seminario.cine.forms.SalaForm;
+import frgp.seminario.cine.model.Complejo;
+import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.support.web.*;
 import frgp.seminario.cine.support.web.Message.Type;
 
@@ -77,5 +83,12 @@ public class SalaController {
 			mav.getModelMap().addAttribute("message",  new Message("El complejo se activo correctamente", Type.SUCCESS));
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/getsalas", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getSalasDisponibles(@RequestParam Long complejo,Principal principal)
+	{
+		LOG.info("/salas/getsalas: pedidas salas del complejo=" + complejo.toString());
+		return logicaNegocio.getSalasComplejoMap(complejo);
 	}
 }

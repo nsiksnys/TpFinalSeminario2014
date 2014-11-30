@@ -117,22 +117,13 @@ public class PeliculaController {
 	}
 	
 	@RequestMapping(value = "/alta", method = RequestMethod.POST)
-	public String alta(@Valid @ModelAttribute PeliculaForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	public String alta(@ModelAttribute PeliculaForm formulario, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
-		//ModelAndView mav =new ModelAndView("redirect:/pelicula/alta");
 		Pelicula item = logicaNegocio.formToEntity(formulario);
-		
-		if (errors.hasErrors())
-		{
-			LOG.error("/pelicula/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			LOG.error("/pelicula/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor, vuelva a llenar el formulario.");
+			MessageHelper.addErrorAttribute(ra, "por favor revise el formulario.");
 			return "redirect:/pelicula/alta";
 		}
 		else
@@ -144,29 +135,20 @@ public class PeliculaController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@Valid @ModelAttribute PeliculaForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute PeliculaForm formulario, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");
-		//ModelAndView mav =new ModelAndView();
 		Pelicula registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		
-		if (errors.hasErrors())
-		{
-			LOG.error("/pelicula/modificar: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
-		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
 			LOG.error("/pelicula/modificar: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
+			MessageHelper.addErrorAttribute(ra, "por favor revise el formulario.");
+			return "redirect:/pelicula/modificar?id=" + formulario.getId();
 		}
 		else
 		{
 			LOG.info("/pelicula/modificar: actualizado registro con id " + registro.getId());
-			MessageHelper.addSuccessAttribute(ra, "El usuario se actualizo correctamente");
+			MessageHelper.addSuccessAttribute(ra, "La pelicula se actualizo correctamente");
 		}
 		return "redirect:/pelicula/lista";
 	}

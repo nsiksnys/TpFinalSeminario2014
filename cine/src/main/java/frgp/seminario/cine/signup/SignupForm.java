@@ -1,42 +1,18 @@
 package frgp.seminario.cine.signup;
 
-import org.hibernate.validator.constraints.*;
-
 public class SignupForm {
 
-	private static final String NOT_BLANK_MESSAGE = "El campo no puede estar vacio.";
-	private static final String EMAIL_MESSAGE = "Por favor ingrese un mail valido.";
-
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String dni;
-	
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String nombre;
-	
-	@NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String apellido;
-	
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
-	@Email(message = SignupForm.EMAIL_MESSAGE)
 	private String email;
-
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	private String password;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
     private String sexo;
-    
     private String preguntaSeguridad;
-    
-    private String respuestaSeguridad;
-    
-    private String role;
-    
-    @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
+    private String respuestaSeguridad; 
+    private String role;   
     private String fechaNacimiento;
-    
     private String genero;
-    
     private String direccion;
 
     public String getEmail() {

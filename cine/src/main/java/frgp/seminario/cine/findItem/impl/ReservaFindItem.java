@@ -51,6 +51,21 @@ public class ReservaFindItem {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public boolean findActiveByClienteEmailBoolean(String email){
+		ArrayList<Reserva> todos = (ArrayList<Reserva>) dataAccess.getAll(Reserva.class);
+		ArrayList<Reserva> respuesta = new ArrayList<Reserva>(); 
+		
+		for (Reserva item : todos) {
+			if (item.getCliente().getEmail().equals(email) && item.isActivo())
+				respuesta.add(item);
+		}
+		
+		if (respuesta.isEmpty())
+			return false;
+		return true;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public ArrayList<Reserva> findByClienteDNI(int dni){
 		ArrayList<Reserva> todos = (ArrayList<Reserva>) dataAccess.getAll(Reserva.class);
 		ArrayList<Reserva> respuesta = new ArrayList<Reserva>(); 

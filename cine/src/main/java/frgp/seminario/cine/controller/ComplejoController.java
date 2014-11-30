@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import frgp.seminario.cine.bo.impl.BoComplejo;
 import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.model.Complejo;
+import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.support.web.*;
 import frgp.seminario.cine.support.web.Message.Type;
 
@@ -152,7 +153,7 @@ public class ComplejoController {
 	}
 	
 	@RequestMapping(value = "/getcomplejos", method = RequestMethod.GET)
-	public @ResponseBody HashMap<String, String> getPeliculasDisponibles(Principal principal)
+	public @ResponseBody HashMap<String, String> getDisponibles(Principal principal)
 	{
 		LOG.info("/complejo/getcomplejos: pedidos complejos activos");
 		return logicaNegocio.getAllActiveMap();

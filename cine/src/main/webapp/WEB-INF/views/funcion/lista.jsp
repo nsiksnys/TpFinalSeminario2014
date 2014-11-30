@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
 <h3>Funciones</h3>
 <br>
@@ -18,15 +19,15 @@
 			<c:forEach items="${lista}" var="item">
 				<tr>
 					<td>${item.id}</td>
-					<td>${item.sala.complejo.nombre}</td>
+					<td>${item.sala.idComplejo}</td>
 					<td>${item.sala.numeroSala}</td>
 					<td>${item.pelicula.nombre}</td>
 					<td>
 						<c:if test="${item.activo == true}"> Activa </c:if>
 						<c:if test="${item.activo == false}"> Inactiva </c:if>
 					</td>
-					<td><a href='<s:url value="/detalles?id=${item.id}"/>'>Ver</a></td>
-					<td><a href='<s:url value="/modificar?id=${item.id}"/>'>Modificar</a></td>
+					<!-- <td><a href='<s:url value="/funcion/detalles?id=${item.id}"/>'>Ver</a></td> -->
+					<td><a href='<s:url value="/funcion/modificar?id=${item.id}"/>'>Modificar</a></td>
 					<td>
 						<c:if test="${item.activo == true}"> <a href='<s:url value="/funcion/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
 						<c:if test="${item.activo == false}"> <a href='<s:url value="/funcion/activar?id=${item.id}"/>'>Activar</a> </c:if>
@@ -35,7 +36,7 @@
 			</c:forEach>
 		</c:if>
 		<c:if test="${empty lista}">
-			<tr><td colspan="7"><center>No hay peliculas en la cartelera</center></td></tr>
+			<tr><td colspan="7"><center>No hay funciones en la cartelera</center></td></tr>
 		</c:if>
 	</tbody>
 </table>

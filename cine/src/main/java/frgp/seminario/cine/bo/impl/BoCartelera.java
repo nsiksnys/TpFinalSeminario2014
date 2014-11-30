@@ -157,6 +157,7 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 	{
 		CarteleraForm formulario = new CarteleraForm();
 		
+		formulario.setId(registro.getId().toString());
 		formulario.setPelicula(registro.getPelicula().getId().toString());
 		formulario.setVersion(registro.getProyeccion());
 		formulario.setSubtitulos(registro.isSubtitulada());

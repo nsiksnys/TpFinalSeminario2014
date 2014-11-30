@@ -30,13 +30,12 @@ public class SalaFindItem {
 	}
 
 	/**
-	 * Busca las salas pertenecientes a un complejo.
+	 * Busca las salas activas pertenecientes a un complejo.
 	 * @param idComplejo id del complejo buscado
 	 * @return ArrayList con todos las salas
 	 **/
-	@SuppressWarnings("unchecked")
 	public ArrayList<Sala> findByComplejo(Long idComplejo){
-		ArrayList<Sala> todos = (ArrayList<Sala>) dataAccess.getAll(Sala.class);
+		ArrayList<Sala> todos = getAllEnabled();
 		ArrayList<Sala> rta = new ArrayList<Sala>();
 		
 		for (Sala item : todos) {
@@ -47,7 +46,7 @@ public class SalaFindItem {
 	}
 	
 	/**
-	 * Busca las salas pertenecientes a un complejo.
+	 * Busca las salas activas pertenecientes a un complejo.
 	 * @param idComplejo id del complejo buscado
 	 * @return true existen salas para ese complejo, false si no se encontro ninguna
 	 **/

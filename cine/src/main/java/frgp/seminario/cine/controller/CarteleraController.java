@@ -48,7 +48,7 @@ public class CarteleraController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal) {
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
+		//mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
 		mav.getModelMap().addAttribute("peliculas", logicaNegocio.getAllPeliculasActivas());
 		return mav;
 	}
@@ -58,7 +58,7 @@ public class CarteleraController {
 	{
 		Cartelera registro = logicaNegocio.get(id); 
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
+		//mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
 		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(registro));//FIXME: arreglar error en las lineas 30 y 37
 		mav.getModelMap().addAttribute("titulo", registro.getPelicula().getNombre());
 		return mav;
@@ -95,19 +95,9 @@ public class CarteleraController {
 	}
 	
 	@RequestMapping(value = "/alta", method = RequestMethod.POST)
-	public String alta(@Valid @ModelAttribute CarteleraForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	public String alta(@ModelAttribute CarteleraForm formulario, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
-		//ModelAndView mav =new ModelAndView("redirect:/cartelera/alta");
-		
 		Cartelera item = logicaNegocio.formToEntity(formulario);
-		
-		if (errors.hasErrors())
-		{
-			LOG.error("/cartelera/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			LOG.error("/cartelera/alta: por favor revise el formulario.");
@@ -123,23 +113,15 @@ public class CarteleraController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@Valid @ModelAttribute CarteleraForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute CarteleraForm formulario, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");
-		//ModelAndView mav =new ModelAndView();
 		Cartelera registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
-		
-		if (errors.hasErrors())
-		{
-			LOG.error("/cartelera/modificar: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
 		
 		if (!logicaNegocio.modificar(registro)){//si no se guarda
 			LOG.error("/cartelera/modificar: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario");//agrego el mensaje de error
+			return "redirect:/cartelera/modificar?id=" + formulario.getId();
 		}
 		else
 		{

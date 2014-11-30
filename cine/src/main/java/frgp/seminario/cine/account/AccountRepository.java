@@ -51,6 +51,19 @@ public class AccountRepository {
 		}
 	}
 	
+	public String getIdByObject(Account item)
+	{
+		ArrayList<Account> todos =  getAll();
+		
+		for (Account registro : todos)
+		{
+			if (registro.equals(item))
+				return registro.getEmail();
+		}
+		
+		return "";
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<Account> getAll()
 	{

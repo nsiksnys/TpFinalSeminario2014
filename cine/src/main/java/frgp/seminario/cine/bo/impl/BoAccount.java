@@ -3,7 +3,6 @@ package frgp.seminario.cine.bo.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.management.relation.RoleStatus;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import frgp.seminario.cine.account.Account;
 import frgp.seminario.cine.account.AccountRepository;
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.model.Cliente;
-import frgp.seminario.cine.repository.impl.ClienteRepository;
 import frgp.seminario.cine.signup.SignupForm;
 import frgp.seminario.cine.utils.FechaUtils;
 
@@ -66,18 +64,51 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		if (registroActual.equals(registro))
 			return true;
 		
-		registro.setPassword(registroActual.getPassword());//la password no cambia aca
+		//compraro uno a uno y guardo los cambios (si los hay)
+		if (registroActual.getDni() != registro.getDni())
+			registroActual.setDni(registro.getDni());
 		
-		return accounts.merge(registro);
+		if (registroActual.getNombre().compareTo(registro.getNombre()) != 0)
+			registroActual.setNombre(registro.getNombre());
+		
+		if (registroActual.getApellido().compareTo(registro.getApellido()) != 0)
+			registroActual.setApellido(registro.getApellido());
+		
+		if (registroActual.getSexo().compareTo(registro.getSexo()) != 0)
+			registroActual.setSexo(registro.getSexo());
+		
+		if (registroActual.getFechaNacimiento().compareTo(registro.getFechaNacimiento()) != 0)
+			registroActual.setFechaNacimiento(registro.getFechaNacimiento());
+		
+		if (registroActual.getPreguntaSeguridad() != null && registro.getPreguntaSeguridad() != null &&
+				registroActual.getPreguntaSeguridad().compareTo(registro.getPreguntaSeguridad()) != 0)
+			registroActual.setPreguntaSeguridad(registro.getPassword());
+		
+		if (registroActual.getRespuestaSeguridad() != null && registro.getRespuestaSeguridad() != null &&
+				registroActual.getRespuestaSeguridad().compareTo(registro.getRespuestaSeguridad())!=0)
+			registroActual.setRespuestaSeguridad(registro.getRespuestaSeguridad());
+		
+		if (registroActual.getEmail().compareTo(registro.getEmail()) != 0)
+			registroActual.setEmail(registro.getEmail());
+		
+		if (registroActual.getRole().compareTo(registro.getRole()) != 0)
+			registroActual.setRole(registro.getRole());
+				
+		return accounts.merge(registroActual);
 	}
 	
-	public boolean modificar(Cliente registro){		
+	public boolean modificar(Cliente registro){
+		if (!(registro instanceof frgp.seminario.cine.model.Cliente))
+			return false;
+		
 		return clientes.modificar(registro);
 	}
 
 	@Override
 	public boolean desactivar(Account registro) {
 		//TODO: verificaciones propias de esta clase
+		if (registro.getRole().equals("C"))
+			return clientes.desactivar(clientes.get(registro.getEmail()));
 		
 		if (registro.isActive())
 			registro.setActive(false);
@@ -99,7 +130,12 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 
 	@Override
 	public boolean verificar(Account registro) {
-		// TODO verificaciones propias de la clase
+		if (!(registro instanceof frgp.seminario.cine.account.Account))
+			return false;
+		
+		if (!accounts.getIdByObject(registro).equals(""))
+			return false;
+		
 		return true;
 	}
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.repository.impl.ClienteRepository;
 import frgp.seminario.cine.signup.SignupForm;
@@ -18,6 +19,9 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 	@Autowired
 	@Qualifier("ClienteRepository") //aclaro cual es el bean a inyectar
 	ClienteRepository repositorio; //aclaro la clase que se utiliza en este caso en particular
+	
+	@Autowired
+	ReservaFindItem reservas;
 	
 	@Autowired
 	FechaUtils utils;
@@ -75,7 +79,9 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 	 **/
 	@Override
 	public boolean desactivar(Cliente registro) {
-		//Verificaciones propias de la clase
+		//si el cliente tiene reservas activas
+		if (reservas.findActiveByClienteEmailBoolean(registro.getEmail()))
+			return false;
 		
 		if (registro.isActive())
 			registro.setActive(false);

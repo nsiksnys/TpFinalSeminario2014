@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import frgp.seminario.cine.bo.impl.BoFuncion;
+import frgp.seminario.cine.forms.CarteleraForm;
 import frgp.seminario.cine.forms.FuncionForm;
 import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Horario;
@@ -73,16 +74,15 @@ public class FuncionController {
 		return mav;
 	}
 	
-/*
+
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
-		ModelAndView mav =new ModelAndView("/funcion/alta");//indico que uso la vista "modificar"
-		//ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
+		ModelAndView mav =new ModelAndView();
+		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(logicaNegocio.get(id)));
 		return mav;
 	}
-*/
+
 	
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
@@ -124,12 +124,31 @@ public class FuncionController {
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
 			mav.setViewName("redirect:/funcion/alta");
-			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
+			//mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 			LOG.error("/funcion/alta: Por favor revise el formulario " + item.getId());
 		}
 		else
 		{
 			LOG.info("/funcion/alta: agregado registro nuevo con id " + item.getId());
+			//mav.getModelMap().addAttribute("ok", "La funcion se guardo correctamente");
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
+	public ModelAndView modificar(@ModelAttribute FuncionForm formulario,Principal principal) 
+	{
+		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");
+		Funcion item = logicaNegocio.formToEntity(formulario);
+		
+		if (!logicaNegocio.modificar(item)){//si no se guarda
+			mav.setViewName("redirect:/funcion/alta");
+			//mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
+			LOG.error("/funcion/modificar: Por favor revise el formulario " + item.getId());
+		}
+		else
+		{
+			LOG.info("/funcion/modificar: actualizado registro con id " + item.getId());
 			//mav.getModelMap().addAttribute("ok", "La funcion se guardo correctamente");
 		}
 		return mav;
@@ -141,6 +160,13 @@ public class FuncionController {
 	{
 		LOG.info("/funcion/gethorarios: pedidos horarios para pelicula=" + pelicula + ", complejo=" + complejo);
 		return logicaNegocio.getHorariosDisponiblesByComplejo(pelicula, complejo);
+	}
+	
+	@RequestMapping(value = "/getfunciones", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getFuncionesDisponibles(@RequestParam Long pelicula , @RequestParam Long complejo, Principal principal)
+	{
+		LOG.info("/funcion/getfunciones: pedidos funciones para pelicula=" + pelicula + ", complejo=" + complejo);
+		return logicaNegocio.getFuncionesDisponibles(pelicula, complejo);
 	}
 /*
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)

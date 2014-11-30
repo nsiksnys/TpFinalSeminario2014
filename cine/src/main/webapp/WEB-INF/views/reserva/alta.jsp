@@ -6,7 +6,7 @@
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form action="pelicula" method="post">
+		<form action="guardar" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="complejo">Elija el complejo</label>
@@ -20,6 +20,7 @@
 							</c:forEach>
 						</c:if>
 					</select>
+					<span id="complejo.errors" class="help-block"></span>
 				</div>
 				
 				<div class="form-group">
@@ -34,6 +35,7 @@
 							</c:forEach>
 						</c:if>
 					</select>
+					<span id="pelicula.errors" class="help-block"></span>
 				</div>
 				
 				<div class="form-group">
@@ -48,11 +50,13 @@
 							</c:forEach>
 						</c:if>
 					</select>
+					<span id="funcion.errors" class="help-block"></span>
 				</div>
 				
 				<div class="form-group">
 					<label for="cantidad">Cantidad de entradas</label>
-					<input type="text" name="cantidad" id="cantidad" class="form-control"/>
+					<input type="text" name="cantidad" id="cantidad" class="form-control" alt="integer" required/>
+					<span id="cantidad.errors" class="help-block"></span>
 				</div>
 				
 				<div class="form-group">
@@ -68,6 +72,7 @@
 							</c:forEach>
 						</c:if>
 					</select>
+					<span id="promo.errors" class="help-block"></span>
 				</div>
 					
 				<button type="submit" class="btn btn-default">Siguiente</button>

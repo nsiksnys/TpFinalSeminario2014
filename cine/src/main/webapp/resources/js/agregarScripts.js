@@ -6,8 +6,10 @@ $( document ).ready(function() {
 	(pathname.search("modificar") != -1) ||
 	(pathname.search("singup") != -1))
     {
-	agregarScript('MeioMaskStart');
 	agregarScript('jquery.meiomask');
+	agregarScript('MeioMaskStart');
+	agregarScript('validateHelper');
+	agregarScript('validateHelperFecha');
     }
   
     if((pathname.search("usuario/alta") != -1) ||
@@ -21,7 +23,7 @@ $( document ).ready(function() {
 	agregarScript('googleCharts');
     }
     
-    if (pathname.search("funcion/alta") != -1)
+    if (pathname.search("funcion/alta") != -1 || pathname.search("funcion/modificar") != -1)
     {
 	agregarScript('funcion');
     }
@@ -35,6 +37,11 @@ $( document ).ready(function() {
     if (pathname.search("cartelera/alta") != -1 || pathname.search("cartelera/modificar") != -1)
     {
 	agregarScript('cartelera');
+    }
+    
+    if (pathname.search("pelicula/alta") != -1 || pathname.search("pelicula/modificar") != -1)
+    {
+	agregarScript('pelicula');
     }
 });
 
