@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.validation.Valid;
+
 import org.codehaus.jackson.map.ObjectMapper;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,5 +157,12 @@ public class PeliculaController {
 	{
 		LOG.info("/pelicula/getpeliculas: pedidas peliculas activas");
 		return logicaNegocio.getAllActiveMap();
+	}
+	
+	@RequestMapping(value = "/getpelicula", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getPeliculaActiva(@RequestParam Long pelicula, Principal principal)
+	{
+		LOG.info("/pelicula/getpeliculas: pedidas peliculas activas");
+		return logicaNegocio.getActiveMap(pelicula);
 	}
 }

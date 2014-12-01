@@ -6,24 +6,23 @@ $( document ).ready(function() {
     var validacion = new validateHelper(); 
     validacion.setInputs(this);
     validacion.agregarExcluido("salas");
+    validacion.agregarExcluido("peliculas");
 
-    //cargamos los select peliculas y complejos
-    getPeliculas();
-    
-    if (getAccion().search("modificar") == -1)
+        
+    if (getAccion() == "alta")
     {
+    //cargamos los select peliculas y complejos
+	getPeliculas();
 	getComplejos();
     }
-    else
+   else if (getAccion() == "modificar")
     {
-	complejo = $("#complejos").attr("value");
-	pelicula = $("#pelicula").attr("value");
-		
+ 	complejo = $("#complejos").attr("value");
+	pelicula = $("#peliculas").attr("value");
+			
 	getHorarios(complejo, pelicula);
-	
-	$("#horarios").val( $("#horario").attr("value") );
     }
-    	
+ 	
     //cuando cambia cualquier select
     $( ":input" ).change(function(){
 	//CASO ESPECIAL: COMPLEJOS
@@ -36,7 +35,7 @@ $( document ).ready(function() {
 	}
 	
 	//Validaciones
-	validacion.validarTodosNormal();//valido todos
+	validacion.validarTodosMenosActual(this.id);//valido todos
 	validacion.validar(this.id, this.value, "select");//valido este select
     });
 
@@ -52,7 +51,6 @@ $( document ).ready(function() {
     $("[type='submit']" ).click(function(event) {
 	validacion.validarTodosSubmit(event);
     });
-
 
     //llamadas por ajax
     function getComplejos(){
@@ -77,7 +75,7 @@ $( document ).ready(function() {
     
     function getPeliculas(){
         var host =document.location.host;
-        var url = "http://" + host + "/" + getContext() + "/pelicula/getpeliculas";//url de la funcion getPeliculas en controller de Peliculas
+        var url = "http://" + host + "/" + getContext() + "/cartelera/getpeliculas";//url de la funcion getPeliculas en controller de Peliculas
         return $.getJSON(url, function(json) {
             if (typeof json === "undefined" || json=="" || json.length == 0)
             {
@@ -106,6 +104,9 @@ $( document ).ready(function() {
             $.each(json, function (key, value) {
            	$("#salas").append(parseOpcion(key, value));
             });
+        })
+        .success(function() {
+            validacion.validar('salas', $("#salas").val(), 'select');
         });
     };
     
@@ -123,6 +124,17 @@ $( document ).ready(function() {
             $.each(json, function (key, value) {
         	$("#horarios").append(parseOpcion(key, value));
             });
+        })
+        .success(function() {
+            if (getAccion() == "modificar"){
+                //fuerzo a que la opcion seleccionada sea la que figura en el registro
+                $("#horarios").val($("#horario").val());
+            }
+            validacion.validar('horarios', $("#horarios").val(), 'select');
+        })
+        .fail(function() {
+            $("#horarios").empty();
+            $("#horarios").append(parseOpcion('0', 'No hay horarios disponibles'));
         });
     };
 

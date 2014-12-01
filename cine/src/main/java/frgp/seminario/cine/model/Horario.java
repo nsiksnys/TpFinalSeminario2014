@@ -17,6 +17,8 @@ public class Horario {
 	private Time horaInicio;
 	@Column(nullable=false)
 	private Time horaFin;
+	@Column(nullable=false)
+	private Time duracion;	
 	
 	public Horario(){
 		//constructor vacio
@@ -52,12 +54,23 @@ public class Horario {
 		this.horaFin = horaFin;
 	}
 	
+	public Time getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(Time duracion) {
+		this.duracion = duracion;
+	}
+
 	public boolean equals(Horario item)
 	{
 		if (horaInicio.compareTo(item.getHoraInicio()) != 0)
 			return false;
 		
 		if (horaFin.compareTo(item.getHoraFin()) != 0)
+			return false;
+		
+		if (duracion.compareTo(item.getDuracion()) != 0)
 			return false;
 		
 		return true;

@@ -180,4 +180,22 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		
 		return respuesta;
 	}
+
+	public HashMap<String, String> getActiveMap(Long pelicula) {
+		ArrayList<Pelicula> activas = busquedaPelicula.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(1);
+		
+		if (activas.isEmpty())
+			return null;
+		
+		for (Pelicula item : activas)
+		{
+			if (item.getId() == pelicula){
+				respuesta.put(item.getId().toString(), item.getNombre());
+				return respuesta;
+			}
+		}
+		
+		return null;
+	}
 }

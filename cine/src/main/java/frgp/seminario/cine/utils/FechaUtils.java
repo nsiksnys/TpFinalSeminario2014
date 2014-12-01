@@ -118,22 +118,4 @@ public class FechaUtils {
 		
 		return new GregorianCalendar(anio,mes,dia).getTime();
 	}
-	
-	/**
-	 * Devuelve la diferencia entre dos objetos Time
-	 * @param timeMayor objeto time mayor
-	 * @param timeMenor objeto time menor
-	 * @return un objeto time con la diferencia entre timeUno y timeDos
-	 */
-	public Time getDiferenciaTime(Time timeMayor, Time timeMenor)
-	{
-		long c;
-		if (timeMayor.compareTo(timeMenor) > 0)
-			c = timeMayor.getTime() - timeMenor.getTime();
-		
-		else //si se ingresaron los Time en el orden incorrecto
-			c = timeMenor.getTime() - timeMayor.getTime();
-		
-		return new Time(c);
-	}
 }

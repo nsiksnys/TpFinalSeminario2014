@@ -2,6 +2,7 @@ package frgp.seminario.cine.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -129,5 +131,12 @@ public class CarteleraController {
 			MessageHelper.addSuccessAttribute(ra, "La pelicula se actualizo correctamente");
 		}
 		return "redirect:/cartelera/lista";
+	}
+	
+	@RequestMapping(value = "/getpeliculas", method = RequestMethod.GET)
+	public @ResponseBody HashMap<String, String> getFuncionesDisponibles(Principal principal)
+	{
+		LOG.info("/cartelera/getpeliculas: pedidas peliculas en cartelera");
+		return logicaNegocio.getPeliculasCarteleraMap();
 	}
 }

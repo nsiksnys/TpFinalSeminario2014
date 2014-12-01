@@ -84,7 +84,10 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	 **/
 	@Override
 	public boolean modificar(Funcion registro) {
-		if (!verificar(registro))
+		if (!(registro instanceof frgp.seminario.cine.model.Funcion))
+			return false;
+		
+		if (registro.getId() == null)
 			return false;
 		
 		return funcionRepository.merge(registro);
@@ -162,7 +165,7 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	
 	/**
 	 * Busca los horarios disponibles segun la duracion de la pelicula
-	 * @param duracion duracion de la pelicula, en HH:MM:SS
+	 * @param pelicula id de la pelicula por la que se busca
 	 * @param idComplejo id del complejo en el que se busca
 	 * @return un HashMap con la forma "Horario.id, Horario.horaInicio - Horario.horaFin"
 	 */
@@ -181,7 +184,7 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 		
 		//cargo los horarios restantes en el hashmap
 		for (Horario item : horariosSugeridos)
-			respuesta.put(item.getId().toString(), fechaUtils.getFormatoHoraMinuto(item.getHoraInicio()) + " - " + fechaUtils.getFormatoHoraMinuto(item.getHoraFin()));
+			respuesta.put(item.getId().toString(), item.getHoraInicio() + " - " + item.getHoraFin()+ " (" + item.getDuracion() + " )");
 		
 		if (respuesta.isEmpty())
 			return null;
@@ -227,6 +230,7 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 		formulario.setNombreSala(Integer.toString(registro.getSala().getNumeroSala()));
 		formulario.setsalas(registro.getSala().getId());
 		formulario.setPeliculas(registro.getPelicula().getId());
+		formulario.setNombrePelicula(registro.getPelicula().getNombre());
 		formulario.setHorarios(registro.getHorario().getId());
 		
 		return formulario;

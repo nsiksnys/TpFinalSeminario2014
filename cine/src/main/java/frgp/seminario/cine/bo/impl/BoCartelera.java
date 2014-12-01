@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -165,5 +166,22 @@ public class BoCartelera implements BusinessObject<Cartelera, CarteleraForm> {
 		formulario.setFin(utils.getFormatoDiaMesAnio(registro.getFechaFin()));
 		
 		return formulario;
+	}
+
+	/**
+	 * Obtiene un hashmap con las peliculas que estan en cartelera
+	 * @return un hashmap con los registros
+	 */
+	public HashMap<String, String> getPeliculasCarteleraMap() {
+		ArrayList<Cartelera> activas= busquedaCartelera.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(activas.size());
+		
+		if (activas.isEmpty())
+			return null;
+		
+		for (Cartelera item : activas)
+			respuesta.put(item.getPelicula().getId().toString(), item.getPelicula().getNombre());
+		
+		return respuesta;
 	}
 }

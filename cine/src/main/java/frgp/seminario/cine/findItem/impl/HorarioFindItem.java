@@ -81,9 +81,13 @@ public class HorarioFindItem {
 		ArrayList<Horario> todos = (ArrayList<Horario>) dataAccess.getAll(Horario.class);
 		ArrayList<Horario> respuesta = new ArrayList<Horario>();
 		
+		//System.out.println("Duracion pelicula: " + periodo + "(" + periodo.getTime() + ")");
+		
 		for (Horario item : todos)
 		{//si la duracion de la funcion es igual o mayor al parametro
-			if (utils.getDiferenciaTime(item.getHoraFin(), item.getHoraInicio()).compareTo(periodo) >= 0)
+				//System.out.println(item.getId() + ") " + item.getHoraFin() + " - " + item.getHoraInicio() + " = " + item.getDuracion());
+				
+			if (item.getDuracion().compareTo(periodo) >= 0)
 				respuesta.add(item);
 		}
 		return respuesta;

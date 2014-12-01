@@ -140,9 +140,10 @@ public class FuncionController {
 	{
 		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");
 		Funcion item = logicaNegocio.formToEntity(formulario);
+		item.setId(formulario.getId());
 		
 		if (!logicaNegocio.modificar(item)){//si no se guarda
-			mav.setViewName("redirect:/funcion/alta");
+			mav.setViewName("redirect:/funcion/modificar?id=" + formulario.getId());
 			//mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
 			LOG.error("/funcion/modificar: Por favor revise el formulario " + item.getId());
 		}
@@ -166,7 +167,7 @@ public class FuncionController {
 	public @ResponseBody HashMap<String, String> getFuncionesDisponibles(@RequestParam Long pelicula , @RequestParam Long complejo, Principal principal)
 	{
 		LOG.info("/funcion/getfunciones: pedidos funciones para pelicula=" + pelicula + ", complejo=" + complejo);
-		return logicaNegocio.getFuncionesDisponibles(pelicula, complejo);
+		return logicaNegocio.getHorariosDisponiblesByComplejo(pelicula, complejo);
 	}
 /*
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
