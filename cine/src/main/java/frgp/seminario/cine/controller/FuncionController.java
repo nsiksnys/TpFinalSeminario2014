@@ -167,28 +167,6 @@ public class FuncionController {
 	public @ResponseBody HashMap<String, String> getFuncionesDisponibles(@RequestParam Long pelicula , @RequestParam Long complejo, Principal principal)
 	{
 		LOG.info("/funcion/getfunciones: pedidos funciones para pelicula=" + pelicula + ", complejo=" + complejo);
-		return logicaNegocio.getHorariosDisponiblesByComplejo(pelicula, complejo);
+		return logicaNegocio.getFuncionesDisponibles(pelicula, complejo);
 	}
-/*
-	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public ModelAndView modificar(@ModelAttribute FuncionForm formulario, Principal principal) 
-	{
-		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");
-		//ModelAndView mav =new ModelAndView();
-		Funcion registro = logicaNegocio.formToEntity(formulario);
-		registro.setId(formulario.getId());
-		
-		if (!logicaNegocio.modificar(registro)){//si no se guarda
-			mav.setViewName("redirect:/funcion/modificar?id="+formulario.getId());
-			mav.getModelMap().addAttribute("error", "Por favor revise el formulario");//agrego el mensaje de error
-			LOG.error("Por favor revise el formulario");
-		}
-		else
-		{
-			LOG.info("/funcion/modificar: actualizado registro con id " + registro.getId());
-			//mav.getModelMap().addAttribute("ok", "La funcion se actualizo correctamente");
-		}
-		return mav;
-	}
-*/
 }

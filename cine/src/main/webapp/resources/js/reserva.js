@@ -15,10 +15,13 @@ $(document).ready(function() {
 	$(":checkbox:checked").each(checked);
     });
     
+    
+    getComplejos();
+    getPeliculas();
     getFuncion($( "#complejo option:selected" ).val(), $( "#pelicula option:selected" ).val());
     validaciones.validarTodosMenosExcluidos();
-
-    //cuando cambia un input (incluye selects)
+            
+   //cuando cambia un input (incluye selects)
     $( ":input" ).change(function (){
 	var element = this;//guardo el elemento en cuestion
 	        
@@ -50,12 +53,71 @@ $(document).ready(function() {
     	}
      };
     
+     function getComplejos(){
+	var host =document.location.host;
+	var url = "http://" + host + "/" + getContext() + "/complejo/getcomplejos";
+	$.getJSON(url, function(json) {
+	    if (typeof json === "undefined" || json=="" || json.length == 0)
+	    {
+		$("#complejo").empty();
+		$("#complejo").append(parseOpcion('0', 'N/A'));
+	        return;
+	    }
+	    	
+	    $("#complejo").empty();
+	            
+	    $.each(json, function (key, value) {
+	        $("#complejo").append(parseOpcion(key, value));
+	    });
+	    validaciones.hideErrorMessage('complejo');
+	})
+	.success (function() {
+	    $("#complejo").change();
+	})
+	.fail (function() {
+	   $("#complejo").empty();
+	   $("#complejo").append(parseOpcion('0', 'N/A'));
+	   validaciones.showError('complejo', 'select');
+	});
+     };
+      		
+   
+     function getPeliculas(){
+	var host =document.location.host;
+	var url = "http://" + host + "/" + getContext() + "/cartelera/getpeliculas";
+	$.getJSON(url, function(json) {
+	    if (typeof json === "undefined" || json=="" || json.length == 0)
+	    {
+		$("#pelicula").empty();
+		$("#pelicula").append(parseOpcion('0', 'N/A'));
+	      	return;
+	    }
+	    	
+	    $("#pelicula").empty();
+	            
+	    $.each(json, function (key, value) {
+	    	$("#pelicula").append(parseOpcion(key, value));
+	    });
+	    validaciones.hideErrorMessage('pelicula');
+	})
+	.success (function() {
+	    $("#pelicula").change();
+	})
+	.fail (function() {
+	    $("#pelicula").empty();
+	    $("#pelicula").append(parseOpcion('0', 'N/A'));
+	    validaciones.showError('pelicula', 'select');
+        });
+    }; 
+    
     function getFuncion(complejo, pelicula){
     	var host =document.location.host;
         var url = "http://" + host + "/" + getContext() + "/funcion/getfunciones?complejo=" + complejo + "&pelicula=" + pelicula;
         $.getJSON(url, function(json) {
             if (typeof json === "undefined" || json=="" || json.length == 0)
             {
+        	$("#funcion").empty();
+    		$("#funcion").append(parseOpcion('0', 'N/A'));
         	return;
             }
     	
@@ -71,39 +133,7 @@ $(document).ready(function() {
     		validaciones.showError('funcion', 'select');
         });
     };
-    
-    getFuncion($( "#complejo option:selected" ).val(), $( "#pelicula option:selected" ).val());
     		
-    		
-    $("#pelicula").change(function () {
-    	var pelicula = $( "#pelicula option:selected" ).val();
-    	var complejo = $( "#complejo option:selected" ).val();
-    	
-    	
-    	if (complejo != "" && !(typeof complejo === "undefined") && pelicula !="" && !(typeof pelicula === "undefined")){
-    		getFuncion(complejo, pelicula);
-    	}
-     });
-    
-    function getFuncion(complejo, pelicula){
-    	var host =document.location.host;
-        var url = "http://" + host + "/" + getContext() + "/funcion/getfunciones?complejo=" + complejo + "&pelicula=" + pelicula;
-        return $.getJSON(url, function(json) {
-            if (typeof json === "undefined" || json=="" || json.length == 0)
-            {
-        	return;
-            }
-    	
-            $("#funcion").empty();
-            
-            $.each(json, function (key, value) {
-//            	alert(key);
-//            	alert(value);
-            	$("#funcion").append(parseOpcion(key, value));
-            });
-        });
-    };
-    
     function checked() {
         if ($(this).attr('checked') == true) {
     	$(this).parent().attr('style', 'background:#ff0000;');

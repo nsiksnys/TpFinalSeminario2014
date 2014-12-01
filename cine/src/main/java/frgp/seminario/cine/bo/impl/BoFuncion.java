@@ -182,6 +182,8 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 				horariosSugeridos.remove(item.getHorario());
 		}
 		
+		//TODO: Queda verificar que no se asigne la misma función para varias películas.
+		
 		//cargo los horarios restantes en el hashmap
 		for (Horario item : horariosSugeridos)
 			respuesta.put(item.getId().toString(), item.getHoraInicio() + " - " + item.getHoraFin()+ " (" + item.getDuracion() + " )");
@@ -236,8 +238,13 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 		return formulario;
 	}
 
-	public HashMap<String, String> getFuncionesDisponibles(Long pelicula,
-			Long complejo) {
+	/**
+	 * Busca las funciones existentes para la pelicula y complejo indicados
+	 * @param pelicula id de la pelicula
+	 * @param complejo id del complejo
+	 * @return un HashMap con la forma "Horario.id, Horario.horaInicio"
+	 */
+	public HashMap<String, String> getFuncionesDisponibles(Long pelicula, Long complejo) {
 		ArrayList<Funcion> funcionesActivasComplejo = busquedaFuncion.findActiveByComplejo(complejo);
 		HashMap<String, String> respuesta = new HashMap<String, String>();
 		
@@ -245,7 +252,7 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 		for (Funcion item : funcionesActivasComplejo)
 		{
 			if (item.getPelicula().getId() == pelicula)
-				respuesta.put(item.getId().toString(), fechaUtils.getFormatoHoraMinuto(item.getHorario().getHoraInicio()) + " - " + fechaUtils.getFormatoHoraMinuto(item.getHorario().getHoraFin()));
+				respuesta.put(item.getId().toString(), item.getHorario().getHoraInicio().toString());
 		}
 		
 		if (respuesta.isEmpty())
@@ -253,5 +260,4 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 		
 		return respuesta;
 	}
-
 }
