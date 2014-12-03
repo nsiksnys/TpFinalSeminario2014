@@ -2,8 +2,11 @@ package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
@@ -25,6 +28,9 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 	
 	@Autowired
 	FechaUtils utils;
+	
+	@Inject
+	private PasswordEncoder passwordEncoder;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -68,6 +74,40 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 			return true;
 		
 		registro.setPassword(registroActual.getPassword());//la password no cambia aca
+		
+		return repositorio.merge(registro);
+	}
+	
+	/**
+	 * Usado para cambiar los datos del cliente logueado (/usuario/actual)
+	 * @param formulario
+	 * @return el resultado del merge del registro
+	 */
+	public boolean modificar(SignupForm formulario) {
+		Cliente registro = this.get(formulario.getEmail());
+				
+		//guardo los cambios posibles
+		if (formulario.getNombre() != null && formulario.getNombre() != "")
+			registro.setNombre(formulario.getNombre());
+		
+		if (formulario.getApellido() != null && formulario.getApellido() != "")
+			registro.setApellido(formulario.getApellido());
+		
+		if (formulario.getFechaNacimiento() != null)
+			registro.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
+		
+		if (formulario.getPreguntaSeguridad() != "")
+			registro.setPreguntaSeguridad(formulario.getPreguntaSeguridad());
+		
+		if (formulario.getRespuestaSeguridad() !="")
+			registro.setRespuestaSeguridad(passwordEncoder.encode(formulario.getRespuestaSeguridad()));
+		
+		if (formulario.getDireccion() != null && formulario.getDireccion() != "")
+			registro.setDireccion(formulario.getDireccion());
+		
+		if (formulario.getGenero() != null && formulario.getGenero() != "")
+			registro.setGeneroPreferido(formulario.getGenero());
+		
 		
 		return repositorio.merge(registro);
 	}

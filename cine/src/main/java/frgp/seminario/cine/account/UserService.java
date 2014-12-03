@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.*;
 
 import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.repository.impl.ClienteRepository;
+import frgp.seminario.cine.utils.FechaUtils;
 
 public class UserService implements UserDetailsService {
 	
@@ -22,11 +23,14 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
+	@Autowired
+	private FechaUtils fecha;
+	
 	@PostConstruct	
 	protected void initialize() {//Usuarios de prueba
-		accountRepository.save(new Account(Long.parseLong("1337"), "Danny", "Pink", "admin@frgp.utn.edu.ar", "test", "A"));
-		accountRepository.save(new Account(Long.parseLong("1234"), "Donna", "Noble", "gerente@frgp.utn.edu.ar", "test", "G"));
-		clienteRepository.save(new Cliente(Long.parseLong("7893"), "Clara", "Oswald", "cliente@frgp.utn.edu.ar", "test"));
+		accountRepository.save(new Account(Long.parseLong("1337"), "Danny", "Pink", "M", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "animal", "blue whale", "admin@frgp.utn.edu.ar", "test", "A"));
+		accountRepository.save(new Account(Long.parseLong("1234"), "Donna", "Noble", "F", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "animal", "blue whale","gerente@frgp.utn.edu.ar", "test", "G"));
+		clienteRepository.save(new Cliente(Long.parseLong("7893"), "Clara", "Oswald", "F", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "animal", "blue whale" , "cliente@frgp.utn.edu.ar", "test", "32 Wallaby St", "Accion"));
 	}
 	
 	@Override

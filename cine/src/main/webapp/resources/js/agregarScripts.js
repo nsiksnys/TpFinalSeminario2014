@@ -4,7 +4,8 @@ $( document ).ready(function() {
     
     if ((pathname.search("alta") != -1) || 
 	(pathname.search("modificar") != -1) ||
-	(pathname.search("singup") != -1))
+	(pathname.search("singup") != -1) || 
+	(pathname.search("usuario/actual") != -1))
     {
 	agregarScript('jquery.meiomask');
 	agregarScript('MeioMaskStart');
@@ -13,7 +14,8 @@ $( document ).ready(function() {
     }
   
     if((pathname.search("usuario/alta") != -1) ||
-	(pathname.search("usuario/modificar") != -1))
+	(pathname.search("usuario/modificar") != -1) ||
+	(pathname.search("usuario/actual") != -1))
     {
 	agregarScript('Usuario');
     }

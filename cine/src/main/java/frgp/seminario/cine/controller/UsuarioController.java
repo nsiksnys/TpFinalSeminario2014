@@ -53,6 +53,8 @@ public class UsuarioController {
 		}
 		mav.getModelMap().addAttribute("command", new SignupForm());
 		mav.getModelMap().addAttribute("registro", form);
+		mav.getModelMap().addAttribute("sexos", boAccount.getSexos());
+
 		if (form.getRole().equals("C"))//si el usuario es un cliente
 		{
 			cliente = boAccount.getCliente(principal.getName());
@@ -76,6 +78,8 @@ public class UsuarioController {
 	public ModelAndView alta(Principal principal) {
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("signupForm", new SignupForm());
+		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
+		mav.getModelMap().addAttribute("sexos", boAccount.getSexos());
 		return mav;
 	}
 	
@@ -160,30 +164,40 @@ public class UsuarioController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public String modificar(@ModelAttribute SignupForm formulario, RedirectAttributes ra) 
 	{
-		Boolean status;
-		
 		if (formulario.getRole().equals("C"))
 		{
-			status = boAccount.modificar(boAccount.formToClienteEntity(formulario));
-		}
-		else
-		{
-			status = boAccount.modificar(boAccount.formToEntity(formulario));
+			LOG.error("/usuario/alta: No esta permitido cambiar el rol a Cliente.");
+			MessageHelper.addErrorAttribute(ra, "No esta permitido cambiar el rol a Cliente.");
+			return "redirect:/usuario/modificar?id=" + formulario.getEmail();
 		}
 		
-		Account registro = boAccount.formToEntityModificar(formulario);
-		
-		if (!status){//si no se guarda
+		if (!boAccount.modificar(boAccount.formToEntity(formulario))){//si no se guarda
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
 			return "redirect:/usuario/modificar?id=" + formulario.getEmail();
 		}
 		else
 		{
-			LOG.info("/usuario/modificar: actualizado registro para " + registro.getEmail());
+			LOG.info("/usuario/modificar: actualizado registro para " + formulario.getEmail());
 			MessageHelper.addSuccessAttribute(ra, "El usuario se guardo correctamente");
 		}
 		return "redirect:/usuario/lista";
 	}
 
+	@RequestMapping(value = "/actual", method = RequestMethod.POST)
+	public String current(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
+	{
+		formulario.setEmail(principal.getName());
+				
+		if (!boAccount.modificar(formulario)){//si no se guarda
+			LOG.error("/usuario/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+		}
+		else
+		{
+			LOG.info("/usuario/modificar: actualizado registro para " + formulario.getEmail());
+			MessageHelper.addSuccessAttribute(ra, "El registro se actualizo correctamente");
+		}
+		return "redirect:/usuario/actual";
+	}
 }

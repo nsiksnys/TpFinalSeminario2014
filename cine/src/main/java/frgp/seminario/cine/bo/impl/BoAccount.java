@@ -3,9 +3,11 @@ package frgp.seminario.cine.bo.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.account.Account;
@@ -27,8 +29,9 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	@Autowired
 	FechaUtils utils;
 	
-	private HashMap<String, String> roles;
-	
+	@Inject
+	private PasswordEncoder passwordEncoder;
+		
 	
 	@Override
 	public Account get(Object email) {
@@ -64,39 +67,50 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		if (registroActual.equals(registro))
 			return true;
 		
-		//compraro uno a uno y guardo los cambios (si los hay)
-		if (registroActual.getDni() != registro.getDni())
-			registroActual.setDni(registro.getDni());
-		
-		if (registroActual.getNombre().compareTo(registro.getNombre()) != 0)
-			registroActual.setNombre(registro.getNombre());
-		
-		if (registroActual.getApellido().compareTo(registro.getApellido()) != 0)
-			registroActual.setApellido(registro.getApellido());
-		
-		if (registroActual.getSexo().compareTo(registro.getSexo()) != 0)
-			registroActual.setSexo(registro.getSexo());
-		
-		if (registroActual.getFechaNacimiento().compareTo(registro.getFechaNacimiento()) != 0)
-			registroActual.setFechaNacimiento(registro.getFechaNacimiento());
-		
-		if (registroActual.getPreguntaSeguridad() != null && registro.getPreguntaSeguridad() != null &&
-				registroActual.getPreguntaSeguridad().compareTo(registro.getPreguntaSeguridad()) != 0)
-			registroActual.setPreguntaSeguridad(registro.getPassword());
-		
-		if (registroActual.getRespuestaSeguridad() != null && registro.getRespuestaSeguridad() != null &&
-				registroActual.getRespuestaSeguridad().compareTo(registro.getRespuestaSeguridad())!=0)
-			registroActual.setRespuestaSeguridad(registro.getRespuestaSeguridad());
-		
-		if (registroActual.getEmail().compareTo(registro.getEmail()) != 0)
-			registroActual.setEmail(registro.getEmail());
-		
-		if (registroActual.getRole().compareTo(registro.getRole()) != 0)
+		if (getRoles().containsKey(registro.getRole())){
 			registroActual.setRole(registro.getRole());
-				
+		}
+		
+		//si se cambia a cliente, devuelve falso porque no se puede (genera un RollbackException)
+		if (registro.getRole().equals("C")){
+				return false;
+		}
+		
 		return accounts.merge(registroActual);
 	}
 	
+	/**
+	 * Usado para cambiar los datos del usuario logueado (/usuario/actual)
+	 * @param formulario
+	 * @return el resultado del merge del registro
+	 */
+	public boolean modificar(SignupForm formulario) {
+		Account registro = this.get(formulario.getEmail());
+		
+		//si el mail corresponde a un cliente, se pasa a la funcion propia de esa clase
+		if (registro.getRole().equals("C"))
+			return clientes.modificar(formulario);
+		
+		//guardo los cambios posibles
+		if (formulario.getNombre() != "")
+			registro.setNombre(formulario.getNombre());
+		
+		if (formulario.getNombre() != "")
+			registro.setApellido(formulario.getApellido());
+		
+		if (formulario.getFechaNacimiento() != null)
+			registro.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
+		
+		if (formulario.getPreguntaSeguridad() != "")
+			registro.setPreguntaSeguridad(formulario.getPreguntaSeguridad());
+		
+		if (formulario.getRespuestaSeguridad() != "")
+			registro.setRespuestaSeguridad(passwordEncoder.encode(formulario.getRespuestaSeguridad()));
+
+		return accounts.merge(registro);
+	}
+
+	@Deprecated
 	public boolean modificar(Cliente registro){
 		if (!(registro instanceof frgp.seminario.cine.model.Cliente))
 			return false;
@@ -106,7 +120,7 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 
 	@Override
 	public boolean desactivar(Account registro) {
-		//TODO: verificaciones propias de esta clase
+		//Si el registro corresponde a un cliente, se pasa a la funcion de BoCliente
 		if (registro.getRole().equals("C"))
 			return clientes.desactivar(clientes.get(registro.getEmail()));
 		
@@ -205,7 +219,7 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		formulario.setNombre(registro.getNombre());
 		formulario.setApellido(registro.getApellido());
 		formulario.setEmail(registro.getEmail());
-		formulario.setRole(registro.getRole());
+		formulario.setRole(getRoles().get(registro.getRole()));
 		
 		//parametros nulleables
 		if (registro.getSexo() != null)
@@ -224,10 +238,18 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	}
 	
 	public HashMap<String, String> getRoles(){
-		roles = new HashMap<String, String>();
-		roles.put("A", "Administrador");
-		roles.put("C", "Cliente");
-		roles.put("G", "Gerente");
-		return roles;
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("A", "Administrador");
+		map.put("C", "Cliente");
+		map.put("G", "Gerente");
+		return map;
+	}
+	
+	public HashMap<String, String> getSexos(){
+		HashMap<String, String> map = new HashMap<String, String>(2);
+		map.put("F", "Femenino");
+		map.put("M", "Masculino");
+		
+		return map;
 	}
 }

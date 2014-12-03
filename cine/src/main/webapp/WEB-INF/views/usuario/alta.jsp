@@ -33,8 +33,9 @@
 		            <label for="sexo">Sexo</label>
 		            <div class="form-group">
 		                <select class="form-control" id="sexo" name="sexo">
-							<option value="F">Femenino</option>
-							<option value="M">Masculino</option>
+							<c:forEach items="${sexos}" var="item">
+								<option value="${item.key}"> ${item.value}</option>
+							</c:forEach>
 						</select>
 		            </div>
 		        </div>
@@ -63,9 +64,9 @@
 		            <label for="role">Rol</label>
 		            <div class="form-group">
 		                <select class="form-control" id="role" name="role">
-							<option value="C">Cliente</option>
-							<option value="A">Administrador</option>
-							<option value="G">Gerente</option>
+							<c:forEach items="${roles}" var="item">
+								<option value="${item.key}"> ${item.value}</option>
+							</c:forEach>
 						</select>
 		            </div>
 		        </div>

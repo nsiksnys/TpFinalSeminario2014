@@ -10,6 +10,7 @@ $( document ).ready(function() {
     validacion.agregarExcluido('respuestaSeguridad');
     
     validacion.validarTodosMenosExcluidos();
+    selectRoles($("#role"));
     
   //cuando cambia un input
     $( ":input" ).change(function() {
@@ -17,12 +18,7 @@ $( document ).ready(function() {
 	
 	if (this.id == 'role')
 	{
-	    if ($(this).val() == 'C'){
-		mostrarOpcionCliente();
-	    }
-	    else{
-		ocultarOpcionCliente();
-	    }
+	    selectRoles(this);
 	}
 	else if (this.id == 'dni')
 	{
@@ -37,9 +33,28 @@ $( document ).ready(function() {
     });
     
     $("[type='submit']" ).click(function(event) {
+	if (getAccion() == "actual" && $("[type='submit']" ).text() == "Modificar")
+	{
+	    console.log("habilitando inputs");
+	    event.preventDefault();
+	    $( ":input" ).each(function() {
+		    $(this).removeAttr("readonly");
+	    });
+	    
+	    $("[type='submit']" ).text("Guardar");
+	}
+	
 	validacion.validarTodosSubmit(event);
     });
       
+    function selectRoles(element){
+	if ($(element).val() == 'C'){
+		mostrarOpcionCliente();
+	    }
+	    else{
+		ocultarOpcionCliente();
+	    }
+    }
     
     function mostrarOpcionCliente(){
 	$("#direccion").parent().parent().show();//muestro
