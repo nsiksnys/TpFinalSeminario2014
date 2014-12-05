@@ -120,6 +120,9 @@ function validateHelper(){
 		case 'url':
 		    	isValido = this.isUrl(value);
 		    	break;
+		case 'float':
+				isValido = this.isFloat(value) && value>0;
+				break;
 		default:		
 		    	isValido = (!(typeof value === "undefined")) && value != '' && value.length > 0;
 		    	break;
@@ -163,6 +166,13 @@ function validateHelper(){
 	     return !isNaN(valor.replace(",","."));
 	};
 	
+	this.isFloat = function (numero) {
+	    var regexp = /^(?:[1-9]\d*|0)?(?:\.\d+)?$/gm;
+	    numero = numero.replace("/\,/g","");
+	    return regexp.test(numero);
+	    };
+	
+		
 	//verifica que siga la forma DD/MMM/YYYY, sin compararla contra la fecha del dia (esta funcion tambien esta en la clase ValidateHelperFecha)
 	this.isDate = function (value){
 	    var regrex = /(\d+)(-|\/)(\d+)(?:-|\/)(?:(\d+)\s+(\d+):(\d+)(?::(\d+))?(?:\.(\d+))?)?/;
@@ -211,6 +221,9 @@ function validateHelper(){
 	    	case 'date':
 	    	    mensaje= 'La fecha ingresada no sigue el formato dia/mes/año';
 	    	    break;
+	    	case 'float':
+	    		mensaje= 'El valor ingresado no es float';
+	    		break;
 		default:
 		    mensaje= 'Por favor revise el campo';
 		    break;

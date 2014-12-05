@@ -30,6 +30,21 @@ public class PrecioFindItem {
 		return (long) 0;
 	}
 
+	/**
+	 * Busca un registro activo con las mismas caracteristicas en la base de datos
+	 * @param item Pelicula que buscamos en la base
+	 * @return id del registro, 0 si no se encontro ninguno
+	 **/
+	public Long getActiveIdByObject(Precio item){
+		ArrayList<Precio> todos = getAllEnabled();
+		
+		for (Precio registro : todos) {
+			if (registro.equals(item))
+				return registro.getId();
+		}
+		return (long) 0;
+	}
+	
 	
 	@SuppressWarnings("unchecked")
 	public boolean findByIdBoolean(int id){
@@ -41,6 +56,8 @@ public class PrecioFindItem {
 		}
 		return false;
 	}
+	
+	
 
 	@SuppressWarnings("unchecked")
 	//@Override
@@ -61,5 +78,13 @@ public class PrecioFindItem {
 	 **/
 	public ArrayList<Precio> getAllEnabled(){
 		return getAllByFlag(true);
+	}
+	
+	/**
+	 * Devuelve todos las Precio desactivadas
+	 * @return un ArrayList con los registros
+	 **/
+	public ArrayList<Precio> getAllDisabled(){
+		return getAllByFlag(false);
 	}
 }

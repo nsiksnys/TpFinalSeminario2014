@@ -50,7 +50,7 @@ public class Precio {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public float getMenor() {
 		return menor;
 	}

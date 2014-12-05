@@ -140,4 +140,19 @@ public class ReservaFindItem {
 		return false;
 	}
 
+	/**
+	 * Busca las reservas activas por promocion
+	 * @param idPromocion id de la promocion que se busca
+	 * @return true si la busqueda encontro registros, false si no existen
+	 */
+	public boolean findActiveByPromocionBoolean(Long idPromocion) {
+		ArrayList<Reserva> todos = getAllEnabled();
+		
+		for (Reserva item : todos){
+			if (item.getPromo().getId() == idPromocion)
+				return true;
+		}
+		return false;
+	}
+
 }
