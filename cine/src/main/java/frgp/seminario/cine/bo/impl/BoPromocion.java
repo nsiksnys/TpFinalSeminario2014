@@ -1,6 +1,8 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,7 +64,10 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 	 **/
 	@Override
 	public boolean modificar(Promocion registro) {
-		
+		//esta sola linea estaba antes de la modificacion 
+		//return repositorio.merge(registro);
+		if(!(registro instanceof frgp.seminario.cine.model.Promocion))
+		return false;
 		return repositorio.merge(registro);
 	}
 
@@ -73,10 +78,14 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 	 **/
 	@Override
 	public boolean desactivar(Promocion registro) {
-		
+		//estas 3 lineas estaban antes d ela modificacion 
+//		if (registro.isActivo())
+//			registro.setActivo(false);
+//		return repositorio.merge(registro);
+		if (busquedaReserva.findActiveByPromocionBoolean(registro.getId()))
+			return false;
 		if (registro.isActivo())
 			registro.setActivo(false);
-		
 		return repositorio.merge(registro);
 	}
 	
@@ -96,11 +105,23 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 	 ** Recupera todos los registros de la clase Promocion
 	 ** @return un ArrayList con todos los registros
 	 **/
-	@Override	
+/* esta funcion estaba antes d ela modificacion
+
+   @Override	
 	public ArrayList<Promocion> listarTodos() {
 		return (ArrayList<Promocion>) repositorio.getAll(Promocion.class);
-	}
+	}*/
 
+	/**
+	 ** Recupera todos los registros de la clase Promocion
+	 ** @return un ArrayList con todos los registros
+	 **/
+	@Override
+	public List<Promocion> listarTodos() {
+		return repositorio.getAll(Promocion.class);
+	}
+	
+	
 	/**
 	 * Verifica que el registro cumpla con las caracteristicas necesarias
 	 * @return true si el registro esta en condiciones de ser guardardo, false si no lo esta
@@ -109,10 +130,12 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 	public boolean verificar(Promocion registro) {
 		if (!(registro instanceof frgp.seminario.cine.model.Promocion))
 			return false;
-		
-		if (busquedaPromocion.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		//esta parte estaba antres de la modificacion
+//		if (busquedaPromocion.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+//			return false;
+		if (busquedaPromocion.getActiveIdByObject(registro) !=0)
 			return false;
-		
+		//esta linea si estaba no fue modificada
 		return true;
 	}
 	
@@ -123,6 +146,46 @@ public class BoPromocion implements BusinessObject<Promocion, PromocionForm>{
 	 */
 	@Override
 	public Promocion formToEntity(PromocionForm formulario) {
-		return new Promocion(formulario.getNombre(), formulario.getDescripcion(), (formulario.getFechainicio()), formulario.getFechafin());
+		return new Promocion(formulario.getNombre(), formulario.getDescripcion(), 
+				utils.getFechaFormatoDiaMesAnio(formulario.getFechainicio()),
+				utils.getFechaFormatoDiaMesAnio(formulario.getFechafin()));
+				//(formulario.getFechainicio()), formulario.getFechafin());
 	}
+	
+	public PromocionForm entityToForm(Promocion registro)
+	{
+		PromocionForm formulario = new PromocionForm();
+		formulario.setId(registro.getId().toString());
+		formulario.setNombre(registro.getNombre());
+		formulario.setDescripcion(registro.getDescripcion());
+		formulario.setFechainicio(utils.getFormatoDiaMesAnio(registro.getFechaInicio()));
+		formulario.setFechafin(utils.getFormatoDiaMesAnio(registro.getFechaFin()));
+		return formulario;
+	}
+
+	
+	public ArrayList<PromocionForm> listarTodosActivosForm() {
+		ArrayList<PromocionForm> respuesta = new ArrayList<PromocionForm>();
+		
+		for(Promocion registro : repositorio.getAll(Promocion.class))
+			if(registro.isActivo())
+				respuesta.add(entityToForm(registro));
+		
+		return respuesta;
+	}
+	
+	
+	public HashMap<String, String> getAllActiveMap() {
+		ArrayList<Promocion> activas = busquedaPromocion.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(activas.size());
+		
+		if (activas.isEmpty())
+			return null;
+		
+		for (Promocion item : activas)
+			respuesta.put(item.getId().toString(), item.getNombre());
+		
+		return respuesta;
+	}
+
 }

@@ -1,23 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <h3>Modificar una promocion</h3>
 <br>
-<!-- Si hay un error, avisa -->
-<c:if test="${not empty error}">
-	<div class="alert alert-dismissable alert-warning">
-	  <button type="button" class="close" data-dismiss="alert">×</button>
-	  <p>${error}</p>
-	</div>
-</c:if>
-
-<!-- Si se guardo bien, avisa -->
-<c:if test="${not empty ok}">
-	<div class="alert alert-dismissable alert-warning">
-	  <button type="button" class="close" data-dismiss="alert">×</button>
-	  <p>${ok}</p>
-	</div>
-</c:if>
 
 <div class="row">
 	<div class="col-6">
@@ -29,23 +15,23 @@
 				</div>
 				<div class="form-group">
 					<label for="nombre">Nombre</label>
-					<input class="form-control" id="nombre" name="nombre" type="text" value="${registro.nombre}"/>
+					<input class="form-control" id="nombre" name="nombre" type="text" value="${registro.nombre}" required/>
+					<span id="nombre.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
 					<label for="descripcion">Descripcion</label>
-					<textarea class="form-control" id="descripcion" name="descripcion">${registro.descripcion}</textarea>
+					<textarea class="form-control" id="descripcion" name="descripcion" required>${registro.descripcion}</textarea>
+					<span id="descripcion.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
-					<label for="imagen">Imagen</label>
-					<input class="form-control" id="imagen" name="imagen"  type="file" value="${registro.imagen}"/>
+					<label for="inicio">Fecha Inicio</label>
+					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa"  value="${registro.fechaInicio}" alt="date" required/>
+					<span id="inicio.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
-					<label for="sinopsis">Fecha Inicio</label>
-					<input class="form-control" id="fechainicio" name="fechainicio" type="date" value="${registro.fechainicio}"/>
-				</div>
-				<div class="form-group">
-					<label for="fechafin">Fecha Fin</label>
-					<input class="form-control" id="fechafin" name="fechafin" type="date" value="${registro.fechafin}"/>
+					<label for="fin">Fecha Fin</label>
+					<input class="form-control" id="fin" name="fin" type="text" placeholder="dd/mm/aaaa" value="${registro.fechaFin}" alt="date" required/>
+					<span id="fin.errors" class="help-block"></span>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>

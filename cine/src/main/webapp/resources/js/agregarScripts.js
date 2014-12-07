@@ -4,8 +4,7 @@ $( document ).ready(function() {
     
     if ((pathname.search("alta") != -1) || 
 	(pathname.search("modificar") != -1) ||
-	(pathname.search("singup") != -1) || 
-	(pathname.search("usuario/actual") != -1))
+	(pathname.search("singup") != -1))
     {
 	agregarScript('jquery.meiomask');
 	agregarScript('MeioMaskStart');
@@ -13,9 +12,8 @@ $( document ).ready(function() {
 	agregarScript('validateHelperFecha');
     }
   
-    if((pathname.search("usuario/alta") != -1) ||
-	(pathname.search("usuario/modificar") != -1) ||
-	(pathname.search("usuario/actual") != -1))
+    if((pathname.search("usuario/alta") != -1) || pathname.search("usuario/modificar") != -1)
+//	(pathname.search("usuario/modificar") != -1))
     {
 	agregarScript('Usuario');
     }
@@ -44,6 +42,20 @@ $( document ).ready(function() {
     if (pathname.search("pelicula/alta") != -1 || pathname.search("pelicula/modificar") != -1)
     {
 	agregarScript('pelicula');
+    }
+    
+    if (pathname.search("promocion/alta") !=-1 || pathname.search("promocion/modificar") != -1)
+    {
+    agregarScript('promocion');
+    }
+    
+    if (pathname.search("precio/alta") !=-1)
+    {
+    agregarScript('precio');
+    }
+    if (pathname.search("complejo/alta") !=-1 || pathname.search("complejo/modificar") != -1)
+    {
+    agregarScript('complejo');
     }
 });
 

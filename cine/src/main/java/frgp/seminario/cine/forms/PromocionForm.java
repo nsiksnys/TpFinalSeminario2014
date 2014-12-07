@@ -1,21 +1,12 @@
 package frgp.seminario.cine.forms;
 
-import java.util.Date;
-
-import org.hibernate.validator.constraints.NotBlank;
-
 public class PromocionForm {
-	private static final String NOT_BLANK_MESSAGE = "El campo no puede estar vacio.";
 	
 	private String id;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String nombre;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String descripcion;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Date fechainicio;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private Date fechafin;
+	private String fechainicio;
+	private String fechafin;
 	
 	
 	public String getId() {
@@ -36,16 +27,16 @@ public class PromocionForm {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public Date getFechainicio() {
+	public String getFechainicio() {
 		return fechainicio;
 	}
-	public void setFechainicio(Date fechainicio) {
+	public void setFechainicio(String fechainicio) {
 		this.fechainicio = fechainicio;
 	}
-	public Date getFechafin() {
+	public String getFechafin() {
 		return fechafin;
 	}
-	public void setFechafin(Date fechafin) {
+	public void setFechafin(String fechafin) {
 		this.fechafin = fechafin;
 	}
 }

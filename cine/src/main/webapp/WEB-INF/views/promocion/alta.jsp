@@ -5,27 +5,27 @@
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form class="form" action="guardar" method="post">
+		<form class="form" action="alta" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="nombre">Nombre</label>
-					<input class="form-control" id="nombre" name="nombre" type="text" placeholder="nombre"/>
+					<input class="form-control" id="nombre" name="nombre" type="text" required />
+					<span id="nombre.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
 					<label for="descripcion">Descripcion</label>
-					<textarea name="descripcion" rows="5" cols="40"></textarea>
+					<textarea class="form-control" id="descripcion" name="descripcion" required></textarea>
+					<span id="descripcion.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
-					<label for="imagen">Imagen</label>
-					<input class="form-control" id="imagen" name="imagen" type="file"/>
+					<label for="inicio">Fecha Inicio</label>
+					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa" alt="date" required/>
+					<span id="inicio.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
-					<label for="fechainicio">Fecha Inicio</label>
-					<input class="form-control" id="fechainicio" name="fechainicio" type="date"/>
-				</div>
-				<div class="form-group">
-					<label for="fechafin">Fecha Fin</label>
-					<input class="form-control" id="fechafin" name="fechafin" type="date"/>
+					<label for="fin">Fecha Fin</label>
+					<input class="form-control" id="fin" name="fin" type="text" placeholder="dd/mm/aaaa" alt="date" required/>
+					<span id="fin.errors" class="help-block"></span>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
