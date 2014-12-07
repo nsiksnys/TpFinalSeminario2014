@@ -52,7 +52,7 @@
 		        </div>
 		        <div class="form-group">
 		            <label for="respuestaSeguridad">Respuesta a la pregunta de seguridad</label>
-		            <input name="respuestaSeguridad" class="form-control" id="respuestaSeguridad" placeholder="Escriba aqui la respuesta a la pregunta de seguridad" readonly/>
+		            <input name="respuestaSeguridad" class="form-control" id="respuestaSeguridad" placeholder="Escriba aqui la nueva respuesta a la pregunta de seguridad" readonly/>
 	                <span id="respuestaSeguridad.errors" class="help-block"></span>
 		        </div>
 		        <div class="form-group">

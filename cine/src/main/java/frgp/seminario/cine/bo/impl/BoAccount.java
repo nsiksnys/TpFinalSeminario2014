@@ -33,15 +33,54 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	private PasswordEncoder passwordEncoder;
 		
 	
+	/**
+	 * Recupera un registro Account activo de la base de datos
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
 	@Override
 	public Account get(Object email) {
 		return accounts.findByEmail((String) email);
 	}
 	
+	/**
+	 * Recupera un registro Cliente activo de la base de datos
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
 	public Cliente getCliente(Object email){
 		return clientes.get(email);
 	}
+	
+	/**
+	 * Recupera un registro Account de la base de datos, sin importar si esta activo o no
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
+	public Account getActiveOrInactive(Object email){
+		return accounts.getActiveOrInactive(email);
+	}
+	
+	public boolean getActiveBoolean(Object email)
+	{
+		//si encontro un registro 
+		if (this.get(email) != null){
+			return true;
+		}
+		
+		return false;
+	}
 
+	
+	public boolean getActiveOrInactiveBoolean(Object email)
+	{
+		//si encontro un registro 
+		if (this.getActiveOrInactive(email) != null){
+			return true;
+		}
+		
+		return false;
+	}
 	@Override
 	public boolean guardar(Account registro) {
 		try
@@ -251,5 +290,48 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		map.put("M", "Masculino");
 		
 		return map;
+	}
+
+/**
+ * Verifica que la respuesta de seguridad enviada coincida con la que esta en el registro de usuario
+ * @param email mail de la cuenta
+ * @param dni dni de la cuenta
+ * @param respuesta respuesta de seguridad ingresada en el formulario
+ * @return true si la respuesta coincide, false si no
+ */
+	public boolean verificarRespuestaSeguridad(String email, Long dni, String respuesta) {
+		Account cuenta = accounts.getActiveOrInactive(email);
+		
+		//si no se encontro el registro en la base de datos o el dni no coincide
+		if (cuenta == null || !cuenta.getDni().equals(dni))
+		{
+			return false;
+		}
+		
+		//si la respuesta de seguridad submiteada coincide
+		if (passwordEncoder.matches(respuesta, cuenta.getRespuestaSeguridad()))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+/**
+ * Recupera una cuenta, ya sea por estar inactiva o por no recordar la contraseña
+ * @param email mail de la cuenta
+ * @param dni dni de la cuenta
+ * @param respuesta respuesta de seguridad ingresada en el formulario
+ * @return true si el merge del registro fue exitoso, false si no
+ */
+	public boolean recuperar(String email, Long dni, String respuesta)
+	{
+		//si la verificacion es exitosa
+		if (verificarRespuestaSeguridad(email, dni, respuesta))
+		{
+			return activar(getActiveOrInactive(email));
+		}
+		
+		return false;
 	}
 }

@@ -31,6 +31,7 @@ public class UserService implements UserDetailsService {
 		accountRepository.save(new Account(Long.parseLong("1337"), "Danny", "Pink", "M", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "animal", "blue whale", "admin@frgp.utn.edu.ar", "test", "A"));
 		accountRepository.save(new Account(Long.parseLong("1234"), "Donna", "Noble", "F", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "animal", "blue whale","gerente@frgp.utn.edu.ar", "test", "G"));
 		clienteRepository.save(new Cliente(Long.parseLong("7893"), "Clara", "Oswald", "F", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "animal", "blue whale" , "cliente@frgp.utn.edu.ar", "test", "32 Wallaby St", "Accion"));
+		clienteRepository.save(new Cliente(Long.parseLong("123456"), "Juan", "Perez", "M", fecha.getFechaFormatoDiaMesAnio("01/11/1988"), "hola", "que tal" , "prueba@frgp.utn.edu.ar", "test", "32 Wallaby St", "Misterio", false));
 	}
 	
 	@Override

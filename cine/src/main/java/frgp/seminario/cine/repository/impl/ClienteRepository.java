@@ -56,6 +56,8 @@ public class ClienteRepository {
 	@Transactional
 	public Account save(Cliente registro) {
 		registro.setPassword(passwordEncoder.encode(registro.getPassword()));
+		registro.setRespuestaSeguridad(passwordEncoder.encode(registro.getRespuestaSeguridad()));
+		
 		if(!dataAccess.save(registro))
 			return null;
 		else

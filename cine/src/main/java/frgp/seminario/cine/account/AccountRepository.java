@@ -64,6 +64,22 @@ public class AccountRepository {
 		return "";
 	}
 	
+	/**
+	 * Recupera un registro de la base de datos, sin importar si esta activo o no
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
+	public Account getActiveOrInactive(Object email){
+		ArrayList<Account> todos = this.getAll();
+		
+		for (Account item : todos){
+			if (item.getEmail().equals(email))
+				return item;
+		}
+		return null;
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<Account> getAll()
 	{

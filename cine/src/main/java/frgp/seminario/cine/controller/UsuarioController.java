@@ -32,9 +32,9 @@ public class UsuarioController {
 	public ModelAndView current (Principal principal, RedirectAttributes ra) {
 		ModelAndView mav =new ModelAndView();
 		LOG.info("/usuario/actual: se quieren mostrar detalles del usuario " + principal.getName());
-		Account account = boAccount.get(principal.getName());
 		
-		if (account == null)
+		//si no encontro al usuario
+		if (!boAccount.getActiveBoolean(principal.getName()))
 		{
 			LOG.error("/usuario/actual: No se encontro el usuario principal.getName()= " + principal.getName());
 			MessageHelper.addErrorAttribute(ra, "No se encontro el usuario.");
@@ -42,7 +42,7 @@ public class UsuarioController {
 			return mav;
 		}
 		
-		SignupForm form = boAccount.entityToForm(account);
+		SignupForm form = boAccount.entityToForm(boAccount.get(principal.getName()));
 		Cliente cliente = null;
 		if (form == null)
 		{

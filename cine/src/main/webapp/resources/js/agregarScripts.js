@@ -57,6 +57,11 @@ $( document ).ready(function() {
     {
     agregarScript('complejo');
     }
+    
+    if (pathname.search("recuperar") != -1){
+	agregarScript('validateHelper');
+	agregarScript('recuperar');
+    }
 });
 
 function agregarScript(nombre){

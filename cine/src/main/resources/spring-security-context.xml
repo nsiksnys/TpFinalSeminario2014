@@ -5,8 +5,8 @@
 http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-	
-	<security:http auto-config="true" disable-url-rewriting="true" use-expressions="true">
+
+	<security:http auto-config="true" disable-url-rewriting="true" use-expressions="true" access-decision-manager-ref="accessDecisionManager">
 		<security:form-login login-page="/signin" authentication-failure-url="/signin?error=1"/>
 		<security:logout logout-url="/logout" />
 		<security:remember-me services-ref="rememberMeServices" key="remember-me-key"/>
@@ -15,8 +15,18 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:intercept-url pattern="/signin" access="permitAll" />
 		<security:intercept-url pattern="/signup" access="permitAll" />
 		<security:intercept-url pattern="/default/**" access="permitAll" />
+		<security:intercept-url pattern="/recuperar/**" access="permitAll"/>
 		<security:intercept-url pattern="/**" access="isAuthenticated()" />
-		<security:intercept-url pattern="/usuario/actual" access="isAuthenticated()" />
+		<security:intercept-url pattern="/usuario/actual" access="isAuthenticated()"/>
+		
+		<security:access-denied-handler error-page="/error/notAuthorized"/>
+				
+		<!-- URLs permitidas para un gerente -->
+		<security:intercept-url pattern="/stats" access="G" />
+		
+		<!-- URLs permitidas para un cliente -->
+		<security:intercept-url pattern="/reserva/**" access="C" />
+		<security:intercept-url pattern="/cartelera/activo" access="C"/>
 		
 		<!-- URLs permitidas para un admin -->
 		<security:intercept-url pattern="/cartelera/lista" access="A" />
@@ -74,17 +84,6 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		<security:intercept-url pattern="/usuario/borrar**" access="A" />
 		<security:intercept-url pattern="/usuario/activar**" access="A" />
 		
-		<!-- URLs permitidas para un gerente -->
-		<security:intercept-url pattern="/stats" access="isAuthenticated()" />
-		
-		<!-- URLs permitidas para un cliente -->
-		<security:intercept-url pattern="/reserva/lista" access="C" />
-		<security:intercept-url pattern="/reserva/alta**" access="C" />
-		<security:intercept-url pattern="/reserva/guardar" access="C"/>
-		<security:intercept-url pattern="/reserva/modificar" access="C" />
-		<security:intercept-url pattern="/reserva/borrar**" access="C" />
-		
-		<security:intercept-url pattern="/cartelera/activo" access="C"/>
 	</security:http>
 	
 	<security:authentication-manager erase-credentials="true" >
@@ -93,4 +92,15 @@ http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 		</security:authentication-provider>
 	</security:authentication-manager>
 
+	<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+	    <property name="decisionVoters">
+	        <list>
+	            <bean class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
+	            <bean class="org.springframework.security.access.vote.RoleVoter">
+	                <property name="rolePrefix" value=""/>
+	            </bean>
+	            <bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+	        </list>
+	    </property>
+	</bean>
 </beans>
