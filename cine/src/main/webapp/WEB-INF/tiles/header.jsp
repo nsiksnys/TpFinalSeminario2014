@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">CINE</a>
+        <a class="navbar-brand" href="<s:url value="/"/>">CINE</a>
         <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
             	<security:authorize access="!isAuthenticated()">

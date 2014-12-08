@@ -18,6 +18,7 @@ $(document).ready(function() {
     
     getComplejos();
     getPeliculas();
+    getPromociones();
     getFuncion($( "#complejo option:selected" ).val(), $( "#pelicula option:selected" ).val());
     validaciones.validarTodosMenosExcluidos();
             
@@ -53,6 +54,30 @@ $(document).ready(function() {
     	}
      };
     
+     function getPromociones(){
+	    	var host =document.location.host;
+	        var url = "http://" + host + "/" + getContext() + "/promocion/getpromocion";
+	        $.getJSON(url, function(json) {
+	            if (typeof json === "undefined" || json=="" || json.length == 0)
+	            {
+	        	$("#promo").empty();
+	    		$("#promo").append(parseOpcion('1', 'Ninguna'));
+	        	return;
+	            }
+	    	
+	            $("#promo").empty();
+	            
+	            $.each(json, function (key, value) {
+	            	$("#promo").append(parseOpcion(key, value));
+	            });
+	            validaciones.hideErrorMessage('funcion');
+	        }).fail (function() {
+	            	$("#promo").empty();
+	            	$("#promo").append(parseOpcion('1', 'Ninguna'));
+	    		validaciones.showError('promo', 'select');
+	        });
+	    };
+     
      function getComplejos(){
 	var host =document.location.host;
 	var url = "http://" + host + "/" + getContext() + "/complejo/getcomplejos";

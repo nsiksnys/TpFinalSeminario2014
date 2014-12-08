@@ -6,7 +6,7 @@
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form action="guardar" method="post">
+		<form action="alta" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="complejo">Elija el complejo</label>
@@ -30,6 +30,16 @@
 						<option value=0>N/A</option>
 					</select>
 					<span id="funcion.errors" class="help-block"></span>
+				</div>
+				
+				<div class="form-group">
+					<label for="fecha">Dia de la funcion</label>
+					<select id="fecha" name="fecha" class="form-control">
+						<c:forEach items="${dias}" var="item">
+							<option value="${item.key}">${item.value}</option>
+						</c:forEach>
+					</select>
+					<span id="fecha.errors" class="help-block"></span>
 				</div>
 				
 				<div class="form-group">

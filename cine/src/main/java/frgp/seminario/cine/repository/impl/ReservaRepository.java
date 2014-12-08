@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import frgp.seminario.cine.repository.Repository;
 import frgp.seminario.cine.dataAccess.DataAccess;
 import frgp.seminario.cine.model.Reserva;
 
 @Service("ReservaRepository")
+@Transactional
 public class ReservaRepository implements Repository<Reserva> {
 	@Autowired
 	DataAccess dataAccess;

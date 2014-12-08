@@ -1,31 +1,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 
-<h3>Reserva de entradas</h3>
+<h3>Indique los tipos de entrada</h3>
 
-<c:if test="${null error}">
-	<form action="entradas" method="post">
-		<b>Entradas</b>
+<form action="entradas" method="post">
+	<fieldset>
 		<div class="form-group">
-			<label for="cantidad">Cantidad</label>
-			<input type="text" name="cantidad" id="cantidad"/>
+			<label for="cantidad">Menor</label>
+			<select id="menor" name="menor">
+				<c:forEach begin="0" end="${cantidad}" varStatus="i">
+					<option value="${i.count}"> ${i.count}</option> 
+				</c:forEach>
+			</select>
 		</div>
-		
-		<b>Promociones</b>
 		<div class="form-group">
-			<label for="promo">Elija la promocion a utilizar</label>
-			<select id="promo" name="promo">
-				<c:if test="${empty promociones}">
-					<option value=0>N/A</option>
-				</c:if>
-				<c:if test="${not empty promociones}">
-					<option value=0>Ninguna</option>
-					<c:forEach items="${promociones}" var="promo">
-						<option value="${promo.id}">${promo.nombre}</option>
-					</c:forEach>
-				</c:if>
+			<label for="cantidad">Mayor</label>
+			<select id="mayor" name="mayor">
+				<c:forEach begin="0" end="${cantidad}" varStatus="i">
+					<option value="${i.count}"> ${i.count}</option> 
+				</c:forEach>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="cantidad">General</label>
+			<select id="general" name="general">
+				<c:forEach begin="0" end="${cantidad}" varStatus="i">
+					<option value="${i.count}"> ${i.count}</option> 
+				</c:forEach>
 			</select>
 		</div>
 		<button type="submit" class="btn btn-default">Siguiente</button>
-	</form>
-</c:if>
+	</fieldset>
+</form>

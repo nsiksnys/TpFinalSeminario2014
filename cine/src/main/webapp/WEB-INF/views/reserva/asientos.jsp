@@ -3,12 +3,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 
-<h3>Por favor seleccione su(s) asiento(s)....</h3>
+<h3>Por favor seleccione su(s) asiento(s)</h3>
 
 <div class="row">
 	<div class="col-6">
 		<!-- por alguna razon class="col-md-6" no funciona -->
-		<form class="form" action="guardar" method="post" name="myform">
+		<form class="form" action="guardar" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="pantalla">PANTALLA</label>

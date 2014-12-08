@@ -118,4 +118,14 @@ public class FechaUtils {
 		
 		return new GregorianCalendar(anio,mes,dia).getTime();
 	}
+	
+	public Date getFechaReserva(int dia)
+	{
+		GregorianCalendar fecha = new GregorianCalendar();
+		
+		if (dia - fecha.get(Calendar.DAY_OF_WEEK) > 0)//la resta entre el dia de la reserva y el actual es distinto de cero
+			fecha.add(Calendar.DAY_OF_MONTH, dia - fecha.get(Calendar.DAY_OF_WEEK));
+		
+		return fecha.getTime();
+	}
 }

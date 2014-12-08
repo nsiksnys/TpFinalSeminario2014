@@ -23,16 +23,16 @@ public class Reserva {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
+	@ManyToOne//(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Cliente cliente;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
+	@ManyToOne//(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Funcion funcion;
 	
 	@OneToMany//(mappedBy="reserva")
 	private List<Asiento> asientos;
 	
-	@ManyToOne(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
+	@ManyToOne//(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Promocion promo;
 	
 	@Column(nullable=false)
@@ -86,7 +86,8 @@ public class Reserva {
 		this.fechaCreacion = fechaCreacion;
 		this.precios = precios;
 		this.importe = importe;
-		this.activo = true;
+		this.codigo = "";
+		this.activo = false;
 	}
 
 	public Reserva(Cliente cliente, Funcion funcion, List<Asiento> asientos, Promocion promo,

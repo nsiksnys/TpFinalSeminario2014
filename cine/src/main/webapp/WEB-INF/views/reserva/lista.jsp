@@ -24,7 +24,7 @@
 					<td>${item.fecha}</td>
 					<td>${item.horario}</td>
 					<td>${item.total}</td>
-					<td><a href='<s:url value="/borrar?id=${item.id}"/>'>X</a></td>
+					<td><a href='<s:url value="/reserva/borrar?id=${item.id}"/>'>X</a></td>
 				</tr>
 			</c:forEach>
 		</c:if>

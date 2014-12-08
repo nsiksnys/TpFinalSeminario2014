@@ -3,6 +3,8 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.bo.impl.BoReserva;
 import frgp.seminario.cine.forms.ReservaForm;
 import frgp.seminario.cine.model.Reserva;
+import frgp.seminario.cine.support.web.Message;
+import frgp.seminario.cine.support.web.MessageHelper;
 
 @RequestMapping(value="/reserva/**")
 @Controller
@@ -41,22 +46,55 @@ public class ReservaController {
 		return mav;
 	}
 		
-	@RequestMapping(value = "/reserva/alta", method = RequestMethod.GET)
+	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
-	{//para elegir complejo, pelicula, funcion cantidad de entradas y promocion en un mismo formulario
-		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("complejos", logicaNegocio.getComplejosActivos());
-		mav.getModelMap().addAttribute("peliculas", logicaNegocio.getPeliculasActivas());
-	//	mav.getModelMap().addAttribute("funciones", logicaNegocio.ggetPeliculasActivas());
-		
+	{
+		ModelAndView mav = new ModelAndView();
+		mav.getModelMap().addAttribute("dias", logicaNegocio.getDias());
 		return mav;
 	}
 	
-	@RequestMapping(value = "/alta?paso=1", method = RequestMethod.GET)//TODO: probar si funciona
-	public ModelAndView pelicula(Principal principal) {//pelicula y complejo
+	@RequestMapping(value = "/asientos", method = RequestMethod.GET)
+	public ModelAndView asientos(HttpServletRequest request, RedirectAttributes ra) {
+		Object idReserva = request.getSession().getAttribute("idReserva");
+		
+		//si no esta guardado el id de reserva en la sesion o el id no corresponde a un registro en la base de datos
+		if (idReserva == null || logicaNegocio.get(Long.parseLong(idReserva.toString())) == null)
+		{
+			LOG.error("/reserva/ubicacion: idReserva no valido.");
+			MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente.");
+			return new ModelAndView("redirect:/reserva/alta");
+		}
+		return new ModelAndView();
+	}
+	
+	@RequestMapping(value = "/entradas", method = RequestMethod.GET)
+	public ModelAndView entradas(HttpServletRequest request, RedirectAttributes ra) {
+		Object idReserva = request.getSession().getAttribute("idReserva");
+		
+		//si no esta guardado el id de reserva en la sesion o el id no corresponde a un registro en la base de datos
+		if (idReserva == null || logicaNegocio.get(Long.parseLong(idReserva.toString())) == null)
+		{
+			LOG.error("/reserva/ubicacion: idReserva no valido.");
+			MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente.");
+			return new ModelAndView("redirect:/reserva/alta");
+		}
+		return new ModelAndView();
+	}
+		
+	@RequestMapping(value = "/detalle", method = RequestMethod.GET)
+	public ModelAndView detalle(@RequestParam("id") Long id, Principal principal, RedirectAttributes ra) {//pelicula y complejo
+		
+		//si no esta guardado el id de reserva en la sesion o el id no corresponde a un registro en la base de datos
+		if (id == null ||  id == 0 || logicaNegocio.get(id) == null)
+		{
+			LOG.error("/reserva/detalle: id no valido.");
+			MessageHelper.addErrorAttribute(ra, "No existe el registro buscado.");
+			return new ModelAndView("redirect:/reserva/lista");
+		}
+		
 		ModelAndView mav =new ModelAndView();
-		mav.getModelMap().addAttribute("complejos", logicaNegocio.getComplejosActivos());
-		mav.getModelMap().addAttribute("peliculas", logicaNegocio.getPeliculasActivas());
+		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(logicaNegocio.get(id)));
 		return mav;
 	}
 	
@@ -96,6 +134,73 @@ public class ReservaController {
 			LOG.info("/reserva/activar: activado registro con id " + id);
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/alta", method = RequestMethod.POST)
+	public String alta(@ModelAttribute ReservaForm formulario, Principal principal, HttpServletRequest request, RedirectAttributes ra) 
+	{
+		formulario.setCliente(principal.getName());
+		Reserva item = logicaNegocio.formToEntity(formulario);
+		
+		if (!logicaNegocio.guardar(item)){//si no se guarda
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario");//agrego el mensaje de error
+			return "redirect:/reserva/alta";
+		}
+		
+		request.getSession().setAttribute("idReserva", item.getId());//agrego el id del registro reserva creado, que se usa en el siguiente paso
+		request.getSession().setAttribute("cantidadEntradas", formulario.getCantidad());
+		LOG.info("/reserva/alta: agregado registro nuevo con id " + item.getId());
+
+		return "redirect:/reserva/asientos";
+	}
+	
+	@RequestMapping(value = "/asientos", method = RequestMethod.POST)
+	public String asientos(Principal principal, HttpServletRequest request, RedirectAttributes ra)
+	{
+		//TODO: recuperar los asientos elegidos
+		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
+		Reserva reserva = logicaNegocio.get(id);
+		
+		//TODO: agregar los asientos elegidos
+		
+		if (!logicaNegocio.modificar(reserva)){//si no se guarda
+			MessageHelper.addErrorAttribute(ra, "error", "Por favor intente de nuevo");//agrego el mensaje de error
+			return "redirect:/reserva/asientos";
+		}
+		
+		return "redirect:/reserva/entradas";
+	}
+	
+	@RequestMapping(value = "/entradas", method = RequestMethod.GET)
+	public String entradas(Principal principal, @RequestParam int menor, @RequestParam int mayor, @RequestParam int general, HttpServletRequest request, RedirectAttributes ra) {
+		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
+		int cantidad = Integer.parseInt(request.getSession().getAttribute("cantidadEntradas").toString());
+		
+		Reserva reserva = logicaNegocio.get(id);
+		
+		//si la cantidad indicada no es la que se indico al principio
+		if (menor + mayor + general != cantidad)
+		{
+			MessageHelper.addErrorAttribute(ra, "error", "Por favor revise la cantidad de entradas e intente de nuevo");//agrego el mensaje de error
+			return "redirect:/reserva/entradas";
+		}
+		
+		reserva.setPrecios(logicaNegocio.getPrecios(menor, mayor, general));//agrego los precios
+		reserva.setCodigo(logicaNegocio.generarCodigo());
+		reserva.setImporte(logicaNegocio.calcularTotal(reserva));
+		reserva.setActivo(true);//activo la reserva
+		
+		if (!logicaNegocio.modificar(reserva)){//si no se guarda
+			MessageHelper.addErrorAttribute(ra, "error", "Por favor intente de nuevo");//agrego el mensaje de error
+			return "redirect:/reserva/entradas";
+		}
+		
+		//los sacos de la sesion porque ya no hacen falta
+		request.getSession().removeAttribute("idReserva");
+		request.getSession().removeAttribute("cantidadEntradas");
+
+		
+		return "redirect:/reserva/detalle?id=" + reserva.getId();
 	}
 	
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)

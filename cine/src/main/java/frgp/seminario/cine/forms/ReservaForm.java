@@ -1,21 +1,16 @@
 package frgp.seminario.cine.forms;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 public class ReservaForm {
-	private static final String NOT_BLANK_MESSAGE = "El campo no puede estar vacio.";
 	
 	private String id;
+	private String cliente;
 	private String codigo;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String complejo;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String pelicula;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
 	private String fecha;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
-	private String horario;
-	@NotBlank(message = NOT_BLANK_MESSAGE)
+	private String funcion;
+	private String cantidad;
+	private String promo;
 	private String total;
 	
 	public String getId() {
@@ -23,6 +18,12 @@ public class ReservaForm {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}
+	public String getCliente() {
+		return cliente;
+	}
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
 	}
 	public String getCodigo() {
 		return codigo;
@@ -48,11 +49,23 @@ public class ReservaForm {
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-	public String getHorario() {
-		return horario;
+	public String getFuncion() {
+		return funcion;
 	}
-	public void setHorario(String horario) {
-		this.horario = horario;
+	public void setFuncion(String funcion) {
+		this.funcion = funcion;
+	}
+	public String getCantidad() {
+		return cantidad;
+	}
+	public void setCantidad(String cantidad) {
+		this.cantidad = cantidad;
+	}
+	public String getPromo() {
+		return promo;
+	}
+	public void setPromo(String promo) {
+		this.promo = promo;
 	}
 	public String getTotal() {
 		return total;
