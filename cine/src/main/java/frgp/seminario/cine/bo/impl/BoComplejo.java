@@ -179,27 +179,22 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 	
 	public Complejo formToEntityUpdate(ComplejoForm formulario)
 	{
-		ArrayList<Sala> existente = new ArrayList<Sala>();
-		ArrayList<Sala> nueva;
+		ArrayList<Sala> actual = new ArrayList<Sala> (get(Long.parseLong(formulario.getId())).getSalas());
+		Sala nueva;
 		Complejo registro =  new Complejo(formulario.getNombre(), formulario.getDireccion());
 		registro.setId(Long.parseLong(formulario.getId()));
 		
-		if (salas.complejoHasAny(registro.getId()))//si el complejo tiene salas
-		{
-			existente.addAll(salas.getByComplejo(registro.getId()));
-		}
 		
 		if (formulario.getSalas() >0) //si se agregan salas
 		{
-			nueva = new ArrayList<Sala>(formulario.getSalas());
 			for (int i=1; i<=formulario.getSalas(); i++){
-				nueva.add(new Sala(registro.getId(), existente.size()+i));//el id es un null
+				nueva= new Sala(registro.getId(), actual.size()+1);
+				salas.guardar(nueva);
+				actual.add(nueva);//el id es un null
 			}
-			salas.guardar(nueva);
-			existente.addAll(nueva);//las agrego a la lista de existentes
 		}
 		
-		registro.setSalas(existente);
+		registro.setSalas(actual);
 		return registro;
 	}
 	

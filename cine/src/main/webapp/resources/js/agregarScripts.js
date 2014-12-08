@@ -46,16 +46,16 @@ $( document ).ready(function() {
     
     if (pathname.search("promocion/alta") !=-1 || pathname.search("promocion/modificar") != -1)
     {
-    agregarScript('promocion');
+	agregarScript('promocion');
     }
     
     if (pathname.search("precio/alta") !=-1)
     {
-    agregarScript('precio');
+	agregarScript('precio');
     }
     if (pathname.search("complejo/alta") !=-1 || pathname.search("complejo/modificar") != -1)
     {
-    agregarScript('complejo');
+	agregarScript('complejo');
     }
     
     if (pathname.search("recuperar") != -1){

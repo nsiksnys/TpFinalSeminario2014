@@ -34,12 +34,13 @@ public class SalaFindItem {
 	 * @param idComplejo id del complejo buscado
 	 * @return ArrayList con todos las salas
 	 **/
+	@SuppressWarnings("unchecked")
 	public ArrayList<Sala> findByComplejo(Long idComplejo){
-		ArrayList<Sala> todos = getAllEnabled();
+		ArrayList<Sala> todos = (ArrayList<Sala>) dataAccess.getAll(Sala.class);
 		ArrayList<Sala> rta = new ArrayList<Sala>();
 		
 		for (Sala item : todos) {
-			if (item.getIdComplejo() == idComplejo);
+			if (item.getIdComplejo().equals(idComplejo));
 				rta.add(item);
 		}
 		return rta;

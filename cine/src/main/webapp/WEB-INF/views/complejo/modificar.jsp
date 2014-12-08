@@ -13,11 +13,13 @@
 				</div>
 				<div class="form-group">
 					<label for="nombre">Nombre</label>
-					<input class="form-control" id="nombre" name="nombre" type="text" value="${registro.nombre}"/>
+					<input class="form-control" id="nombre" name="nombre" type="text" value="${registro.nombre}" required/>
+					<span id="nombre.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
 					<label for="direccion">Direccion</label>
-					<input class="form-control" id="direccion" name="direccion" type="text" value="${registro.direccion}"/>
+					<input class="form-control" id="direccion" name="direccion" type="text" value="${registro.direccion}" required/>
+					<span id="direccion.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
 					<label for="salas">Salas</label><br>
@@ -50,9 +52,10 @@
 							</tbody>
 						</table>
 						<br>
-						<label for="salas">Cantidad a agregar</label>
+						<label for="cantidad">Cantidad a agregar</label>
 					</c:if>
-						<input class="form-control" id="salas" name="salas" type="text" alt="99" value="0"/>
+						<input class="form-control" id="cantidad" name="salas" type="text" alt="99"/>
+ 						<span id="cantidad.errors" class="help-block"></span>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
