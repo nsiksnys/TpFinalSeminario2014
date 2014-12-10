@@ -171,7 +171,7 @@ public class ReservaController {
 		return "redirect:/reserva/entradas";
 	}
 	
-	@RequestMapping(value = "/entradas", method = RequestMethod.GET)
+	@RequestMapping(value = "/entradas", method = RequestMethod.POST)
 	public String entradas(Principal principal, @RequestParam int menor, @RequestParam int mayor, @RequestParam int general, HttpServletRequest request, RedirectAttributes ra) {
 		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
 		int cantidad = Integer.parseInt(request.getSession().getAttribute("cantidadEntradas").toString());
