@@ -2,20 +2,15 @@ package frgp.seminario.cine.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+
+import frgp.seminario.cine.model.ReservaPrecio;
 
 @Entity
 public class Reserva {
@@ -41,11 +36,8 @@ public class Reserva {
 	@Column(nullable=false)
 	private Date fechaCreacion;
 	
-	@ElementCollection(fetch = FetchType.LAZY)
-	@CollectionTable(name = "Reserva_Precios")
-	@MapKeyColumn//(name="idPrecio")
-	@Column(name="cantidad")
-	private Map<Precio, Integer> precios;
+	@OneToMany
+	private List<ReservaPrecio> precios_detalle;
 	
 	@Column(nullable=false)
 	private float importe;
@@ -62,7 +54,7 @@ public class Reserva {
 	}
 
 	public Reserva(Long id, Cliente cliente, Funcion funcion, List<Asiento> asientos,
-			Promocion promo, Date fechaReserva, Date fechaCreacion, Map<Precio, Integer> precios,
+			Promocion promo, Date fechaReserva, Date fechaCreacion, List<ReservaPrecio> precios,
 			float importe, boolean activo) {
 		this.id = id;
 		this.cliente = cliente;
@@ -71,34 +63,34 @@ public class Reserva {
 		this.promo = promo;
 		this.fechaReserva = fechaReserva;
 		this.fechaCreacion = fechaCreacion;
-		this.precios = precios;
+		this.precios_detalle = precios;
 		this.importe = importe;
 		this.activo = activo;
 	}
 
 	public Reserva(Cliente cliente, Funcion funcion, List<Asiento> asientos, Promocion promo,
-			Date fechaReserva, Date fechaCreacion, Map<Precio, Integer> precios, float importe) {
+			Date fechaReserva, Date fechaCreacion, List<ReservaPrecio> precios, float importe) {
 		this.cliente = cliente;
 		this.funcion = funcion;
 		this.asientos = asientos;
 		this.promo = promo;
 		this.fechaReserva = fechaReserva;
 		this.fechaCreacion = fechaCreacion;
-		this.precios = precios;
+		this.precios_detalle = precios;
 		this.importe = importe;
 		this.codigo = "";
 		this.activo = false;
 	}
 
 	public Reserva(Cliente cliente, Funcion funcion, List<Asiento> asientos, Promocion promo,
-			Date fechaReserva, Date fechaCreacion, Map<Precio, Integer> precios, float importe, String codigo) {
+			Date fechaReserva, Date fechaCreacion, List<ReservaPrecio> precios, float importe, String codigo) {
 		this.cliente = cliente;
 		this.funcion = funcion;
 		this.asientos = asientos;
 		this.promo = promo;
 		this.fechaReserva = fechaReserva;
 		this.fechaCreacion = fechaCreacion;
-		this.precios = precios;
+		this.precios_detalle = precios;
 		this.importe = importe;
 		this.codigo = codigo;
 		this.activo = true;
@@ -161,12 +153,12 @@ public class Reserva {
 	}
 
 	//@ElementCollection
-	public Map<Precio, Integer> getPrecios() {
-		return precios;
+	public List<ReservaPrecio> getPrecios() {
+		return precios_detalle;
 	}
 
-	public void setPrecios(Map<Precio, Integer> precios) {
-		this.precios = precios;
+	public void setPrecios(List<ReservaPrecio> precios) {
+		this.precios_detalle = precios;
 	}
 
 	public float getImporte() {
