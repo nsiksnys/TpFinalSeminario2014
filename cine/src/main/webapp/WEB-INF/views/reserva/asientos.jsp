@@ -23,7 +23,6 @@
 								type="checkbox" name="checkbox" id="checkbox11" value="1,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox12" value="1,2"></td>
-							<!-- <td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox13" value="1,3"></td>
 							<td onChange="this.style.backgroundColor='#006600';"><input
@@ -48,7 +47,6 @@
 								type="checkbox" name="checkbox" id="checkbox21" value="2,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox22" value="2,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox23" value="2,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -73,7 +71,6 @@
 								type="checkbox" name="checkbox" id="checkbox31" value="3,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox32" value="3,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox33" value="3,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -98,7 +95,6 @@
 								type="checkbox" name="checkbox" id="checkbox41" value="4,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox42" value="4,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox43" value="4,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -123,7 +119,6 @@
 								type="checkbox" name="checkbox" id="checkbox51" value="5,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox52" value="5,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox53" value="5,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -148,7 +143,6 @@
 								type="checkbox" name="checkbox" id="checkbox61" value="6,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox62" value="6,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox63" value="6,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -173,7 +167,6 @@
 								type="checkbox" name="checkbox" id="checkbox71" value="7,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox72" value="7,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox73" value="7,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -198,7 +191,6 @@
 								type="checkbox" name="checkbox" id="checkbox81" value="8,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox82" value="8,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox83" value="8,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -223,7 +215,6 @@
 								type="checkbox" name="checkbox" id="checkbox91" value="9,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox92" value="9,2"></td>
-							<!-- 				<td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox93" value="9,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
@@ -248,7 +239,6 @@
 								type="checkbox" name="checkbox" id="checkbox101" value="10,1"></td>
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox102" value="10,2"></td>
-							<!-- <td onClick="if(document.myform.checkbox3.checked == true){alert('estoy seleccionado!')} else{alert('estoy des-seleccionado!')}"> -->
 							<td onClick="this.style.backgroundColor='#006600';"><input
 								type="checkbox" name="checkbox" id="checkbox103" value="10,3"></td>
 							<td onChange="this.style.backgroundColor='#33CC00';"><input
