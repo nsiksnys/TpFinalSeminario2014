@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +21,18 @@ import frgp.seminario.cine.bo.impl.BoAccount;
 import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.signup.SignupForm;
 import frgp.seminario.cine.support.web.MessageHelper;
+import frgp.seminario.cine.utils.SecurityUtils;
 
 @RequestMapping(value="/usuario/**")
 @Controller
 public class UsuarioController {
 	@Autowired
 	BoAccount boAccount;
+	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
 	
 	private static final Logger LOG = LoggerFactory.getLogger(UsuarioController.class);
 	
@@ -65,8 +73,11 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal) {
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Account> lista = (ArrayList<Account>) boAccount.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -74,8 +85,11 @@ public class UsuarioController {
 		return mav;
 	}
 		
+	
 	@RequestMapping(value = "/usuario/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal) {
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("signupForm", new SignupForm());
 		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
@@ -83,9 +97,12 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") String email, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		SignupForm registro = boAccount.entityToForm(boAccount.get(email));
 		mav.getModelMap().addAttribute("registro", registro);
@@ -100,9 +117,12 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") String email, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");//indico que uso la vista "modificar"
 		
 		if (!boAccount.desactivar(boAccount.get(email))){//si no se guarda
@@ -115,9 +135,12 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") String email, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");//indico que uso la vista "modificar"
 		
 		if (!boAccount.activar(boAccount.get(email))){//si no se guarda
@@ -130,9 +153,12 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/alta", method = RequestMethod.POST)
-	public String alta(@ModelAttribute SignupForm formulario, RedirectAttributes ra) 
+	public String alta(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Account usuario;
 		Cliente cliente;
 		boolean status;
@@ -161,9 +187,12 @@ public class UsuarioController {
 		return "redirect:/usuario/lista";
 	}
 	
+	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@ModelAttribute SignupForm formulario, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		if (formulario.getRole().equals("C"))
 		{
 			LOG.error("/usuario/alta: No esta permitido cambiar el rol a Cliente.");

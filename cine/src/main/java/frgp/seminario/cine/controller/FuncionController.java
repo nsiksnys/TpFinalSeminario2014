@@ -23,6 +23,7 @@ import frgp.seminario.cine.forms.CarteleraForm;
 import frgp.seminario.cine.forms.FuncionForm;
 import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Horario;
+import frgp.seminario.cine.utils.SecurityUtils;
 
 @RequestMapping(value="/funcion/**")
 @Controller
@@ -31,17 +32,26 @@ public class FuncionController {
 	@Qualifier("BoFuncion") //aclaro cual es el bean a inyectar
 	BoFuncion logicaNegocio;
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(FuncionController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView("redirect:/funcion/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Funcion> lista = (ArrayList<Funcion>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -52,6 +62,8 @@ public class FuncionController {
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
 	public ModelAndView lista(@RequestParam("ok") String ok,Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Funcion> lista = (ArrayList<Funcion>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -66,6 +78,8 @@ public class FuncionController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("complejos", logicaNegocio.listarTodosComplejos());
 		mav.getModelMap().addAttribute("salas", logicaNegocio.listarTodasSalas());
@@ -78,6 +92,8 @@ public class FuncionController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(logicaNegocio.get(id)));
 		return mav;
@@ -87,6 +103,8 @@ public class FuncionController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.desactivar(logicaNegocio.get(id))){//si no se guarda
@@ -103,6 +121,8 @@ public class FuncionController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.activar(logicaNegocio.get(id))){//si no se guarda
@@ -118,6 +138,8 @@ public class FuncionController {
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public ModelAndView guardar(@ModelAttribute FuncionForm formulario, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/funcion/alta");
 		Funcion item = logicaNegocio.formToEntity(formulario);
@@ -138,6 +160,8 @@ public class FuncionController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@ModelAttribute FuncionForm formulario,Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/funcion/lista");
 		Funcion item = logicaNegocio.formToEntity(formulario);
 		item.setId(formulario.getId());

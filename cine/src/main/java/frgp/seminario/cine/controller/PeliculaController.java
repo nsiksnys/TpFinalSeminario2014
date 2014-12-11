@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.support.web.MessageHelper;
+import frgp.seminario.cine.utils.SecurityUtils;
 import frgp.seminario.cine.bo.impl.BoPelicula;
 import frgp.seminario.cine.forms.PeliculaForm;
 
@@ -33,17 +34,26 @@ public class PeliculaController {
 	@Qualifier("BoPelicula") //aclaro cual es el bean a inyectar
 	BoPelicula logicaNegocio; //aclaro las clases que se utilizan en este caso en particular
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(PeliculaController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView("redirect:/pelicula/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Pelicula> lista = (ArrayList<Pelicula>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -54,6 +64,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
 	public ModelAndView lista(@RequestParam("ok") String ok,Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Pelicula> lista = (ArrayList<Pelicula>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -68,6 +80,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("peliculaForm", new PeliculaForm());
 		return mav;
@@ -76,6 +90,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		//ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
 		Pelicula registro = logicaNegocio.get(id);
 		ModelAndView mav =new ModelAndView();
@@ -87,6 +103,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.desactivar(logicaNegocio.get(id))){//si no se guarda
@@ -103,6 +121,8 @@ public class PeliculaController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/pelicula/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.activar(logicaNegocio.get(id))){//si no se guarda
@@ -116,8 +136,10 @@ public class PeliculaController {
 	}
 	
 	@RequestMapping(value = "/alta", method = RequestMethod.POST)
-	public String alta(@ModelAttribute PeliculaForm formulario, RedirectAttributes ra) 
+	public String alta(@ModelAttribute PeliculaForm formulario, Principal principal, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Pelicula item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
@@ -134,8 +156,10 @@ public class PeliculaController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@ModelAttribute PeliculaForm formulario, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute PeliculaForm formulario, Principal principal, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Pelicula registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		

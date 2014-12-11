@@ -25,6 +25,7 @@ import frgp.seminario.cine.model.Complejo;
 import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.support.web.*;
 import frgp.seminario.cine.support.web.Message.Type;
+import frgp.seminario.cine.utils.SecurityUtils;
 
 @RequestMapping(value="/complejo/**")
 @Controller
@@ -34,17 +35,26 @@ public class ComplejoController {
 	@Qualifier("BoComplejo") //aclaro cual es el bean a inyectar
 	BoComplejo logicaNegocio;
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ComplejoController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView("redirect:/complejo/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<ComplejoForm> lista = (ArrayList<ComplejoForm>) logicaNegocio.listarTodosForm();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -55,6 +65,8 @@ public class ComplejoController {
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
 	public ModelAndView lista(@RequestParam("message") String message,Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<ComplejoForm> lista = (ArrayList<ComplejoForm>) logicaNegocio.listarTodosForm();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -69,12 +81,16 @@ public class ComplejoController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView();
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		//ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));//FIXME: el registro no tiene salas
@@ -84,6 +100,8 @@ public class ComplejoController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.desactivar(logicaNegocio.get(id))){//si no se guarda
@@ -100,6 +118,8 @@ public class ComplejoController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.activar(logicaNegocio.get(id))){//si no se guarda
@@ -116,6 +136,8 @@ public class ComplejoController {
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public ModelAndView guardar(@ModelAttribute ComplejoForm formulario, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/complejo/alta");
 		Complejo item = logicaNegocio.formToEntity(formulario);
@@ -135,6 +157,8 @@ public class ComplejoController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@ModelAttribute ComplejoForm formulario, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/complejo/lista");
 		//ModelAndView mav =new ModelAndView();
 		Complejo registro = logicaNegocio.formToEntityUpdate(formulario);

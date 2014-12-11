@@ -1,7 +1,12 @@
 package frgp.seminario.cine.error;
 
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +22,7 @@ class ExceptionHandler {
 	/**
 	 * Handle exceptions thrown by handlers.
 	 */
+
 	@org.springframework.web.bind.annotation.ExceptionHandler(value = Exception.class)	
 	public ModelAndView exception(Exception exception, WebRequest request) {
 		ModelAndView modelAndView = new ModelAndView("generalError");
@@ -25,5 +31,26 @@ class ExceptionHandler {
 		LOG.error(Throwables.getRootCause(exception).toString());
 		exception.printStackTrace();
 		return modelAndView;
+	}
+
+/*	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = Exception.class)	
+	public void exception(Exception exception, WebRequest request) {
+		String fromUrl = request.getContextPath();//TODO: probar
+		LOG.error(Throwables.getRootCause(exception).toString());
+		exception.printStackTrace();
+		return;
+	}
+*/	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = AccessDeniedException.class)	
+	public ModelAndView accessDenied(AccessDeniedException exception, WebRequest request) {
+		LOG.error(Throwables.getRootCause(exception).toString());
+		return new ModelAndView("notAuthorized");
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = PersistenceException.class)	
+	public void persistance(AccessDeniedException exception, WebRequest request) {
+		LOG.error(Throwables.getRootCause(exception).toString());
+		return;
 	}
 }

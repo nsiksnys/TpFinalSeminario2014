@@ -22,6 +22,7 @@ import frgp.seminario.cine.forms.ReservaForm;
 import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.support.web.Message;
 import frgp.seminario.cine.support.web.MessageHelper;
+import frgp.seminario.cine.utils.SecurityUtils;
 
 @RequestMapping(value="/reserva/**")
 @Controller
@@ -30,15 +31,24 @@ public class ReservaController {
 	@Qualifier("BoReserva") //aclaro cual es el bean a inyectar
 	BoReserva logicaNegocio; //aclaro las clases que se utilizan en este caso en particular
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "C";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ReservaController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal) {
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView("redirect:/reserva/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal) {
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		ArrayList<Reserva> lista = logicaNegocio.listarTodos(principal.getName());
 		mav.getModelMap().addAttribute("lista", lista);
@@ -49,13 +59,17 @@ public class ReservaController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav = new ModelAndView();
 		mav.getModelMap().addAttribute("dias", logicaNegocio.getDias());
 		return mav;
 	}
 	
 	@RequestMapping(value = "/asientos", method = RequestMethod.GET)
-	public ModelAndView asientos(HttpServletRequest request, RedirectAttributes ra) {
+	public ModelAndView asientos(Principal principal, HttpServletRequest request, RedirectAttributes ra) {
+		security.isAuthorized(principal, ROLE);
+
 		Object idReserva = request.getSession().getAttribute("idReserva");
 		
 		//si no esta guardado el id de reserva en la sesion o el id no corresponde a un registro en la base de datos
@@ -69,7 +83,9 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/entradas", method = RequestMethod.GET)
-	public ModelAndView entradas(HttpServletRequest request, RedirectAttributes ra) {
+	public ModelAndView entradas(Principal principal, HttpServletRequest request, RedirectAttributes ra) {
+		security.isAuthorized(principal, ROLE);
+
 		Object idReserva = request.getSession().getAttribute("idReserva");
 		
 		//si no esta guardado el id de reserva en la sesion o el id no corresponde a un registro en la base de datos
@@ -84,7 +100,8 @@ public class ReservaController {
 		
 	@RequestMapping(value = "/detalle", method = RequestMethod.GET)
 	public ModelAndView detalle(@RequestParam("id") Long id, Principal principal, RedirectAttributes ra) {//pelicula y complejo
-		
+		security.isAuthorized(principal, ROLE);
+
 		//si no esta guardado el id de reserva en la sesion o el id no corresponde a un registro en la base de datos
 		if (id == null ||  id == 0 || logicaNegocio.get(id) == null)
 		{
@@ -101,6 +118,8 @@ public class ReservaController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("registro", logicaNegocio.get(id));
 		return mav;
@@ -109,6 +128,8 @@ public class ReservaController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/reserva/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.desactivar(logicaNegocio.get(id))){//si no se guarda
@@ -124,6 +145,8 @@ public class ReservaController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, "A");
+
 		ModelAndView mav =new ModelAndView("redirect:/cartelera/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.activar(logicaNegocio.get(id))){//si no se guarda
@@ -139,6 +162,8 @@ public class ReservaController {
 	@RequestMapping(value = "/alta", method = RequestMethod.POST)
 	public String alta(@ModelAttribute ReservaForm formulario, Principal principal, HttpServletRequest request, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		formulario.setCliente(principal.getName());
 		Reserva item = logicaNegocio.formToEntity(formulario);
 		
@@ -155,8 +180,10 @@ public class ReservaController {
 	}
 	
 	@RequestMapping(value = "/asientos", method = RequestMethod.POST)
-	public String asientos(Principal principal, HttpServletRequest request, RedirectAttributes ra)
+	public String asientos(Principal principal,RedirectAttributes ra, HttpServletRequest request)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		//TODO: recuperar los asientos elegidos
 		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
 		Reserva reserva = logicaNegocio.get(id);
@@ -173,6 +200,8 @@ public class ReservaController {
 	
 	@RequestMapping(value = "/entradas", method = RequestMethod.POST)
 	public String entradas(Principal principal, @RequestParam int menor, @RequestParam int mayor, @RequestParam int general, HttpServletRequest request, RedirectAttributes ra) {
+		security.isAuthorized(principal, ROLE);
+
 		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
 		int cantidad = Integer.parseInt(request.getSession().getAttribute("cantidadEntradas").toString());
 		
@@ -206,6 +235,8 @@ public class ReservaController {
 	@RequestMapping(value = "/guardar", method = RequestMethod.POST)
 	public ModelAndView guardar(@ModelAttribute ReservaForm formulario, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/reserva/lista");
 		//ModelAndView mav =new ModelAndView("redirect:/reserva/alta");
 		Reserva item = logicaNegocio.formToEntity(formulario);
@@ -225,6 +256,8 @@ public class ReservaController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
 	public ModelAndView modificar(@ModelAttribute ReservaForm formulario, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/reserva/lista");
 		//ModelAndView mav =new ModelAndView();
 		Reserva registro = logicaNegocio.formToEntity(formulario);

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.model.Precio;
 import frgp.seminario.cine.support.web.MessageHelper;
+import frgp.seminario.cine.utils.SecurityUtils;
 import frgp.seminario.cine.bo.impl.BoPrecio;
 import frgp.seminario.cine.forms.PrecioForm;
 
@@ -27,17 +28,26 @@ public class PrecioController {
 	@Qualifier("BoPrecio") //aclaro cual es el bean a inyectar
 	BoPrecio logicaNegocio; //aclaro las clases que se utilizan en este caso en particular
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(PrecioController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView("redirect:/precio/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Precio> lista = (ArrayList<Precio>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -48,6 +58,8 @@ public class PrecioController {
 	@RequestMapping(value = "/lista", method = RequestMethod.POST)
 	public ModelAndView lista(@RequestParam("ok") String ok,Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Precio> lista = (ArrayList<Precio>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -62,7 +74,8 @@ public class PrecioController {
 	@RequestMapping(value = "/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal)
 	{
-		//return new ModelAndView();
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav = new ModelAndView();
 		mav.getModelMap().addAttribute("precioForm", new PrecioForm());
 		return mav;
@@ -71,7 +84,8 @@ public class PrecioController {
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
 	{
-		//ModelAndView mav =new ModelAndView("modificar");//indico que uso la vista "modificar"
+		security.isAuthorized(principal, ROLE);
+
 		Precio registro = logicaNegocio.get(id);
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("PrecioForm", logicaNegocio.entityToForm(registro));
@@ -82,6 +96,8 @@ public class PrecioController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/precio/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.desactivar(logicaNegocio.get(id))){//si no se guarda
@@ -97,6 +113,8 @@ public class PrecioController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/precio/lista");//indico que uso la vista "modificar"
 		
 		if (!logicaNegocio.activar(logicaNegocio.get(id))){//si no se guarda
@@ -109,8 +127,10 @@ public class PrecioController {
 	}
 	
 	@RequestMapping(value = "/alta", method = RequestMethod.POST)
-	public String alta(@ModelAttribute PrecioForm formulario, RedirectAttributes ra) 
+	public String alta(@ModelAttribute PrecioForm formulario, Principal principal, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Precio item = logicaNegocio.formToEntity(formulario);
 		
 		if (!logicaNegocio.guardar(item)){//si no se guarda
@@ -127,8 +147,10 @@ public class PrecioController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@ModelAttribute PrecioForm formulario, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute PrecioForm formulario, Principal principal, RedirectAttributes ra) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Precio registro = logicaNegocio.formToEntity(formulario);
 		registro.setId(Long.parseLong(formulario.getId()));
 		

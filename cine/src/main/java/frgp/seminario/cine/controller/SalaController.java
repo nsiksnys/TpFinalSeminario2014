@@ -23,6 +23,7 @@ import frgp.seminario.cine.model.Complejo;
 import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.support.web.*;
 import frgp.seminario.cine.support.web.Message.Type;
+import frgp.seminario.cine.utils.SecurityUtils;
 
 @RequestMapping(value="/sala/**")
 @Controller
@@ -32,17 +33,26 @@ public class SalaController {
 	@Qualifier("BoSala") //aclaro cual es el bean a inyectar
 	BoSala logicaNegocio;
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(SalaController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		return new ModelAndView("redirect:/sala/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<SalaForm> lista = (ArrayList<SalaForm>) logicaNegocio.listarTodasForm();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -53,6 +63,8 @@ public class SalaController {
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") Long id, Principal principal)
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Long complejoId=logicaNegocio.get(id).getIdComplejo();//lo usamos para el redirect
 		
 		ModelAndView mav =new ModelAndView("redirect:/complejo/modificar?id=" + complejoId);//indico que uso la vista "modificar"
@@ -71,6 +83,8 @@ public class SalaController {
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") Long id, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		Long complejoId=logicaNegocio.get(id).getIdComplejo();//lo usamos para el redirect
 		ModelAndView mav =new ModelAndView("redirect:/complejo/modificar?id=" + complejoId);//indico que uso la vista "modificar"
 		
