@@ -45,7 +45,7 @@ public class ComplejoController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal)
 	{
-		security.isAuthorized(principal, ROLE);
+		//security.isAuthorized(principal, ROLE);
 
 		return new ModelAndView("redirect:/complejo/lista");
 	}
@@ -53,7 +53,7 @@ public class ComplejoController {
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal)
 	{
-		security.isAuthorized(principal, ROLE);
+		//security.isAuthorized(principal, ROLE);
 
 		ArrayList<ComplejoForm> lista = (ArrayList<ComplejoForm>) logicaNegocio.listarTodosForm();
 		ModelAndView mav =new ModelAndView();

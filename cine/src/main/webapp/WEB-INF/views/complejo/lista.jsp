@@ -1,10 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="s"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 
 <h3>Lista Complejos</h3>
 <br>
-<!-- 		<button type="button" class="btn btn-default">Crear nuevo complejo</button> -->
 	<table class="table table-bordered table-hover">
 		<thead>
 			<tr>
@@ -12,10 +12,10 @@
 				<td>Nombre</td>
 				<td>Direccion</td>
 				<td>Salas</td>
-<!-- 				<td colspan="2">Opciones</td> -->
-				<!-- <td>Detalles</td> -->
-				<td>Modificar</td>
-				<td>Status</td>
+				<security:authorize ifAllGranted="A">
+					<td>Modificar</td>
+					<td>Status</td>
+				</security:authorize>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,22 +26,13 @@
 						<td>${item.nombre}</td>
 						<td>${item.direccion}</td>
 						<td>${item.salas}</td>
-<!-- 						<td> -->
-<%-- 						<c:forEach items="${item.salas}" var="sala" varStatus="status"> --%>
-<%--  							${sala.id}  --%>
-<%--  							<c:if test="${not status.last}">, </c:if>  --%>
-						 
-<%-- 						</c:forEach> --%>
-<!-- 						</td> -->
-						<td><a href='<s:url value="/complejo/modificar?id=${item.id}"/>'>Modificar</a></td>
-						<td>
-							<c:if test="${item.activo == true}"> <a href='<s:url value="/complejo/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
-							<c:if test="${item.activo == false}"> <a href='<s:url value="/complejo/activar?id=${item.id}"/>'>Activar</a> </c:if>
-						</td>
-<!-- 						<td> -->
-<%-- 							<c:if test="${item.activo == true}"> <a href='<s:url value="/complejo/borrar?id=${item.id}"/>'>Desactivar</a> </c:if> --%>
-<%-- 							<c:if test="${item.activo == false}"> <a href='<s:url value="/complejo/activar?id=${item.id}"/>'>Activar</a> </c:if> --%>
-<!-- 						</td> -->
+						<security:authorize ifAllGranted="A">
+							<td><a href='<s:url value="/complejo/modificar?id=${item.id}"/>'>Modificar</a></td>
+							<td>
+								<c:if test="${item.activo == true}"> <a href='<s:url value="/complejo/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
+								<c:if test="${item.activo == false}"> <a href='<s:url value="/complejo/activar?id=${item.id}"/>'>Activar</a> </c:if>
+							</td>
+						</security:authorize>
 					</tr>
 				</c:forEach>
 			</c:if>

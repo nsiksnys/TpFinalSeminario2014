@@ -41,14 +41,14 @@ public class CarteleraController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(Principal principal) {
-		security.isAuthorized(principal, ROLE);
+		//security.isAuthorized(principal, ROLE);
 
 		return new ModelAndView("redirect:/cartelera/lista");
 	}
 	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal) {
-		security.isAuthorized(principal, ROLE);
+		//security.isAuthorized(principal, ROLE);
 
 		ArrayList<Cartelera> lista = (ArrayList<Cartelera>) logicaNegocio.listarTodos();
 		ModelAndView mav =new ModelAndView();

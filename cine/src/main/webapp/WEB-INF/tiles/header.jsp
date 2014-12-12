@@ -19,9 +19,8 @@
             	
 		    	<security:authorize access="isAuthenticated()">
 	               	<security:authorize ifAllGranted="C">
-	            		<li><a href="#">Complejos y salas</a></li>
+	            		<li><a href="<s:url value="/complejo/"/>">Complejos y salas</a></li>
 	               		<li><a href="<s:url value="/cartelera/activo"/>">Cartelera</a></li>
-	               		<li><a href="#">Proximos estrenos</a></li>
 	            		<li class="dropdown">
 							<a href="<s:url value="/reserva"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Reservas</font>

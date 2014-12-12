@@ -33,13 +33,13 @@
 						<c:if test="${item.subtitulada == true}"> Si </c:if>
 						<c:if test="${item.subtitulada == false}"> No </c:if>
 					</td>
-					<security:authorize access="isAuthenticated()"> <security:authorize ifAllGranted="A">
-					<td><a href='<s:url value="/cartelera/modificar?id=${item.id}"/>'>Modificar</a></td>
-					<td>
-						<c:if test="${item.activo == true}"> <a href='<s:url value="/cartelera/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
-						<c:if test="${item.activo == false}"> <a href='<s:url value="/cartelera/activar?id=${item.id}"/>'>Activar</a> </c:if>
-					</td>
-					</security:authorize> </security:authorize>
+					<security:authorize ifAllGranted="A">
+						<td><a href='<s:url value="/cartelera/modificar?id=${item.id}"/>'>Modificar</a></td>
+						<td>
+							<c:if test="${item.activo == true}"> <a href='<s:url value="/cartelera/borrar?id=${item.id}"/>'>Desactivar</a> </c:if>
+							<c:if test="${item.activo == false}"> <a href='<s:url value="/cartelera/activar?id=${item.id}"/>'>Activar</a> </c:if>
+						</td>
+					</security:authorize>
 				</tr>
 			</c:forEach>
 		</c:if>
