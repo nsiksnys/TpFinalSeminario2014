@@ -8,6 +8,7 @@
 <div class="row">
 	<div class="col-6">
 		<!-- por alguna razon class="col-md-6" no funciona -->
+		<input type="hidden" id="funcion" value="${funcion}" />
 		<form class="form" action="asientos" method="post">
 			<fieldset>
 				<div class="form-group">
@@ -17,11 +18,11 @@
 				<div class="form-group"></div>
 				<div class="asientos">
 					<table id="t01">
-						<c:forEach begin="1" end="10" varStatus="fila">
+						<c:forEach begin="0" end="9" varStatus="fila">
 							<tr>
 								<c:forEach begin="1" end="10" varStatus="col">
-									<td onClick="this.style.backgroundColor='#006600';">
-										<input type="checkbox" name="checkbox" id="checkbox${fila.index}${col.index}" value="${fila.index},${col.index}">
+									<td onchange="this.style.backgroundColor='#006600';">
+										<input type="checkbox" name="checkbox" id="${fila.index * 10 + col.index}" value="${fila.count},${col.index}">
 									</td>
 								</c:forEach>
 							</tr>

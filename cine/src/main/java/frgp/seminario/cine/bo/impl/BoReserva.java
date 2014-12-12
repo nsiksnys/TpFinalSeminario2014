@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -286,7 +287,7 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 			}
 		}
 		
-		if (lista.isEmpty() || lista.size() < cantidad)
+		if (lista.isEmpty() || lista.size() < cantidad || check.length > cantidad)
 			throw new NullPointerException("La cantidad de asientos no coincide con la esperada.");
 		
 		return lista;
@@ -351,5 +352,400 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 		}
 				
 		return total;
+	}
+	
+	public ArrayList<Reserva> listarHorariosNoRepetidos() {
+
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		for(int i=0;i<rev.size()-1;i++){
+			for(int j=i+1;j<rev.size();j++){
+				if(rev.get(i).getFechaCreacion() ==rev.get(j).getFechaCreacion())
+					rev.remove(i);
+			}
+		}
+		return (ArrayList<Reserva>) rev;
+	}
+
+	/**
+	 * Devuelve un Map con los asientos y su status
+	 * @param idFuncion id de la funcion buscada
+	 * @return
+	 */
+	public Map<Long, Integer> getAsientosbyFuncion(Long idFuncion)
+	{
+		ArrayList<Asiento> asientosFuncion = new ArrayList<Asiento>();
+		Map<Long, Integer> rta = new TreeMap<Long, Integer>();
+		
+		
+		//agrego los asientos de esa funcion
+		for (Reserva registro : busquedaReservas.getAllEnabled())
+		{
+			if (registro.getFuncion().getId() == idFuncion)
+				asientosFuncion.addAll(registro.getAsientos());
+		}
+		
+		//lleno el map
+		for (Asiento registro : asientoRepository.getAll(Asiento.class))
+		{
+			if (asientosFuncion.contains(registro))
+				rta.put(registro.getId(), 1);//asiento ocupado
+			else
+				rta.put(registro.getId(), 0);//asiento libre
+		}
+		
+		return rta;
+	}
+	
+	public boolean isAsientoDisponible(Long idAsiento, Long idFuncion)
+	{
+		/*for (Reserva registro : busquedaReservas.findActiveByFuncion(idFuncion))
+		{
+			for (Asiento asiento : registro.getAsientos())
+					if (asiento.getId().equals(idAsiento))
+						return true;
+		}*/
+		
+		Object[] asientosId = asientos.findAsientoIdByFuncion(idFuncion);
+		
+		//System.out.println("asientosId len " + asientosId.length);
+		
+		if (asientosId.length < 1)
+			return false;
+				
+		for (Object id : asientosId)
+		{
+			if (Integer.parseInt(id.toString()) == idAsiento)
+				return true;
+		}
+		return false;
+	}
+	
+	public Map<String,Integer> AsistenciaXPelicula(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getPelicula().getNombre() == r2.getFuncion().getPelicula().getNombre() && r.isActivo() == true){
+					cantidad = cantidad + r2.getAsientos().size();
+				}
+			}
+			asistencia.put(r.getFuncion().getPelicula().getNombre().toString(), cantidad);
+		}
+		return asistencia;
+	}
+	
+	public Map<String,Integer> AsistenciaXPelicula(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				
+				if(r.getFuncion().getPelicula().getNombre() == r2.getFuncion().getPelicula().getNombre() && r.isActivo() == true){
+					
+					if(fecha1.after(r2.getFechaReserva()) && fecha2.before(r2.getFechaReserva())){
+						cantidad = cantidad + r2.getAsientos().size();	
+					}				
+					
+				}
+				
+			}
+			asistencia.put(r.getFuncion().getPelicula().getNombre().toString(), cantidad);
+		}
+		return asistencia;
+	}
+
+	public Map<String,Integer> CancelacionesXPelicula(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getPelicula().getNombre() == r2.getFuncion().getPelicula().getNombre() && r.isActivo() == false){
+					cantidad = cantidad + r2.getAsientos().size();
+				}
+			}
+			asistencia.put(r.getFuncion().getPelicula().getNombre().toString(), cantidad);
+		}
+		return asistencia;
+	}
+	
+	public Map<String,Integer> CancelacionesXPelicula(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getPelicula().getNombre() == r2.getFuncion().getPelicula().getNombre() && r.isActivo() == false){
+					if(fecha1.after(r2.getFechaReserva()) && fecha2.before(r2.getFechaReserva())){
+						cantidad = cantidad + r2.getAsientos().size();
+					}					
+				}
+			}
+			asistencia.put(r.getFuncion().getPelicula().getNombre().toString(), cantidad);
+		}
+		return asistencia;
+	}
+
+	public Map<String,Float> PorcentajesAsistencia(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Float> asistencia = new TreeMap<String,Float>();
+		
+		int cancelaciones = 0;
+		int activos = 0;
+		int total = 0;
+		
+		for(Reserva r : rev){
+			
+			total = total + r.getAsientos().size();
+			
+			if(r.isActivo() == true){
+				activos=activos + r.getAsientos().size();
+			}else{
+				cancelaciones = cancelaciones + r.getAsientos().size();
+			}
+			
+			
+		}
+		asistencia.put("Porcentaje Asistencia", (float) ((total*100)/activos));
+		asistencia.put("Porcentade Cancelaciones",(float) ((total*100)/cancelaciones));
+
+		return asistencia;
+	}
+	
+	public Map<String,Float> PorcentajesAsistencia(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Float> asistencia = new TreeMap<String,Float>();
+		
+		int cancelaciones = 0;
+		int activos = 0;
+		int total = 0;
+		
+		for(Reserva r : rev){
+			
+			
+			
+			if(fecha1.after(r.getFechaReserva()) && fecha2.before(r.getFechaReserva())){
+				
+				total = total + r.getAsientos().size();
+				
+				if(r.isActivo() == true){
+					activos=activos + r.getAsientos().size();
+				}else{
+					cancelaciones = cancelaciones + r.getAsientos().size();
+				}
+				
+				
+			}		
+			
+		}
+		asistencia.put("Porcentaje Asistencia", (float) ((total*100)/activos));
+		asistencia.put("Porcentade Cancelaciones",(float) ((total*100)/cancelaciones));
+
+		return asistencia;
+	}
+
+	public Map<String,Integer> HorarioMasSolicitados(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getHorario() == r2.getFuncion().getHorario() && r.isActivo() == true){
+					cantidad = cantidad + r2.getAsientos().size();
+				}
+			}
+			asistencia.put(r.getFuncion().getHorario().toString(), cantidad);
+		}
+		return asistencia;
+	}
+	public Map<String,Integer> HorarioMasSolicitados(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getHorario() == r2.getFuncion().getHorario() && r.isActivo() == true){
+					
+					if(fecha1.after(r2.getFechaReserva()) && fecha2.before(r2.getFechaReserva())){
+						cantidad = cantidad + r2.getAsientos().size();
+					}	
+					
+					
+				}
+			}
+			asistencia.put(r.getFuncion().getHorario().toString(), cantidad);
+		}
+		return asistencia;
+	}
+
+	public Map<String,Integer> ComplejoMasSolicitado(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getSala().getIdComplejo() == r2.getFuncion().getSala().getIdComplejo() && r.isActivo() == true){
+					cantidad = cantidad + r2.getAsientos().size();
+				}
+			}
+			asistencia.put(r.getFuncion().getSala().getIdComplejo().toString(), cantidad);
+		}
+		return asistencia;
+	}
+	
+	public Map<String,Integer> ComplejoMasSolicitado(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getFuncion().getSala().getIdComplejo() == r2.getFuncion().getSala().getIdComplejo() && r.isActivo() == true){
+					
+					if(fecha1.after(r2.getFechaReserva()) && fecha2.before(r2.getFechaReserva())){
+						cantidad = cantidad + r2.getAsientos().size();
+					}	
+					
+				}
+			}
+			asistencia.put(r.getFuncion().getSala().getIdComplejo().toString(), cantidad);
+		}
+		return asistencia;
+	}
+
+	public Map<String,Integer> GeneroMasSolicitado(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getCliente().getGeneroPreferido() == r2.getCliente().getGeneroPreferido() && r.isActivo() == true){
+					cantidad = cantidad + 1;
+				}
+			}
+			asistencia.put(r.getCliente().getGeneroPreferido().toString(), cantidad);
+		}
+		return asistencia;
+	}
+	public Map<String,Integer> GeneroMasSolicitado(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		for(Reserva r : rev){
+			
+			int cantidad = 0;
+			for(Reserva r2: rev){
+				if(r.getCliente().getGeneroPreferido() == r2.getCliente().getGeneroPreferido() && r.isActivo() == true){
+					
+					if(fecha1.after(r2.getFechaReserva()) && fecha2.before(r2.getFechaReserva())){
+						cantidad = cantidad + 1;
+					}	
+				}
+			}
+			asistencia.put(r.getCliente().getGeneroPreferido().toString(), cantidad);
+		}
+		
+		return asistencia;
+	}
+
+	public Map<String,Integer> MenoresEnDiaSemana(){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		List<Entrada> ent = (ArrayList<Entrada>) entradaRepository.getAll(Entrada.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		// (1) create a java int array
+		int[] intArray = {0, 0, 0, 0, 0, 0, 0};
+		
+		for(Reserva r : rev){
+			for(Entrada e : ent){
+				if(r.getId() == e.getReserva().getId()){
+					if(e.getTipoEntrada()=="Menor"){
+						
+						Calendar c = Calendar.getInstance();
+						c.setTime(r.getFechaReserva());
+						int dia = c.get(Calendar.DAY_OF_WEEK);
+						
+						intArray[dia]=intArray[dia]+1;
+					}
+				}
+			}
+		}
+		asistencia.put("Domingo", intArray[0]);
+		asistencia.put("Lunes", intArray[1]);
+		asistencia.put("Martes", intArray[2]);
+		asistencia.put("Miercoles", intArray[3]);
+		asistencia.put("Jueves", intArray[4]);
+		asistencia.put("Viernes", intArray[5]);
+		asistencia.put("Sabado", intArray[6]);
+		
+		return asistencia;
+	}
+	public Map<String,Integer> MenoresEnDiaSemana(Date fecha1, Date fecha2){
+		List<Reserva> rev = (ArrayList<Reserva>) reservaRepository.getAll(Reserva.class);
+		List<Entrada> ent = (ArrayList<Entrada>) entradaRepository.getAll(Entrada.class);
+		
+		Map<String,Integer> asistencia = new TreeMap<String,Integer>();
+		
+		// (1) create a java int array
+		int[] intArray = {0, 0, 0, 0, 0, 0, 0};
+		
+		for(Reserva r : rev){
+			for(Entrada e : ent){
+				if(r.getId() == e.getReserva().getId()){
+					if(e.getTipoEntrada()=="Menor"){
+						if(fecha1.after(r.getFechaReserva()) && fecha2.before(r.getFechaReserva())){
+						Calendar c = Calendar.getInstance();
+						c.setTime(r.getFechaReserva());
+						int dia = c.get(Calendar.DAY_OF_WEEK);
+						
+						intArray[dia]=intArray[dia]+1;
+						
+						}	
+					}
+				}
+			}
+		}
+		asistencia.put("Domingo", intArray[0]);
+		asistencia.put("Lunes", intArray[1]);
+		asistencia.put("Martes", intArray[2]);
+		asistencia.put("Miercoles", intArray[3]);
+		asistencia.put("Jueves", intArray[4]);
+		asistencia.put("Viernes", intArray[5]);
+		asistencia.put("Sabado", intArray[6]);
+		
+		return asistencia;
 	}
 }

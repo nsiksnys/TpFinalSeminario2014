@@ -17,4 +17,6 @@ public interface DataAccess {
 	public boolean delete (Object registro);
 	@SuppressWarnings("rawtypes")
 	public Object createQuery(Class entityClass);
+	@SuppressWarnings("rawtypes")
+	List getCustomQueryResult(String query);
 }

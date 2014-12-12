@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
+import frgp.seminario.cine.model.Asiento;
 import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.model.Cartelera;
@@ -138,6 +139,21 @@ public class ReservaFindItem {
 			}
 		}
 		return false;
+	}
+	
+	public ArrayList<Reserva> findActiveByFuncion(Long idFuncion)
+	{
+		ArrayList<Reserva> activos = getAllEnabled();
+		ArrayList<Reserva> rta = new ArrayList<Reserva>();
+		
+		for (Reserva registro : activos)
+		{
+			if (registro.getFuncion().getId() == idFuncion)
+			{
+				rta.add(registro);
+			}
+		}
+		return rta;
 	}
 
 	/**

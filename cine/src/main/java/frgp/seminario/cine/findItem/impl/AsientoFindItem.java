@@ -1,6 +1,7 @@
 package frgp.seminario.cine.findItem.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,10 @@ public class AsientoFindItem {
 		}
 		
 		return null;
+	}
+	
+	public Object[] findAsientoIdByFuncion(Long idFuncion)
+	{
+		return dataAccess.getCustomQueryResult("SELECT asientos_id FROM Reserva JOIN Reserva_Asiento ON Reserva.id = Reserva_Asiento.Reserva_id WHERE Reserva.funcion_id =" + idFuncion).toArray();
 	}
 }

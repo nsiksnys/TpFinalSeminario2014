@@ -62,10 +62,27 @@ $( document ).ready(function() {
     {
 	agregarScript("signup");
     }
-    
+
+    if (pathname.search("stats/alta") != -1 || pathname.search("stats/listaAll") != -1)
+    {
+    	agregarScript('estadistica');	
+    	agregarScript('highcharts');
+    	agregarScript('estadisticaGraficoAll');
+    }
+    if (pathname.search("stats/alta") != -1 || pathname.search("stats/listaRango") != -1)
+    {
+    	agregarScript('estadistica');	
+    	agregarScript('highcharts');
+    	agregarScript('estadisticaGraficoRango');
+    }
+   
     if (pathname.search("recuperar") != -1){
 	agregarScript('validateHelper');
 	agregarScript('recuperar');
+    }
+    
+    if (pathname.search("asientos") != -1){
+	agregarScript('asiento');
     }
 });
 

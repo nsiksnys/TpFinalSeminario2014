@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -176,6 +177,7 @@ public class ReservaController {
 		
 		request.getSession().setAttribute("idReserva", item.getId());//agrego el id del registro reserva creado, que se usa en el siguiente paso
 		request.getSession().setAttribute("cantidadEntradas", formulario.getCantidad());
+		request.getSession().setAttribute("funcion", formulario.getFuncion());
 		LOG.info("/reserva/alta: agregado registro nuevo con id " + item.getId());
 
 		return "redirect:/reserva/asientos";
@@ -280,5 +282,22 @@ public class ReservaController {
 			//mav.getModelMap().addAttribute("ok", "La pelicula se guardo correctamente");
 		}
 		return mav;
+	}
+	
+	@RequestMapping(value = "/getasientostatus", method = RequestMethod.GET)
+	public @ResponseBody boolean isAsientoDisponible(@RequestParam Long asiento, @RequestParam Long funcion, Principal principal)
+	{
+		//LOG.info("/reserva/getAsientoStatus: pedidas status del asiento " + asiento + " para la funcion " + funcion);
+		return logicaNegocio.isAsientoDisponible(asiento, funcion);
+	}
+	
+	@RequestMapping(value = "/getidfuncion", method = RequestMethod.GET)
+	public @ResponseBody Object getidFuncionReserva(Principal principal, HttpServletRequest request)
+	{
+		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
+		Reserva reserva = logicaNegocio.get(id);
+
+		LOG.info("/reserva/getIdFuncion: enviado el valor de la funcion reservada");
+		return reserva.getFuncion().getId();
 	}
 }
