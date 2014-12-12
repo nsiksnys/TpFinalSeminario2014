@@ -8,13 +8,17 @@ $( document ).ready(function() {
   //necesario para que el validateHelper funcione correctamente
     validacion = new validateHelper();
     validacion.setInputs(this);
-    validacion.agregarExcluido('cantidad');
+    validacion.agregarExcluido('salas');
     
-    validacion.validarTodosMenosExcluidos();
+    validacion.validarTodos();
     
   //cuando cambia un input
     $( ":input" ).change(function() {
 	validacion.validarTodosMenosExcluidos();
+	
+	if (this.id == 'salas' && getAccion() == 'alta'){
+	    validacion.validar('salas', this.value, 'integer');
+	}
     });
     
     $("[type='submit']" ).click(function(event) {

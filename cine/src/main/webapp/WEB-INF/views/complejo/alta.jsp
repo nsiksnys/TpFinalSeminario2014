@@ -18,9 +18,9 @@
 					<span id="direccion.errors" class="help-block"></span>
 				</div>
 				<div class="form-group">
-					<label for="cantidad">Cantidad de salas</label>
-					<input class="form-control" id="salas" name="salas" type="text" alt="integer" required/>
-					<span id="cantidad.errors" class="help-block"></span>
+					<label for="salas">Cantidad de salas</label>
+					<input class="form-control" id="salas" name="salas" type="text" alt="99" value="1" required/>
+					<span id="salas.errors" class="help-block"></span>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>

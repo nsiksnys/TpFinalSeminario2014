@@ -54,7 +54,7 @@
 						<br>
 						<label for="cantidad">Cantidad a agregar</label>
 					</c:if>
-						<input class="form-control" id="cantidad" name="salas" type="text" alt="99"/>
+						<input class="form-control" id="cantidad" name="salas" type="text" alt="99" value="0"/>
  						<span id="cantidad.errors" class="help-block"></span>
 				</div>
 				<button type="submit" class="btn btn-default">Guardar</button>
