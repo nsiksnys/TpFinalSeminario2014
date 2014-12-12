@@ -187,6 +187,7 @@ public class ReservaController {
 		security.isAuthorized(principal, ROLE);
 		
 		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
+		int cantidad = Integer.parseInt((String) request.getSession().getAttribute("cantidadEntradas"));
 		
 		if (request.getParameterValues("checkbox") == null){//si no se guarda
 			MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente");//agrego el mensaje de error
@@ -194,7 +195,7 @@ public class ReservaController {
 		}
 		
 		Reserva reserva = logicaNegocio.get(id);
-		reserva.setAsientos(logicaNegocio.getAsientos(request.getParameterValues("checkbox")));
+		reserva.setAsientos(logicaNegocio.getAsientos(request.getParameterValues("checkbox"), cantidad));
 		
 		if (!logicaNegocio.modificar(reserva)){//si no se guarda
 			MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente");//agrego el mensaje de error

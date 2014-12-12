@@ -10,10 +10,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Precios_Detalle")
 public class ReservaPrecio {
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Id
 	private Long idReserva;
 	
 	@ManyToOne

@@ -26,7 +26,7 @@ public class Reserva {
 	@ManyToOne//(cascade=CascadeType.ALL, fetch= FetchType.EAGER)
 	private Funcion funcion;
 	
-	@OneToMany//(mappedBy="reserva")
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Asiento> asientos;
 	
 	@ManyToOne//(cascade=CascadeType.ALL, fetch= FetchType.EAGER)

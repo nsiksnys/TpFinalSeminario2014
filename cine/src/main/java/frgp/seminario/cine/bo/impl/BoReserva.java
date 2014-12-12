@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.bo.impl.BoComplejo;
+import frgp.seminario.cine.findItem.impl.AsientoFindItem;
 import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.ReservaForm;
 import frgp.seminario.cine.model.Asiento;
@@ -48,10 +48,18 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	@Qualifier("AsientoRepository") //aclaro cual es el bean a inyectar
 	private Repository<Asiento> asientoRepository; //aclaro las clases que se utilizan en este caso en particular
 
+	@Autowired
+	@Qualifier("ReservaPrecioRepository") //aclaro cual es el bean a inyectar
+	private Repository<ReservaPrecio> detallesPrecios;
+	
 	
 	@Autowired
 	@Qualifier("ReservaFindItem") //aclaro cual es el bean a inyectar
 	private ReservaFindItem busquedaReservas;
+	
+	@Autowired
+	private AsientoFindItem asientos;
+	
 	
 	@Autowired
 	private BoPelicula peliculas;
@@ -258,25 +266,30 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 	/**
 	 * Obtengo los asientos elegidos
 	 * @param check Array de strings con los valores de los checkboxes
+	 * @param cantidad Int con la cantidad de entradas reservadas
 	 * @return un List con los asientos
+	 * @throws 
 	 */
-	public List<Asiento> getAsientos(String[] check)
+	public List<Asiento> getAsientos(String[] check, int cantidad)
 	{
-		List<Asiento> asientos= new ArrayList<Asiento>();
+		List<Asiento> lista= new ArrayList<Asiento>(cantidad);
 				
 		for(int i=0; i<check.length;i++)
 		{
-			if (check[i] != null)
+			if (check[i] != null && i <= cantidad)
 			{
 				char fila = check[i].charAt(0);
 				char columna = check[i].charAt(2);
 				
 				Asiento asiento =new Asiento(String.valueOf(fila),String.valueOf(columna));
-				asientos.add(asiento);
+				lista.add(asientos.findByAsiento(asiento));
 			}
 		}
 		
-		return asientos;
+		if (lista.isEmpty() || lista.size() < cantidad)
+			throw new NullPointerException("La cantidad de asientos no coincide con la esperada.");
+		
+		return lista;
 	}
 
 	/**
@@ -299,6 +312,14 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 		
 		if (general > 0) //si hay entradas de mayores
 			lista.add(new ReservaPrecio(idReserva, precio, "general", general));
+		
+		lista.trimToSize();
+
+/*
+		for (ReservaPrecio item : lista){
+			detallesPrecios.save(item);
+		}
+*/
 		
 		return lista;
 	}
@@ -328,9 +349,7 @@ public class BoReserva implements BusinessObject<Reserva, ReservaForm> {
 					break;
 			}
 		}
-		
-		//FIXME: la promocion tiene precios? si es asi, aca tengo que aplicar el descuento.
-		
+				
 		return total;
 	}
 }
