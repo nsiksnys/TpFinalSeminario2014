@@ -12,8 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.base.Throwables;
+
+import frgp.seminario.cine.support.web.MessageHelper;
 
 @Controller
 class CustomErrorController {
@@ -22,12 +25,14 @@ class CustomErrorController {
 	 * Display an error page, as defined in web.xml <code>custom-error</code> element.
 	 */
 	@RequestMapping("generalError")	
-	public String generalError(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String generalError(HttpServletRequest request, HttpServletResponse response, RedirectAttributes ra) {
 		// retrieve some useful information from the request
 		String message = getExceptionMessage(request);
-		model.addAttribute("errorMessage", message);
+		String referer = request.getHeader("Referer");
+		
+		MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente.");
 		LOG.error("generalError - " + message);
-		return "generalError";
+		return "redirect:"+ getPreviousView(referer);
 	}
 	
 	@RequestMapping("notAuthorized")
@@ -72,5 +77,11 @@ class CustomErrorController {
 		
 		HttpStatus httpStatus = HttpStatus.valueOf(statusCode);
 		return httpStatus.getReasonPhrase();
+	}
+	
+	private String getPreviousView(String referer)
+	{
+		String[] split = referer.split("(\\/\\/)|(\\/)");
+		return "/" + split[3] + "/" + split[4];
 	}
 }
