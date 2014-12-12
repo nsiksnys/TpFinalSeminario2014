@@ -2,6 +2,7 @@ package frgp.seminario.cine.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import frgp.seminario.cine.bo.impl.BoReserva;
 import frgp.seminario.cine.forms.ReservaForm;
+import frgp.seminario.cine.model.Asiento;
 import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.support.web.Message;
 import frgp.seminario.cine.support.web.MessageHelper;
@@ -50,7 +52,7 @@ public class ReservaController {
 		security.isAuthorized(principal, ROLE);
 
 		ModelAndView mav =new ModelAndView();
-		ArrayList<Reserva> lista = logicaNegocio.listarTodos(principal.getName());
+		ArrayList<ReservaForm> lista = logicaNegocio.listarTodosForm(principal.getName());
 		mav.getModelMap().addAttribute("lista", lista);
 		LOG.info("/cartelera/lista: listando " + lista.size() + " registro(s)");
 		return mav;
@@ -181,20 +183,24 @@ public class ReservaController {
 	
 	@RequestMapping(value = "/asientos", method = RequestMethod.POST)
 	public String asientos(Principal principal,RedirectAttributes ra, HttpServletRequest request)
-	{
+	{	
 		security.isAuthorized(principal, ROLE);
-
-		//TODO: recuperar los asientos elegidos
+		
 		Long id = Long.parseLong(request.getSession().getAttribute("idReserva").toString());
-		Reserva reserva = logicaNegocio.get(id);
 		
-		//TODO: agregar los asientos elegidos
-		
-		if (!logicaNegocio.modificar(reserva)){//si no se guarda
-			MessageHelper.addErrorAttribute(ra, "error", "Por favor intente de nuevo");//agrego el mensaje de error
+		if (request.getParameterValues("checkbox") == null){//si no se guarda
+			MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente");//agrego el mensaje de error
 			return "redirect:/reserva/asientos";
 		}
 		
+		Reserva reserva = logicaNegocio.get(id);
+		reserva.setAsientos(logicaNegocio.getAsientos(request.getParameterValues("checkbox")));
+		
+		if (!logicaNegocio.modificar(reserva)){//si no se guarda
+			MessageHelper.addErrorAttribute(ra, "Por favor intente nuevamente");//agrego el mensaje de error
+			return "redirect:/reserva/asientos";
+		}
+
 		return "redirect:/reserva/entradas";
 	}
 	
@@ -210,13 +216,13 @@ public class ReservaController {
 		//si la cantidad indicada no es la que se indico al principio
 		if (menor + mayor + general != cantidad)
 		{
-			MessageHelper.addErrorAttribute(ra, "error", "Por favor revise la cantidad de entradas e intente de nuevo");//agrego el mensaje de error
+			MessageHelper.addErrorAttribute(ra, "Por favor revise la cantidad de entradas e intente de nuevo");//agrego el mensaje de error
 			return "redirect:/reserva/entradas";
 		}
 		
-		reserva.setPrecios(logicaNegocio.getPrecios(menor, mayor, general));//agrego los precios
+		reserva.setPrecios(logicaNegocio.getPrecios(id, menor, mayor, general));//agrego los precios
 		reserva.setCodigo(logicaNegocio.generarCodigo());
-		reserva.setImporte(logicaNegocio.calcularTotal(reserva));
+		reserva.setImporte(logicaNegocio.calcularTotal(reserva.getPrecios(), reserva.getPromo()));
 		reserva.setActivo(true);//activo la reserva
 		
 		if (!logicaNegocio.modificar(reserva)){//si no se guarda

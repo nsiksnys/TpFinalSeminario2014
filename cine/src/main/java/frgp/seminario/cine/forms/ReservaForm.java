@@ -10,6 +10,7 @@ public class ReservaForm {
 	private String fecha;
 	private String funcion;
 	private String cantidad;
+	private String asientos;
 	private String promo;
 	private String total;
 	
@@ -60,6 +61,12 @@ public class ReservaForm {
 	}
 	public void setCantidad(String cantidad) {
 		this.cantidad = cantidad;
+	}
+	public String getAsientos() {
+		return asientos;
+	}
+	public void setAsientos(String asientos) {
+		this.asientos = asientos;
 	}
 	public String getPromo() {
 		return promo;

@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-6">
 		<!-- por alguna razon class="col-md-6" no funciona -->
-		<form class="form" action="guardar" method="post">
+		<form class="form" action="asientos" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="pantalla">PANTALLA</label>

@@ -2,6 +2,8 @@ package frgp.seminario.cine.model;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,7 +38,7 @@ public class Reserva {
 	@Column(nullable=false)
 	private Date fechaCreacion;
 	
-	@OneToMany
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<ReservaPrecio> precios_detalle;
 	
 	@Column(nullable=false)

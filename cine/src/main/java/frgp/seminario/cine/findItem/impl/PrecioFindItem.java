@@ -76,8 +76,24 @@ public class PrecioFindItem {
 	 * Devuelve todos las precios activos
 	 * @return un ArrayList con los registros
 	 **/
-	public ArrayList<Precio> getAllEnabled(){
+	public ArrayList<Precio> getAllEnabled()
+	{
 		return getAllByFlag(true);
+	}
+	
+	/**
+	 * Devuelve el unico precio activo
+	 * @return un ArrayList con los registros
+	 **/
+	@SuppressWarnings("unchecked")
+	public Precio getEnabled(){
+		ArrayList<Precio> todos = (ArrayList<Precio>) dataAccess.getAll(Precio.class);
+		
+		for (Precio item : todos) {
+			if (item.isActivo() == true)
+				return item;
+		}
+		return null;
 	}
 	
 	/**

@@ -3,29 +3,29 @@
 
 <h3>Indique los tipos de entrada</h3>
 
-<form action="entradas" method="post">
+<form class="form" action="entradas" method="post">
 	<fieldset>
 		<div class="form-group">
-			<label for="cantidad">Menor</label>
-			<select id="menor" name="menor">
-				<c:forEach begin="0" end="${cantidad}" varStatus="i">
-					<option value="${i.count}"> ${i.count}</option> 
+			<label for="cantidadEntradas">Menor</label>
+			<select id="menor" class="form-group" name="menor">
+				<c:forEach begin="0" end="${cantidadEntradas}" varStatus="i">
+					<option value="${i.index}"> ${i.index}</option> 
 				</c:forEach>
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="cantidad">Mayor</label>
-			<select id="mayor" name="mayor">
-				<c:forEach begin="0" end="${cantidad}" varStatus="i">
-					<option value="${i.count}"> ${i.count}</option> 
+			<label for="cantidadEntradas">Mayor</label>
+			<select id="mayor" class="form-group" name="mayor">
+				<c:forEach begin="0" end="${cantidadEntradas}" varStatus="i">
+					<option value="${i.index}"> ${i.index}</option> 
 				</c:forEach>
 			</select>
 		</div>
 		<div class="form-group">
-			<label for="cantidad">General</label>
-			<select id="general" name="general">
-				<c:forEach begin="0" end="${cantidad}" varStatus="i">
-					<option value="${i.count}"> ${i.count}</option> 
+			<label for="cantidadEntradas">General</label>
+			<select id="general" class="form-group" name="general">
+				<c:forEach begin="0" end="${cantidadEntradas}" varStatus="i">
+					<option value="${i.index}"> ${i.index}</option> 
 				</c:forEach>
 			</select>
 		</div>

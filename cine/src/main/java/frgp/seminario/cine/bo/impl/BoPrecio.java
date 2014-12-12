@@ -141,7 +141,7 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 		return respuesta;
 	}
 
-	public ArrayList<Precio> getAllEnabled() {
-		return busquedaPrecio.getAllEnabled();
+	public Precio getEnabled() {
+		return busquedaPrecio.getEnabled();
 	}
 }

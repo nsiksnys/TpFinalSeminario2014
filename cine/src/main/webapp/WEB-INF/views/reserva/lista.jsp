@@ -18,13 +18,24 @@
 		<c:if test="${not empty lista}">
 			<c:forEach items="${lista}" var="item">
 				<tr>
-					<td>${item.codigo}</td>
+					<td>
+						<c:if test="${item.codigo != ''}">
+							<a href='<s:url value="/reserva/detalle?id=${item.id}"/>'>${item.codigo}</a>
+						</c:if>
+					</td>
 					<td>${item.complejo}</td>
 					<td>${item.pelicula}</td>
 					<td>${item.fecha}</td>
-					<td>${item.horario}</td>
+					<td>${item.funcion}</td>
 					<td>${item.total}</td>
-					<td><a href='<s:url value="/reserva/borrar?id=${item.id}"/>'>X</a></td>
+					<td>
+					<c:if test="${item.codigo != ''}">
+							<a href='<s:url value="/reserva/borrar?id=${item.id}"/>'>X</a>
+					</c:if>
+					<c:if test="${item.codigo == ''}">
+							Cancelado
+					</c:if>
+					</td>
 				</tr>
 			</c:forEach>
 		</c:if>
