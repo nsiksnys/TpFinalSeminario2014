@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
 	
 	@PostConstruct	
 	protected void initialize() {//Usuarios de prueba
-		accountRepository.save(new Account(Long.parseLong("1337"), "Danny", "Pink", "M", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "pregunta", "respuesta", "admin@frgp.utn.edu.ar", "test", "A"));
+/*		accountRepository.save(new Account(Long.parseLong("1337"), "Danny", "Pink", "M", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "pregunta", "respuesta", "admin@frgp.utn.edu.ar", "test", "A"));
 		accountRepository.save(new Account(Long.parseLong("1234"), "Donna", "Noble", "F", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "pregunta", "respuesta","gerente@frgp.utn.edu.ar", "test", "G"));
 		clienteRepository.save(new Cliente(Long.parseLong("7893"), "Clara", "Oswald", "F", fecha.getFechaFormatoDiaMesAnio("23/11/1963"), "pregunta", "respuesta" , "cliente@frgp.utn.edu.ar", "test", "32 Wallaby St", "Accion"));
 		clienteRepository.save(new Cliente(Long.parseLong("123456"), "Juan", "Perez", "M", fecha.getFechaFormatoDiaMesAnio("01/11/1988"), "pregunta", "respuesta" , "prueba@frgp.utn.edu.ar", "test", "32 Wallaby St", "Misterio", false));
@@ -60,7 +60,8 @@ public class UserService implements UserDetailsService {
 		clienteRepository.save(new Cliente(Long.parseLong("47831324"),"Whitney","Vaughn","F",fecha.getFechaFormatoDiaMesAnio("31/12/1969"),"pregunta","respuesta","Whitney.Vaughn@prueba.com","test","519-4280 Auctor Av.","Aventuras",false));
 		clienteRepository.save(new Cliente(Long.parseLong("61123281"),"Reuben","Jenkins","F",fecha.getFechaFormatoDiaMesAnio("31/12/1969"),"pregunta","respuesta","Reuben.Jenkins@prueba.com","test","P.O. Box 419, 4307 Rhoncus. Street","Aventuras",false));
 		clienteRepository.save(new Cliente(Long.parseLong("18316286"),"Charissa","Chaney","F",fecha.getFechaFormatoDiaMesAnio("31/12/1969"),"pregunta","respuesta","Charissa.Chaney@prueba.com","test","248-7905 At, Avenue","Aventuras",false));
-	}
+*/
+		}
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

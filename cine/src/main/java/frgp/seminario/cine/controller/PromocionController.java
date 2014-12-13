@@ -84,11 +84,18 @@ public class PromocionController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
-	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
+	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal, RedirectAttributes ra) 
 	{
 		security.isAuthorized(principal, ROLE);
 
 		Promocion registro = logicaNegocio.get(id);
+		
+		if (registro.isActivo())
+		{
+			MessageHelper.addErrorAttribute(ra, "No se puede modificar un registro activo.");
+			return new ModelAndView("redirect:/cartelera/lista");
+		}
+		
 		ModelAndView mav = new ModelAndView();
 		mav.getModelMap().addAttribute("PromocionForm", logicaNegocio.entityToForm(registro));
 		mav.getModelMap().addAttribute("registro", registro);

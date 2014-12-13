@@ -5,7 +5,7 @@
 <br>
 <div class="row">
 	<div class="col-6"> <!-- por alguna razon class="col-md-6" no funciona -->
-		<form class="form" action="guardar" method="post">
+		<form class="form" action="alta" method="post">
 			<fieldset>
 				<div class="form-group">
 					<label for="pelicula">Titulo</label>
@@ -22,7 +22,7 @@
 					<label>Subtitulos? <input type="checkbox" id="subtitulo" name="subtitulo"/></label>
 				</div>
 				<div class="form-group">
-					<label for="inicio">Inicio de proyeccion</label>
+					<label for="inicio">Inicio de proyeccion (debe ser un jueves)</label>
 					<input class="form-control" id="inicio" name="inicio" type="text" placeholder="dd/mm/aaaa" alt="date" required/>
 					<span id="inicio.errors" class="help-block"></span>
 				</div>

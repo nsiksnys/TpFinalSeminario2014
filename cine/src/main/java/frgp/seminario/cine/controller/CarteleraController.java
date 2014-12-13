@@ -68,11 +68,18 @@ public class CarteleraController {
 	}
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
-	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal) 
+	public ModelAndView modificar(@RequestParam("id") Long id, Principal principal, RedirectAttributes ra) 
 	{
 		security.isAuthorized(principal, ROLE);
 
 		Cartelera registro = logicaNegocio.get(id); 
+		
+		if (registro.isActivo())
+		{
+			MessageHelper.addErrorAttribute(ra, "No se puede modificar un registro activo.");
+			return new ModelAndView("redirect:/cartelera/lista");
+		}
+		
 		ModelAndView mav =new ModelAndView();
 		//mav.getModelMap().addAttribute("carteleraForm", new CarteleraForm());
 		mav.getModelMap().addAttribute("registro", logicaNegocio.entityToForm(registro));//FIXME: arreglar error en las lineas 30 y 37
