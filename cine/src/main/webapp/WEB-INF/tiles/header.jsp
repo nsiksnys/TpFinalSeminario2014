@@ -8,7 +8,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">CINE</a>
+        <a class="navbar-brand" href="<s:url value="/"/>">CINE</a>
         <div class="nav-collapse collapse">
             <ul class="nav navbar-nav">
             	<security:authorize access="!isAuthenticated()">
@@ -19,9 +19,8 @@
             	
 		    	<security:authorize access="isAuthenticated()">
 	               	<security:authorize ifAllGranted="C">
-	            		<li><a href="#">Complejos y salas</a></li>
+	            		<li><a href="<s:url value="/complejo/"/>">Complejos y salas</a></li>
 	               		<li><a href="<s:url value="/cartelera/activo"/>">Cartelera</a></li>
-	               		<li><a href="#">Proximos estrenos</a></li>
 	            		<li class="dropdown">
 							<a href="<s:url value="/reserva"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Reservas</font>
@@ -124,16 +123,16 @@
 							</ul>
 						</li>
 						<li class="dropdown">
-							<a href="<s:url value="/promo"/>" class="dropdown-toggle" data-toggle="dropdown">
+							<a href="<s:url value="/promocion"/>" class="dropdown-toggle" data-toggle="dropdown">
 								<font>Promociones</font>
 								<b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="<s:url value="/promo/lista"/>"><font><font>Lista</font></font></a>
+									<a href="<s:url value="/promocion/lista"/>"><font><font>Lista</font></font></a>
 								</li>
 								<li>
-									<a href='<s:url value="/promo/alta"></s:url>'><font><font>Nuevo</font></font></a>
+									<a href='<s:url value="/promocion/alta"></s:url>'><font><font>Nuevo</font></font></a>
 								</li>
 							</ul>
 						</li>

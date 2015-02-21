@@ -13,6 +13,7 @@ import frgp.seminario.cine.findItem.impl.CarteleraFindItem;
 import frgp.seminario.cine.findItem.impl.PeliculaFindItem;
 import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.PeliculaForm;
+import frgp.seminario.cine.model.FichaTecnica;
 import frgp.seminario.cine.model.Pelicula;
 import frgp.seminario.cine.repository.Repository;
 import frgp.seminario.cine.utils.FechaUtils;
@@ -59,6 +60,12 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 		if (!verificar(registro))
 			return false;
 		
+		if (getPeliculaActivaByNombreBoolean(registro.getNombre()))
+			return false;
+/* FIXME arreglar	
+		if (registro.isReposicion() && getFichaTecnicaByPeliculaActiva(registro.getNombre()) != null)
+			registro.setDetalles(getFichaTecnicaByPeliculaActiva(registro.getNombre()));
+*/		
 		return repositorio.save(registro);
 	}
 
@@ -179,5 +186,45 @@ public class BoPelicula implements BusinessObject<Pelicula, PeliculaForm>{
 			respuesta.put(item.getId().toString(), item.getNombre());
 		
 		return respuesta;
+	}
+
+	public HashMap<String, String> getActiveMap(Long pelicula) {
+		ArrayList<Pelicula> activas = busquedaPelicula.getAllEnabled();
+		HashMap<String, String> respuesta = new HashMap<String, String>(1);
+		
+		if (activas.isEmpty())
+			return null;
+		
+		for (Pelicula item : activas)
+		{
+			if (item.getId() == pelicula){
+				respuesta.put(item.getId().toString(), item.getNombre());
+				return respuesta;
+			}
+		}
+		
+		return null;
+	}
+	
+	public FichaTecnica getFichaTecnicaByPeliculaActiva(String nombrePelicula)
+	{
+		for (Pelicula item : repositorio.getAll(Pelicula.class))
+		{
+			if (item.getNombre().trim().toUpperCase().equals( nombrePelicula.trim().toUpperCase() ) )
+				return item.getDetalles();
+		}
+		
+		return null;
+	}
+	
+	public boolean getPeliculaActivaByNombreBoolean(String nombrePelicula)
+	{
+		for (Pelicula item : repositorio.getAll(Pelicula.class))
+		{
+			if (item.getNombre().trim().toUpperCase().equals( nombrePelicula.trim().toUpperCase() ) && item.isActivo())
+				return true;
+		}
+		
+		return false;
 	}
 }

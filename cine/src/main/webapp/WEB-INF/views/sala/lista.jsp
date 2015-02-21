@@ -10,10 +10,11 @@
 			<thead>
 				<tr>
 					<th>Id</th>
-					<th>Complejo</th>
-					<th>Numero</th>
-					<th>Estado</th>
-					<th></th>
+					<th>Nombre Complejo</th>
+					<th>Sala Numero</th>
+					<th>Status</th>
+<!-- 					<th></th> -->
+					<th colspan="3">Opciones</th>
 				</tr>
 			</thead>
 			<tbody>

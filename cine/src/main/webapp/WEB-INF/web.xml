@@ -6,4 +6,12 @@
 	<error-page>
     	<location>/generalError</location>
 	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+    	<location>/notAuthorized</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+    	<location>/notFound</location>
+	</error-page>
 </web-app>

@@ -9,6 +9,7 @@ public interface DataAccess {
 	public Object get(Class entityClass, Object id);
 	@SuppressWarnings("rawtypes")
 	public List getAll(Class entityClass);
+	@SuppressWarnings("rawtypes")
 	public boolean save(Object registro);
 	public boolean merge(Object registro);
 //	public void saveOrUpdate(Object registro);
@@ -16,4 +17,8 @@ public interface DataAccess {
 	public boolean delete (Object registro);
 	@SuppressWarnings("rawtypes")
 	public Object createQuery(Class entityClass);
+	@SuppressWarnings("rawtypes")
+	List getCustomQueryResult(String query);
+
+	
 }

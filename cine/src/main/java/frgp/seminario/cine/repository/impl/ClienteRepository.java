@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,8 @@ public class ClienteRepository {
 	@Transactional
 	public Account save(Cliente registro) {
 		registro.setPassword(passwordEncoder.encode(registro.getPassword()));
+		registro.setRespuestaSeguridad(passwordEncoder.encode(registro.getRespuestaSeguridad()));
+		
 		if(!dataAccess.save(registro))
 			return null;
 		else

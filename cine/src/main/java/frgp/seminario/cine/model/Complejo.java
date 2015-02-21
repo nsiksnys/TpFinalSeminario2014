@@ -27,7 +27,7 @@ public class Complejo {
 	private List<Sala> salas;
 	
 	@Column(nullable = false)
-	private boolean activo;
+	private boolean activo=true;
 	
 	public Complejo()
 	{
@@ -35,6 +35,7 @@ public class Complejo {
 	}
 
 	public Complejo(Long id, String nombre, String direccion, boolean activo) {
+		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.direccion = direccion;
@@ -42,11 +43,13 @@ public class Complejo {
 	}
 
 	public Complejo(String nombre, String direccion) {
+		super();
 		this.nombre = nombre;
 		this.direccion = direccion;
 	}
 	
 	public Complejo(String nombre, String direccion, List<Sala> salas) {
+		super();
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.salas = salas;
@@ -75,7 +78,7 @@ public class Complejo {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-
+	
 	public List<Sala> getSalas() {
 		return salas;
 	}
@@ -92,6 +95,7 @@ public class Complejo {
 		this.activo = activo;
 	}
 	
+	
 	public boolean equals(Complejo item)
 	{
 		if (nombre.compareTo(item.getNombre()) != 0)
@@ -100,8 +104,31 @@ public class Complejo {
 		if (direccion.compareTo(item.getDireccion()) != 0)
 			return false;
 		
-		//TODO: comparar la list de salas.
+		if (!isMismaLista(salas, item.getSalas()))
+			return false;
 		
 		return true;
+	}
+	
+	public boolean isMismaLista(List<Sala> thisSalas, List<Sala> registroSalas)
+	{
+		int cuenta = 0;
+		
+		if (registroSalas == null)
+		{
+			if (salas.size() == 0)
+				return true;
+			return false;
+		}
+		
+		for (int i = 0; i < thisSalas.size(); i++) {// uso un for tradicional para evitar que busque un null en elementos
+			for (int j = 0; j < thisSalas.size(); j++) {
+				if (thisSalas.get(i).getId() == registroSalas.get(j).getId())// comparo los ids de las salas
+					cuenta++;
+			}
+		}
+		if (cuenta == registroSalas.size())
+			return true;
+		return false;
 	}
 }

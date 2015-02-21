@@ -23,8 +23,13 @@ public class Precio {
 	
 	@Column(nullable=false)
 	private boolean activo;
+	
+	public Precio() {
+		//constructor vacio
+	}
 
 	public Precio(Long id, float menor, float general, float mayor) {
+		super();
 		this.id = id;
 		this.menor = menor;
 		this.general = general;
@@ -32,6 +37,7 @@ public class Precio {
 	}
 
 	public Precio(float menor, float general, float mayor) {
+		super();
 		this.menor = menor;
 		this.general = general;
 		this.mayor = mayor;
@@ -44,7 +50,7 @@ public class Precio {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public float getMenor() {
 		return menor;
 	}

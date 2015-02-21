@@ -40,5 +40,10 @@
                 <p>Nuevo? <a href='<s:url value="/signup"/>'>Registrarse.</a></p>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-lg-offset-2 col-lg-10">
+                <p>Olvido la contraseña? <a href='<s:url value="/recuperar/uno"/>'>Recuperar.</a></p>
+            </div>
+        </div>
     </fieldset>
 </form>

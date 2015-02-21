@@ -106,6 +106,18 @@ public class DataAccessImpl implements DataAccess{
 	}
 
 	/**
+	 * Devuelve el resultado de una query propia
+	 * @param query String con la consulta
+	 * @return un List con los resultados
+	 */
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List getCustomQueryResult(String query)
+	{
+		return entityManager.createNativeQuery(query).getResultList();
+	}
+
+	/**
 	 ** Crea una consulta a ejecutar sobre la base de datos.
 	 ** @param entityClass Clase de la entidad sobre la que se ejecutará la consulta.
 	 **/

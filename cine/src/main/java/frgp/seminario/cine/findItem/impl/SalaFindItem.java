@@ -30,7 +30,7 @@ public class SalaFindItem {
 	}
 
 	/**
-	 * Busca las salas pertenecientes a un complejo.
+	 * Busca las salas activas pertenecientes a un complejo.
 	 * @param idComplejo id del complejo buscado
 	 * @return ArrayList con todos las salas
 	 **/
@@ -40,14 +40,14 @@ public class SalaFindItem {
 		ArrayList<Sala> rta = new ArrayList<Sala>();
 		
 		for (Sala item : todos) {
-			if (item.getIdComplejo() == idComplejo);
+			if (item.getIdComplejo().equals(idComplejo));
 				rta.add(item);
 		}
 		return rta;
 	}
 	
 	/**
-	 * Busca las salas pertenecientes a un complejo.
+	 * Busca las salas activas pertenecientes a un complejo.
 	 * @param idComplejo id del complejo buscado
 	 * @return true existen salas para ese complejo, false si no se encontro ninguna
 	 **/

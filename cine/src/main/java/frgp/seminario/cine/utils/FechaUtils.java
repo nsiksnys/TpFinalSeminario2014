@@ -119,21 +119,17 @@ public class FechaUtils {
 		return new GregorianCalendar(anio,mes,dia).getTime();
 	}
 	
-	/**
-	 * Devuelve la diferencia entre dos objetos Time
-	 * @param timeMayor objeto time mayor
-	 * @param timeMenor objeto time menor
-	 * @return un objeto time con la diferencia entre timeUno y timeDos
-	 */
-	public Time getDiferenciaTime(Time timeMayor, Time timeMenor)
+	public Date getFechaReserva(int dia)
 	{
-		long c;
-		if (timeMayor.compareTo(timeMenor) > 0)
-			c = timeMayor.getTime() - timeMenor.getTime();
+		GregorianCalendar fecha = new GregorianCalendar();
 		
-		else //si se ingresaron los Time en el orden incorrecto
-			c = timeMenor.getTime() - timeMayor.getTime();
+		if (dia - fecha.get(Calendar.DAY_OF_WEEK) >= 0){//la resta entre el dia de la reserva y el actual es distinto de cero
+			fecha.add(Calendar.DAY_OF_MONTH, dia - fecha.get(Calendar.DAY_OF_WEEK));
+		}else{
+			int diasFaltante =  7 - fecha.get(Calendar.DAY_OF_WEEK);
+			fecha.add(Calendar.DAY_OF_MONTH, diasFaltante + dia);
+		}
 		
-		return new Time(c);
+		return fecha.getTime();
 	}
 }

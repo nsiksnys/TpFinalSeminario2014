@@ -5,5 +5,11 @@
 <tiles-definitions>
 	<definition name="generalError" extends="default">
 		<put-attribute name="body" value="/WEB-INF/views/error/generalError.jsp"></put-attribute>
+	</definition>
+	<definition name="notAuthorized" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/error/notAuthorized.jsp"></put-attribute>
 	</definition>	
+	<definition name="notFound" extends="default">
+		<put-attribute name="body" value="/WEB-INF/views/error/notFound.jsp"></put-attribute>
+	</definition>
 </tiles-definitions>

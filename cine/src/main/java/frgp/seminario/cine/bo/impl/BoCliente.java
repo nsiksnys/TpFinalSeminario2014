@@ -2,11 +2,15 @@ package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.repository.impl.ClienteRepository;
 import frgp.seminario.cine.signup.SignupForm;
@@ -20,7 +24,13 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 	ClienteRepository repositorio; //aclaro la clase que se utiliza en este caso en particular
 	
 	@Autowired
+	ReservaFindItem reservas;
+	
+	@Autowired
 	FechaUtils utils;
+	
+	@Inject
+	private PasswordEncoder passwordEncoder;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -67,6 +77,40 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 		
 		return repositorio.merge(registro);
 	}
+	
+	/**
+	 * Usado para cambiar los datos del cliente logueado (/usuario/actual)
+	 * @param formulario
+	 * @return el resultado del merge del registro
+	 */
+	public boolean modificar(SignupForm formulario) {
+		Cliente registro = this.get(formulario.getEmail());
+				
+		//guardo los cambios posibles
+		if (formulario.getNombre() != null && formulario.getNombre() != "")
+			registro.setNombre(formulario.getNombre());
+		
+		if (formulario.getApellido() != null && formulario.getApellido() != "")
+			registro.setApellido(formulario.getApellido());
+		
+		if (formulario.getFechaNacimiento() != null)
+			registro.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
+		
+		if (formulario.getPreguntaSeguridad() != "")
+			registro.setPreguntaSeguridad(formulario.getPreguntaSeguridad());
+		
+		if (formulario.getRespuestaSeguridad() !="")
+			registro.setRespuestaSeguridad(passwordEncoder.encode(formulario.getRespuestaSeguridad()));
+		
+		if (formulario.getDireccion() != null && formulario.getDireccion() != "")
+			registro.setDireccion(formulario.getDireccion());
+		
+		if (formulario.getGenero() != null && formulario.getGenero() != "")
+			registro.setGeneroPreferido(formulario.getGenero());
+		
+		
+		return repositorio.merge(registro);
+	}
 
 	/**
 	 ** Desactiva un registro en la base de datos.
@@ -75,7 +119,9 @@ public class BoCliente implements BusinessObject<Cliente, SignupForm> {
 	 **/
 	@Override
 	public boolean desactivar(Cliente registro) {
-		//Verificaciones propias de la clase
+		//si el cliente tiene reservas activas
+		if (reservas.findActiveByClienteEmailBoolean(registro.getEmail()))
+			return false;
 		
 		if (registro.isActive())
 			registro.setActive(false);

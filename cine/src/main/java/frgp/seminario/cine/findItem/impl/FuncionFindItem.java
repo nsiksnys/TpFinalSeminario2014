@@ -310,6 +310,25 @@ public class FuncionFindItem /* implements FindItemWithFlag<Funcion> */ {
 		return rta;
 	}
 	
+	/**INGRESADA AHORA 
+	 * busca las funciones activas del mismo complejo, misma pelicula.
+	 * del mismo horario y misma sala.
+	 * @param idComplejo id del complejo buscado
+	 * @param idPelicula id de la pelicula buscada
+	 * @return ArrayList con todos las funciones
+	 */
+	public boolean FuncionRepetida(Long idcomplejo, Long sala_id, Long horario_id, Long idPelicula) {
+		if(findActiveByComplejoSalaBoolean(idcomplejo, sala_id) == true)
+		{
+			if(findActiveByPeliculaBoolean(idPelicula)== true && findByHorarioBoolean(horario_id)==true)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+
 	/**
 	 * Busca las funciones activas del mismo complejo y la misma pelicula.
 	 * @param idComplejo id del complejo buscado
@@ -320,5 +339,30 @@ public class FuncionFindItem /* implements FindItemWithFlag<Funcion> */ {
 		if (findActiveByComplejoPelicula(idComplejo, idPelicula).isEmpty())
 			return false;
 		return true;
+	}
+	/**
+	 * Busca si hay diferentes peliculas para la misma sala.
+	 * @param idComplejo id del complejo buscado
+	 * @param idPelicula id de la pelicual buscada
+	 * @return true existen resultados, false si no se encontro ninguno
+	 **/
+	public boolean findSalaOcupadaBoolean(Long idcomplejo, Long sala_id, Long idPelicula){
+		
+		if(findByComplejoSalaBoolean(idcomplejo,sala_id)){
+			if(findPeliculaSalaBoolean( idcomplejo,  sala_id,  idPelicula)){
+				return false;
+			}else{
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean findPeliculaSalaBoolean(Long idcomplejo, Long sala_id, Long idPelicula){
+		ArrayList<Funcion> lista = findByComplejoSala(idcomplejo,sala_id);
+		for (Funcion item : lista) {
+			if (item.getPelicula().getId() == idPelicula)
+				return true;
+		}
+		return false;
 	}
 }

@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
 import frgp.seminario.cine.findItem.impl.ComplejoFindItem;
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.model.Complejo;
+import frgp.seminario.cine.model.Funcion;
+import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.repository.Repository;
 
@@ -27,7 +30,13 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 	ComplejoFindItem busquedaComplejo;
 	
 	@Autowired
+	ReservaFindItem busquedaReservas;
+	
+	@Autowired
 	BoSala salas;
+	
+	@Autowired //aclaro cual es el bean a inyectar
+	BoFuncion funciones;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -179,27 +188,22 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 	
 	public Complejo formToEntityUpdate(ComplejoForm formulario)
 	{
-		ArrayList<Sala> existente = new ArrayList<Sala>();
-		ArrayList<Sala> nueva;
+		ArrayList<Sala> actual = new ArrayList<Sala> (get(Long.parseLong(formulario.getId())).getSalas());
+		Sala nueva;
 		Complejo registro =  new Complejo(formulario.getNombre(), formulario.getDireccion());
 		registro.setId(Long.parseLong(formulario.getId()));
 		
-		if (salas.complejoHasAny(registro.getId()))//si el complejo tiene salas
-		{
-			existente.addAll(salas.getByComplejo(registro.getId()));
-		}
 		
 		if (formulario.getSalas() >0) //si se agregan salas
 		{
-			nueva = new ArrayList<Sala>(formulario.getSalas());
 			for (int i=1; i<=formulario.getSalas(); i++){
-				nueva.add(new Sala(registro.getId(), existente.size()+i));//el id es un null
+				nueva= new Sala(registro.getId(), actual.size()+1);
+				salas.guardar(nueva);
+				actual.add(nueva);//el id es un null
 			}
-			salas.guardar(nueva);
-			existente.addAll(nueva);//las agrego a la lista de existentes
 		}
 		
-		registro.setSalas(existente);
+		registro.setSalas(actual);
 		return registro;
 	}
 	
@@ -230,4 +234,29 @@ public class BoComplejo implements BusinessObject<Complejo, ComplejoForm> {
 		
 		return respuesta;
 	}
+	//============================
+	public void desactivarSalasComplejo(Complejo registro){
+		List<Sala> lista = registro.getSalas();		
+		for(Sala sala : lista){
+			salas.desactivar(sala);			
+		}
+	}
+	public void desactivarFuncionComplejo(Complejo registro){
+		List<Funcion> lista = funciones.listarTodos();
+		for(Funcion item : lista){
+			if(item.getSala().getIdComplejo() == registro.getId())
+			funciones.desactivar(item);
+		}
+	}
+	public boolean isReservaActivaComplejo(Complejo registro){
+		ArrayList<Reserva> lista = busquedaReservas.getAllEnabled();
+		for(Reserva item : lista){
+			if(item.getFuncion().getSala().getIdComplejo() == registro.getId()){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 }

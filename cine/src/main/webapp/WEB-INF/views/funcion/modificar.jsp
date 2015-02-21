@@ -4,45 +4,38 @@
 <br>
 <div class="row">
 	<div class="col-6 column">
-		<form class="form" action="guardar" method="post">
+		<form class="form" action="modificar" method="post">
 			<fieldset>
 				<div class="form-group">
-					<label for="complejos">Complejo: ${registro.nombreComplejo}</label>
-					<input id="complejos" name="compeljos" type="hidden" value="${registro.complejo}">
+					<label for="complejos">Id: </label>
+					<input class="form-control" disabled value="${registro.id}">
+					<input id="id" name="id" type="hidden" value="${registro.id}">
 				</div>
 				<div class="form-group">
-					<label for="salas">Sala: ${registro.nombreSala}</label>
-					<input id="salas" name="salas" type="hidden" value="${registro.sala}">
+					<label for="complejos">Complejo: </label>
+					<input class="form-control" disabled value="${registro.nombreComplejo}">
+					<input id="complejos" name="complejos" type="hidden" value="${registro.complejos}">
+				</div>
+				<div class="form-group">
+					<label for="salas">Sala: </label>
+					<input class="form-control" disabled value="${registro.nombreSala}">
+					<input id="salas" name="salas" type="hidden" value="${registro.salas}">
 				</div>
 				<div class="form-group">
 					<label for="peliculas">Pelicula</label> </br>
-					<select id="peliculas" name="peliculas" class="form-control">
-						<c:if test="${not empty peliculas}">
-							<c:forEach items="${peliculas}" var="pelicula">
-								<option value="${pelicula.id}">${peliculas.nombre}</option>
-							</c:forEach>
-						</c:if>
-						<c:if test="${empty peliculas}">
-							<option value="0">No hay peliculas</option>
-						</c:if>
-					</select>
+					<input name="peliculas" id="peliculas" type="hidden" value="${registro.peliculas}" />
+					<input class="form-control" disabled value="${registro.nombrePelicula}" />
 				</div>
 				<div class="form-group">
 					<label for="horarios">Horarios</label> </br>
-					<select name="horarios" size="5" multiple style='width: 100%;'>
-						<c:if test="${not empty horarios}">
-							<c:forEach items="${horarios}" var="horario">
-								<option value="${horario.id}">${horario.horaInicio} - ${horario.horaFin}</option>
-							</c:forEach>
-						</c:if>
-						<c:if test="${empty horarios}">
-							<option value="0">No hay horarios</option>
-						</c:if>
+					<input name="horario" id="horario" type="hidden" value="${registro.horarios}" />
+					<select name="horarios" id="horarios" multiple class="form-control">
+						<option value="0">Elija complejo, sala y pelicula</option>
 					</select>
+					<span id="horarios.errors" class="help-block"></span>
 				</div>
+			<button type="submit" class="btn btn-default">Guardar</button>
 			</fieldset>
-
-			<button type="button" class="btn btn-success">Guardar</button>
 		</form>
 	</div>
 </div>

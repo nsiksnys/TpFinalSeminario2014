@@ -1,6 +1,7 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,18 +60,12 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 	 **/
 	@Override
 	public boolean modificar(Precio registro) {
-		if (!verificar(registro))
-			return false;
-		
+		if(!(registro instanceof frgp.seminario.cine.model.Precio))
+		return false;
 		return repositorio.merge(registro);
 	}
 
-	/**
-	 ** Desactiva un registro en la base de datos.
-	 ** @param registro El objeto a desactivar.
-	 ** @return true si se realizo con exito, false si hubo una excepcion.
-	 **/
-	@Override
+	
 	public boolean desactivar(Precio registro) {
 		
 		if (registro.isActivo())
@@ -96,8 +91,9 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 	 ** @return un ArrayList con todos los registros
 	 **/
 	@Override
-	public ArrayList<Precio> listarTodos() {
-		return (ArrayList<Precio>) repositorio.getAll(Precio.class);
+	public List<Precio> listarTodos() 
+	{
+		return repositorio.getAll(Precio.class);
 	}
 
 	/**
@@ -109,7 +105,7 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 		if (!(registro instanceof frgp.seminario.cine.model.Precio))
 			return false;
 		
-		if (busquedaPrecio.getIdByObject(registro) != 0)//si el registro ya existe en la base de datos
+		if (busquedaPrecio.getActiveIdByObject(registro) != 0)//si el registro ya existe en la base de datos
 			return false;
 		
 		return true;
@@ -118,11 +114,34 @@ public class BoPrecio implements BusinessObject<Precio, PrecioForm> {
 	/**
 	 * Convierte un formulario en un registro Precio
 	 * @param formulario el formulario submiteado
-	 * @return un objeto Pelicula
+	 * @return un objeto Precio
 	 */
 	@Override
 	public Precio formToEntity(PrecioForm formulario)
 	{
 		return new Precio(formulario.getMenor(), formulario.getGeneral(), formulario.getMayor());
+	}
+	
+	public PrecioForm entityToForm(Precio registro)
+	{
+		PrecioForm formulario = new PrecioForm();
+		formulario.setId(registro.getId().toString());
+		formulario.setMenor(registro.getMenor());
+		formulario.setGeneral(registro.getGeneral());
+		formulario.setMayor(registro.getMayor());
+		return formulario;
+	}
+	
+	public ArrayList<PrecioForm> listarTodosActivosForm() {
+		ArrayList<PrecioForm> respuesta = new ArrayList<PrecioForm>();
+		
+		for(Precio registro : repositorio.getAll(Precio.class))
+			if(registro.isActivo())
+				respuesta.add(entityToForm(registro));
+		return respuesta;
+	}
+
+	public Precio getEnabled() {
+		return busquedaPrecio.getEnabled();
 	}
 }

@@ -30,6 +30,16 @@ public class Cliente extends Account{
 		this.direccion = direccion;
 		this.generoPreferido = generoPreferido;
 	}
+	
+	public Cliente(Long dni, String nombre, String apellido, String sexo,
+			Date fechaNacimiento, String preguntaSeguridad, String respuestaSeguridad, String email,
+			String password, String direccion,
+			String generoPreferido, boolean activo) {
+		super(dni, nombre, apellido, sexo, fechaNacimiento, preguntaSeguridad, respuestaSeguridad, email, password, "C");
+		this.direccion = direccion;
+		this.generoPreferido = generoPreferido;
+		this.setActive(activo);
+	}
 
 	public Cliente(Long dni, String nombre, String apellido, String email, String password,
 			String direccion, String generoPreferido) {

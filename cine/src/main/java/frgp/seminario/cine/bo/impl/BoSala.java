@@ -1,21 +1,27 @@
 package frgp.seminario.cine.bo.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import frgp.seminario.cine.findItem.impl.ReservaFindItem;
 import frgp.seminario.cine.findItem.impl.SalaFindItem;
 import frgp.seminario.cine.forms.SalaForm;
 import frgp.seminario.cine.model.Complejo;
+import frgp.seminario.cine.model.Funcion;
+import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.repository.Repository;
 
 //Funciones pertenecientes a la logica de negocios
 @Service("BoSala") //agrego el nombre del bean, para que al momento de llamar al Autowired pueda aclarar cual quiero
 public class BoSala {
+	private static int capacidad = 100;
+	
 	@Autowired
 	@Qualifier("SalaRepository") //aclaro cual es el bean a inyectar
 	Repository<Sala> repository;
@@ -27,6 +33,12 @@ public class BoSala {
 	@Autowired
 	@Qualifier("SalaFindItem") //aclaro cual es el bean a inyectar
 	SalaFindItem busquedaSala;
+	
+	@Autowired
+	ReservaFindItem busquedaReservas;
+	
+	@Autowired //aclaro cual es el bean a inyectar
+	BoFuncion funciones;
 	
 	/** 
 	 ** Busca un registro en específico.
@@ -147,5 +159,50 @@ public class BoSala {
 
 	public boolean complejoHasAny(Long idComplejo) {
 		return busquedaSala.findByComplejoBoolean(idComplejo);
+	}
+
+	public HashMap<String, String> getSalasComplejoMap(Long idComplejo) {
+		ArrayList<Sala> salas =  busquedaSala.findByComplejo(idComplejo);
+		HashMap<String, String> respuesta = new HashMap<String, String>(salas.size());
+		
+		if (salas.isEmpty())
+			return null;
+		
+		for (Sala item : salas){
+			if(item.getIdComplejo() == idComplejo){
+				respuesta.put(item.getId().toString(), Integer.toString(item.getNumeroSala()));
+			}	
+		}
+		return respuesta;
+
+	}
+	
+	/**
+	 * Compara la cantidad de asientos cubiertos dados con la capacidad de la sala.
+	 * @param asientosCubiertos
+	 * @return true si la cantidad de asientos es igual a la capacidad total
+	 */
+	public boolean isCubierta(int asientosCubiertos)
+	{
+		if (asientosCubiertos == this.capacidad)
+			return true;
+		return false;
+	}
+	//=================================
+	public void desactivarFuncionComplejo(Sala registro){
+		List<Funcion> lista = funciones.listarTodos();
+		for(Funcion item : lista){
+			if(item.getSala().getId() == registro.getId())
+			funciones.desactivar(item);
+		}
+	}
+	public boolean isReservaActivaSala(Sala registro){
+		ArrayList<Reserva> lista = busquedaReservas.getAllEnabled();
+		for(Reserva item : lista){
+			if(item.getFuncion().getSala().getId() == registro.getId()){
+				return true;
+			}
+		}
+		return false;
 	}
 }

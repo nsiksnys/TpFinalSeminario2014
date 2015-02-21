@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.dataAccess.DataAccess;
+import frgp.seminario.cine.model.Complejo;
 import frgp.seminario.cine.model.Funcion;
 import frgp.seminario.cine.model.Reserva;
 import frgp.seminario.cine.model.Cartelera;
+import frgp.seminario.cine.model.Sala;
 import frgp.seminario.cine.repository.Repository;
 
 @Service("ReservaFindItem")
@@ -48,6 +50,21 @@ public class ReservaFindItem {
 				respuesta.add(item);
 		}
 		return respuesta;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean findActiveByClienteEmailBoolean(String email){
+		ArrayList<Reserva> todos = (ArrayList<Reserva>) dataAccess.getAll(Reserva.class);
+		ArrayList<Reserva> respuesta = new ArrayList<Reserva>(); 
+		
+		for (Reserva item : todos) {
+			if (item.getCliente().getEmail().equals(email) && item.isActivo())
+				respuesta.add(item);
+		}
+		
+		if (respuesta.isEmpty())
+			return false;
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -125,4 +142,64 @@ public class ReservaFindItem {
 		return false;
 	}
 
+	/**
+	 * Busca las reservas activas por promocion
+	 * @param idPromocion id de la promocion que se busca
+	 * @return true si la busqueda encontro registros, false si no existen
+	 */
+	public boolean findActiveByPromocionBoolean(Long idPromocion) {
+		ArrayList<Reserva> todos = getAllEnabled();
+		
+		for (Reserva item : todos){
+			if (item.getPromo().getId() == idPromocion)
+				return true;
+		}
+		return false;
+	}
+	
+	//==========================
+	//
+	//==========================
+	public int findAsientoIdByReserva(Long idReserva)
+	{
+		return dataAccess.getCustomQueryResult("SELECT asientos_id FROM Reserva JOIN Reserva_Asiento ON Reserva.id = Reserva_Asiento.Reserva_id WHERE Reserva.id =" + idReserva).size();
+	}
+	public int findReservaByBetween(String fecha1,String fecha2, Long idReserva)
+	{
+		return dataAccess.getCustomQueryResult("SELECT asientos_id FROM Reserva JOIN Reserva_Asiento ON Reserva.id = Reserva_Asiento.Reserva_id WHERE Reserva.FechaReserva  BETWEEN "+fecha1+" AND "+fecha2+" Reserva.id =" + idReserva).size();
+	}
+	public int findCantidadAsientos(String mail,Long idfuncion, String fecha)
+	{
+		return dataAccess.getCustomQueryResult("SELECT asientos_id FROM Reserva JOIN Reserva_Asiento ON Reserva.id = Reserva_Asiento.Reserva_id WHERE Reserva.cliente_email = '" + mail + "' AND Reserva.funcion_id =" +   idfuncion +" AND Reserva.fechaReserva LIKE '" + fecha + "%'").size();
+	}
+	//==========================
+	//
+	//==========================
+	public boolean findReservaActivaByFuncionBoolean(Funcion itemFuncion) {
+		ArrayList<Reserva> todos = getAllEnabled();
+		
+		for (Reserva item : todos){
+			if (item.getFuncion().getId() == itemFuncion.getId())
+				return true;
+		}
+		return false;
+	}
+	public boolean findReservaActivaBySalaBoolean(Sala itemSala) {
+		ArrayList<Reserva> todos = getAllEnabled();
+		
+		for (Reserva item : todos){
+			if (item.getFuncion().getSala().getId() == itemSala.getId())
+				return true;
+		}
+		return false;
+	}
+	public boolean findReservaActivaByComplejoBoolean(Complejo itemComplejo) {
+		ArrayList<Reserva> todos = getAllEnabled();
+		
+		for (Reserva item : todos){
+			if (item.getFuncion().getSala().getIdComplejo() == itemComplejo.getId())
+				return true;
+		}
+		return false;
+	}
 }

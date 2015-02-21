@@ -3,13 +3,12 @@ package frgp.seminario.cine.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 
-import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +21,7 @@ import frgp.seminario.cine.bo.impl.BoAccount;
 import frgp.seminario.cine.model.Cliente;
 import frgp.seminario.cine.signup.SignupForm;
 import frgp.seminario.cine.support.web.MessageHelper;
+import frgp.seminario.cine.utils.SecurityUtils;
 
 @RequestMapping(value="/usuario/**")
 @Controller
@@ -29,15 +29,20 @@ public class UsuarioController {
 	@Autowired
 	BoAccount boAccount;
 	
+	@Autowired
+	SecurityUtils security;
+	
+	private static String ROLE = "A";
+	
 	private static final Logger LOG = LoggerFactory.getLogger(UsuarioController.class);
 	
 	@RequestMapping(value = "/actual", method = RequestMethod.GET)
 	public ModelAndView current (Principal principal, RedirectAttributes ra) {
 		ModelAndView mav =new ModelAndView();
 		LOG.info("/usuario/actual: se quieren mostrar detalles del usuario " + principal.getName());
-		Account account = boAccount.get(principal.getName());
 		
-		if (account == null)
+		//si no encontro al usuario
+		if (!boAccount.getActiveBoolean(principal.getName()))
 		{
 			LOG.error("/usuario/actual: No se encontro el usuario principal.getName()= " + principal.getName());
 			MessageHelper.addErrorAttribute(ra, "No se encontro el usuario.");
@@ -45,7 +50,7 @@ public class UsuarioController {
 			return mav;
 		}
 		
-		SignupForm form = boAccount.entityToForm(account);
+		SignupForm form = boAccount.entityToForm(boAccount.get(principal.getName()));
 		Cliente cliente = null;
 		if (form == null)
 		{
@@ -56,6 +61,8 @@ public class UsuarioController {
 		}
 		mav.getModelMap().addAttribute("command", new SignupForm());
 		mav.getModelMap().addAttribute("registro", form);
+		mav.getModelMap().addAttribute("sexos", boAccount.getSexos());
+
 		if (form.getRole().equals("C"))//si el usuario es un cliente
 		{
 			cliente = boAccount.getCliente(principal.getName());
@@ -66,8 +73,11 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/lista", method = RequestMethod.GET)
 	public ModelAndView lista(Principal principal) {
+		security.isAuthorized(principal, ROLE);
+
 		ArrayList<Account> lista = (ArrayList<Account>) boAccount.listarTodos();
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("lista", lista);
@@ -75,21 +85,29 @@ public class UsuarioController {
 		return mav;
 	}
 		
+	
 	@RequestMapping(value = "/usuario/alta", method = RequestMethod.GET)
 	public ModelAndView alta(Principal principal) {
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		mav.getModelMap().addAttribute("signupForm", new SignupForm());
+		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
+		mav.getModelMap().addAttribute("sexos", boAccount.getSexos());
 		return mav;
 	}
+	
 	
 	@RequestMapping(value = "/modificar", method = RequestMethod.GET)
 	public ModelAndView modificar(@RequestParam("id") String email, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView();
 		SignupForm registro = boAccount.entityToForm(boAccount.get(email));
-		mav.getModelMap().addAttribute("signupForm", new SignupForm());
 		mav.getModelMap().addAttribute("registro", registro);
 		mav.getModelMap().addAttribute("roles", boAccount.getRoles());
+		
 		if (registro.getRole().equals("C"))//si el usuario es un cliente
 		{
 			Cliente cliente = boAccount.getCliente(email);
@@ -99,9 +117,12 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/borrar", method = RequestMethod.GET)
 	public ModelAndView borrar(@RequestParam("id") String email, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");//indico que uso la vista "modificar"
 		
 		if (!boAccount.desactivar(boAccount.get(email))){//si no se guarda
@@ -114,9 +135,12 @@ public class UsuarioController {
 		return mav;
 	}
 	
+	
 	@RequestMapping(value = "/activar", method = RequestMethod.GET)
 	public ModelAndView activar(@RequestParam("id") String email, Principal principal) 
 	{
+		security.isAuthorized(principal, ROLE);
+
 		ModelAndView mav =new ModelAndView("redirect:/usuario/lista");//indico que uso la vista "modificar"
 		
 		if (!boAccount.activar(boAccount.get(email))){//si no se guarda
@@ -129,21 +153,16 @@ public class UsuarioController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/alta", method = RequestMethod.POST)//TODO: testear
-	public String alta(@Valid @ModelAttribute SignupForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	
+	@RequestMapping(value = "/alta", method = RequestMethod.POST)
+	public String alta(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
-		//ModelAndView mav =new ModelAndView("redirect:/usuario/alta");
+		security.isAuthorized(principal, ROLE);
+
 		Account usuario;
 		Cliente cliente;
 		boolean status;
 		
-		if (errors.hasErrors())
-		{
-			LOG.error("/usuario/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
 		if (formulario.getRole().equals("C"))
 		{
 			cliente = boAccount.formToClienteEntity(formulario);
@@ -156,10 +175,9 @@ public class UsuarioController {
 		}
 		
 		if (!status){//si no se guarda
-			//mav.setViewName("redirect:/usuario/alta");
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
+			return "redirect:/usuario/alta";
 		}
 		else
 		{
@@ -169,42 +187,46 @@ public class UsuarioController {
 		return "redirect:/usuario/lista";
 	}
 	
+	
 	@RequestMapping(value = "/modificar", method = RequestMethod.POST)
-	public String modificar(@Valid @ModelAttribute SignupForm formulario, /*Principal principal,*/ Errors errors, RedirectAttributes ra) 
+	public String modificar(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
 	{
-		//ModelAndView mav =new ModelAndView("redirect:/usuario/lista");
-		//ModelAndView mav =new ModelAndView();
-		Boolean status;
-		
-		if (errors.hasErrors())
-		{
-			LOG.error("/usuario/alta: por favor revise el formulario.");
-			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
-		}
-		
+		security.isAuthorized(principal, ROLE);
+
 		if (formulario.getRole().equals("C"))
 		{
-			status = boAccount.modificar(boAccount.formToClienteEntity(formulario));
-		}
-		else
-		{
-			status = boAccount.modificar(boAccount.formToEntity(formulario));
+			LOG.error("/usuario/alta: No esta permitido cambiar el rol a Cliente.");
+			MessageHelper.addErrorAttribute(ra, "No esta permitido cambiar el rol a Cliente.");
+			return "redirect:/usuario/modificar?id=" + formulario.getEmail();
 		}
 		
-		Account registro = boAccount.formToEntityModificar(formulario);
-		
-		if (!status){//si no se guarda
+		if (!boAccount.modificar(boAccount.formToEntity(formulario))){//si no se guarda
 			LOG.error("/usuario/alta: por favor revise el formulario.");
 			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
-			return null;
+			return "redirect:/usuario/modificar?id=" + formulario.getEmail();
 		}
 		else
 		{
-			LOG.info("/usuario/modificar: actualizado registro para " + registro.getEmail());
+			LOG.info("/usuario/modificar: actualizado registro para " + formulario.getEmail());
 			MessageHelper.addSuccessAttribute(ra, "El usuario se guardo correctamente");
 		}
 		return "redirect:/usuario/lista";
 	}
 
+	@RequestMapping(value = "/actual", method = RequestMethod.POST)
+	public String current(@ModelAttribute SignupForm formulario, Principal principal, RedirectAttributes ra) 
+	{
+		formulario.setEmail(principal.getName());
+				
+		if (!boAccount.modificar(formulario)){//si no se guarda
+			LOG.error("/usuario/alta: por favor revise el formulario.");
+			MessageHelper.addErrorAttribute(ra, "Por favor revise el formulario.");
+		}
+		else
+		{
+			LOG.info("/usuario/modificar: actualizado registro para " + formulario.getEmail());
+			MessageHelper.addSuccessAttribute(ra, "El registro se actualizo correctamente");
+		}
+		return "redirect:/usuario/actual";
+	}
 }

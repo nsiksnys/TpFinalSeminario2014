@@ -3,9 +3,11 @@ package frgp.seminario.cine.bo.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.inject.Inject;
 import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.account.Account;
@@ -27,18 +29,58 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	@Autowired
 	FechaUtils utils;
 	
-	private HashMap<String, String> roles;
+	@Inject
+	private PasswordEncoder passwordEncoder;
+		
 	
-	
+	/**
+	 * Recupera un registro Account activo de la base de datos
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
 	@Override
 	public Account get(Object email) {
 		return accounts.findByEmail((String) email);
 	}
 	
+	/**
+	 * Recupera un registro Cliente activo de la base de datos
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
 	public Cliente getCliente(Object email){
 		return clientes.get(email);
 	}
+	
+	/**
+	 * Recupera un registro Account de la base de datos, sin importar si esta activo o no
+	 * @param email email de la cuenta
+	 * @return un Account con la cuenta, o null si no lo encontro
+	 */
+	public Account getActiveOrInactive(Object email){
+		return accounts.getActiveOrInactive(email);
+	}
+	
+	public boolean getActiveBoolean(Object email)
+	{
+		//si encontro un registro 
+		if (this.get(email) != null){
+			return true;
+		}
+		
+		return false;
+	}
 
+	
+	public boolean getActiveOrInactiveBoolean(Object email)
+	{
+		//si encontro un registro 
+		if (this.getActiveOrInactive(email) != null){
+			return true;
+		}
+		
+		return false;
+	}
 	@Override
 	public boolean guardar(Account registro) {
 		try
@@ -64,18 +106,62 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		if (registroActual.equals(registro))
 			return true;
 		
-		registro.setPassword(registroActual.getPassword());//la password no cambia aca
+		if (getRoles().containsKey(registro.getRole())){
+			registroActual.setRole(registro.getRole());
+		}
 		
-		return accounts.merge(registro);
+		//si se cambia a cliente, devuelve falso porque no se puede (genera un RollbackException)
+		if (registro.getRole().equals("C")){
+				return false;
+		}
+		
+		return accounts.merge(registroActual);
 	}
 	
-	public boolean modificar(Cliente registro){		
+	/**
+	 * Usado para cambiar los datos del usuario logueado (/usuario/actual)
+	 * @param formulario
+	 * @return el resultado del merge del registro
+	 */
+	public boolean modificar(SignupForm formulario) {
+		Account registro = this.get(formulario.getEmail());
+		
+		//si el mail corresponde a un cliente, se pasa a la funcion propia de esa clase
+		if (registro.getRole().equals("C"))
+			return clientes.modificar(formulario);
+		
+		//guardo los cambios posibles
+		if (formulario.getNombre() != "")
+			registro.setNombre(formulario.getNombre());
+		
+		if (formulario.getNombre() != "")
+			registro.setApellido(formulario.getApellido());
+		
+		if (formulario.getFechaNacimiento() != null)
+			registro.setFechaNacimiento(utils.getFechaFormatoDiaMesAnio(formulario.getFechaNacimiento()));
+		
+		if (formulario.getPreguntaSeguridad() != "")
+			registro.setPreguntaSeguridad(formulario.getPreguntaSeguridad());
+		
+		if (formulario.getRespuestaSeguridad() != "")
+			registro.setRespuestaSeguridad(passwordEncoder.encode(formulario.getRespuestaSeguridad()));
+
+		return accounts.merge(registro);
+	}
+
+	@Deprecated
+	public boolean modificar(Cliente registro){
+		if (!(registro instanceof frgp.seminario.cine.model.Cliente))
+			return false;
+		
 		return clientes.modificar(registro);
 	}
 
 	@Override
 	public boolean desactivar(Account registro) {
-		//TODO: verificaciones propias de esta clase
+		//Si el registro corresponde a un cliente, se pasa a la funcion de BoCliente
+		if (registro.getRole().equals("C"))
+			return clientes.desactivar(clientes.get(registro.getEmail()));
 		
 		if (registro.isActive())
 			registro.setActive(false);
@@ -97,7 +183,12 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 
 	@Override
 	public boolean verificar(Account registro) {
-		// TODO verificaciones propias de la clase
+		if (!(registro instanceof frgp.seminario.cine.account.Account))
+			return false;
+		
+		if (!accounts.getIdByObject(registro).equals(""))
+			return false;
+		
 		return true;
 	}
 
@@ -167,7 +258,7 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 		formulario.setNombre(registro.getNombre());
 		formulario.setApellido(registro.getApellido());
 		formulario.setEmail(registro.getEmail());
-		formulario.setRole(registro.getRole());
+		formulario.setRole(getRoles().get(registro.getRole()));
 		
 		//parametros nulleables
 		if (registro.getSexo() != null)
@@ -186,10 +277,61 @@ public class BoAccount implements BusinessObject<Account, SignupForm> {
 	}
 	
 	public HashMap<String, String> getRoles(){
-		roles = new HashMap<String, String>();
-		roles.put("A", "Administrador");
-		roles.put("C", "Cliente");
-		roles.put("G", "Gerente");
-		return roles;
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("A", "Administrador");
+		map.put("C", "Cliente");
+		map.put("G", "Gerente");
+		return map;
+	}
+	
+	public HashMap<String, String> getSexos(){
+		HashMap<String, String> map = new HashMap<String, String>(2);
+		map.put("F", "Femenino");
+		map.put("M", "Masculino");
+		
+		return map;
+	}
+
+/**
+ * Verifica que la respuesta de seguridad enviada coincida con la que esta en el registro de usuario
+ * @param email mail de la cuenta
+ * @param dni dni de la cuenta
+ * @param respuesta respuesta de seguridad ingresada en el formulario
+ * @return true si la respuesta coincide, false si no
+ */
+	public boolean verificarRespuestaSeguridad(String email, Long dni, String respuesta) {
+		Account cuenta = accounts.getActiveOrInactive(email);
+		
+		//si no se encontro el registro en la base de datos o el dni no coincide
+		if (cuenta == null || !cuenta.getDni().equals(dni))
+		{
+			return false;
+		}
+		
+		//si la respuesta de seguridad submiteada coincide
+		if (passwordEncoder.matches(respuesta, cuenta.getRespuestaSeguridad()))
+		{
+			return true;
+		}
+		
+		return false;
+	}
+
+/**
+ * Recupera una cuenta, ya sea por estar inactiva o por no recordar la contraseña
+ * @param email mail de la cuenta
+ * @param dni dni de la cuenta
+ * @param respuesta respuesta de seguridad ingresada en el formulario
+ * @return true si el merge del registro fue exitoso, false si no
+ */
+	public boolean recuperar(String email, Long dni, String respuesta)
+	{
+		//si la verificacion es exitosa
+		if (verificarRespuestaSeguridad(email, dni, respuesta))
+		{
+			return activar(getActiveOrInactive(email));
+		}
+		
+		return false;
 	}
 }

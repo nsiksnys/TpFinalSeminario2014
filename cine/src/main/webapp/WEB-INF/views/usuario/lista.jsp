@@ -7,13 +7,13 @@
 <table class="table table-bordered table-hover">
 	<thead>
 		<tr>
-			<td>DNI</td>
-			<td>Nombre</td>
-			<td>Apellido</td>
-			<td>Mail</td>
-			<td>Rol</td>
-			<td>Modificar</td>
-			<td>Status</td>
+			<th>DNI</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>Mail</th>
+			<th>Rol</th>
+			<th>Modificar</th>
+			<th>Status</th>
 		</tr>
 	</thead>
 	<tbody>

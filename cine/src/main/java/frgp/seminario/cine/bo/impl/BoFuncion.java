@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import frgp.seminario.cine.bo.BusinessObject;
+import frgp.seminario.cine.findItem.impl.AsientoFindItem;
 import frgp.seminario.cine.findItem.impl.FuncionFindItem;
 import frgp.seminario.cine.forms.ComplejoForm;
 import frgp.seminario.cine.forms.FuncionForm;
@@ -34,6 +35,10 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Autowired
 	@Qualifier("FuncionFindItem") //aclaro cual es el bean a inyectar
 	FuncionFindItem busquedaFuncion;
+	
+	@Autowired
+	@Qualifier("AsientoFindItem") //aclaro cual es el bean a inyectar
+	AsientoFindItem busquedaAsiento;
 	
 	@Autowired
 	@Qualifier("BoHorario") //aclaro cual es el bean a inyectar
@@ -84,7 +89,10 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	 **/
 	@Override
 	public boolean modificar(Funcion registro) {
-		if (!verificar(registro))
+		if (!(registro instanceof frgp.seminario.cine.model.Funcion))
+			return false;
+		
+		if (registro.getId() == null)
 			return false;
 		
 		return funcionRepository.merge(registro);
@@ -162,7 +170,7 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	
 	/**
 	 * Busca los horarios disponibles segun la duracion de la pelicula
-	 * @param duracion duracion de la pelicula, en HH:MM:SS
+	 * @param pelicula id de la pelicula por la que se busca
 	 * @param idComplejo id del complejo en el que se busca
 	 * @return un HashMap con la forma "Horario.id, Horario.horaInicio - Horario.horaFin"
 	 */
@@ -179,9 +187,11 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 				horariosSugeridos.remove(item.getHorario());
 		}
 		
+		//TODO: Queda verificar que no se asigne la misma función para varias películas.
+		
 		//cargo los horarios restantes en el hashmap
 		for (Horario item : horariosSugeridos)
-			respuesta.put(item.getId().toString(), fechaUtils.getFormatoHoraMinuto(item.getHoraInicio()) + " - " + fechaUtils.getFormatoHoraMinuto(item.getHoraFin()));
+			respuesta.put(item.getId().toString(), item.getHoraInicio() + " - " + item.getHoraFin()+ " (" + item.getDuracion() + " )");
 		
 		if (respuesta.isEmpty())
 			return null;
@@ -212,9 +222,68 @@ public class BoFuncion implements BusinessObject<Funcion, FuncionForm> {
 	@Override
 	public Funcion formToEntity(FuncionForm formulario)
 	{
-		return new Funcion(salas.get(formulario.getSala()), 
-							peliculas.get(formulario.getPelicula()), 
-							horarioRepository.get(Horario.class, formulario.getHorario()));
+		return new Funcion(salas.get(formulario.getsalas()), 
+							peliculas.get(formulario.getPeliculas()), 
+							horarioRepository.get(Horario.class, formulario.getHorarios()));
+	}
+	
+	public FuncionForm entityToForm(Funcion registro)
+	{
+		FuncionForm formulario = new FuncionForm();
+		
+		formulario.setId(registro.getId());
+		formulario.setNombreComplejo(complejos.get(registro.getSala().getIdComplejo()).getNombre());
+		formulario.setComplejos(registro.getSala().getIdComplejo());
+		formulario.setNombreSala(Integer.toString(registro.getSala().getNumeroSala()));
+		formulario.setsalas(registro.getSala().getId());
+		formulario.setPeliculas(registro.getPelicula().getId());
+		formulario.setNombrePelicula(registro.getPelicula().getNombre());
+		formulario.setHorarios(registro.getHorario().getId());
+		formulario.setInicio(registro.getHorario().getHoraInicio().toString());//TODO: revisar
+		formulario.setFin(registro.getHorario().getHoraFin().toString());//TODO: revisar
+		formulario.setActivo(registro.isActivo());
+		
+		return formulario;
 	}
 
+	/**
+	 * Busca las funciones existentes para la pelicula y complejo indicados
+	 * @param pelicula id de la pelicula
+	 * @param complejo id del complejo
+	 * @return un HashMap con la forma "Horario.id, Horario.horaInicio"
+	 */
+	public HashMap<String, String> getFuncionesDisponibles(Long pelicula, Long complejo) {
+		ArrayList<Funcion> funcionesActivasComplejo = busquedaFuncion.findActiveByComplejo(complejo);
+		HashMap<String, String> respuesta = new HashMap<String, String>();
+		int asientosReservadosFuncion;
+		
+		//cargo los horarios restantes en el hashmap
+		for (Funcion item : funcionesActivasComplejo)
+		{
+			asientosReservadosFuncion = busquedaAsiento.getCantidadAsientoByFuncionStatusReserva(item.getId(), true);
+			
+			//si la pelicula de la funcion coincide y la sala no está cubierta en toda su capacidad
+			if (item.getPelicula().getId() == pelicula &&  !salas.isCubierta(asientosReservadosFuncion)) 
+				respuesta.put(item.getId().toString(), item.getHorario().getHoraInicio().toString());
+		}
+		
+		if (respuesta.isEmpty())
+			return null;
+		
+		return respuesta;
+	}
+
+	/**
+	 ** Recupera todos los registros de la clase Funcion como FuncionForm
+	 ** @return un List con todos los registros
+	 **/
+	public List<FuncionForm> listarTodosForm() {
+		List<FuncionForm> respuesta = new ArrayList<FuncionForm>();
+		
+		for (Funcion registro : listarTodos())
+		{
+			respuesta.add(entityToForm(registro));
+		}
+		return respuesta;
+	}
 }

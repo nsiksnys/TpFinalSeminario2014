@@ -52,7 +52,7 @@
 	
 	<script src="<c:url value="/resources/js/jQuery.js" />"></script>
     <script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
-    <script src="<c:url value="/resources/js/general.js" />"></script>
+    <script src="<c:url value="/resources/js/ubicacion.js" />"></script>
     
     <!-- script que agrega otros scripts segun la pagina en la que este -->
     <script type="text/javascript" src="<c:url value="/resources/js/agregarScripts.js"/>"  rel="stylesheet" media="screen"></script>

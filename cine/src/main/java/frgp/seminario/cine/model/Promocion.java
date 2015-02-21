@@ -24,7 +24,7 @@ public class Promocion {
 	private String descripcion;
 	
 	@OneToMany
-	private List<Complejo> cines;
+	private List<Complejo> complejo;
 	
 	@Column(nullable=false)
 	private Date fechaInicio;
@@ -34,30 +34,34 @@ public class Promocion {
 	
 	@Column(nullable=false)
 	private boolean activo;
+	
+	public Promocion() {
+		//constructor por defecto
+	}
 
-	public Promocion(Long id, String nombre, String descripcion,
-			List<Complejo> cines, Date fechaInicio, Date fechaFin,
-			boolean activo) {
+	public Promocion(Long id, String nombre, String descripcion, List<Complejo> complejo, Date fechaInicio, Date fechaFin, boolean activo) {
+		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.cines = cines;
+		this.complejo = complejo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = activo;
 	}
 
-	public Promocion(String nombre, String descripcion, List<Complejo> cines,
-			Date fechaInicio, Date fechaFin) {
+	public Promocion(String nombre, String descripcion, List<Complejo> complejo, Date fechaInicio, Date fechaFin) {
+		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
-		this.cines = cines;
+		this.complejo = complejo;
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.activo = true;
 	}
 	
 	public Promocion(String nombre, String descripcion, Date fechaInicio, Date fechaFin) {
+		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
@@ -89,12 +93,13 @@ public class Promocion {
 		this.descripcion = descripcion;
 	}
 
-	public List<Complejo> getCines() {
-		return cines;
+
+	public List<Complejo> getComplejo() {
+		return complejo;
 	}
 
-	public void setCines(List<Complejo> cines) {
-		this.cines = cines;
+	public void setComplejo(List<Complejo> complejo) {
+		this.complejo = complejo;
 	}
 
 	public Date getFechaInicio() {
@@ -121,40 +126,25 @@ public class Promocion {
 		this.activo = activo;
 	}
 	
-	public boolean equals(Promocion item)
+	
+	public boolean equals(Promocion registro)
 	{
-		if (nombre.compareTo(item.getNombre()) != 0)
+		if (nombre.compareTo(registro.getNombre()) != 0)
 			return false;
 		
-		if (descripcion.compareTo(item.getDescripcion()) != 0)
+		if (descripcion.compareTo(registro.getDescripcion()) != 0)
 			return false;
 		
-		if (!isMismaLista(this.cines, item.getCines()))
+		if (fechaInicio.compareTo(registro.getFechaInicio()) != 0)
 			return false;
 		
-		if (fechaInicio.compareTo(item.getFechaInicio()) != 0)
+		if (fechaFin.compareTo(registro.getFechaFin()) != 0)
 			return false;
 		
-		if (fechaFin.compareTo(item.getFechaFin()) != 0)
-			return false;
-		
-		if (activo != item.isActivo())
+		if (activo != registro.isActivo())
 			return false;
 		
 		return true;
 	}
-	
-	public boolean isMismaLista(List<Complejo> thisCines, List<Complejo> itemCines)
-	{
-		int cuenta = 0;
-		for (int i = 0; i < thisCines.size(); i++) {// uso un for tradicional para evitar que busque un null en elementos
-			for (int j = 0; j < thisCines.size(); j++) {
-				if (thisCines.get(i).getId() == itemCines.get(j).getId())// comparo los ids de los complejos
-					cuenta++;
-			}
-		}
-		if (cuenta == thisCines.size())
-			return true;
-		return false;
-	}
 }
+	

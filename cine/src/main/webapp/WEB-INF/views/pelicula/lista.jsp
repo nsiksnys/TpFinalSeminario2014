@@ -23,12 +23,11 @@
 <table class="table table-bordered table-hover">
 	<thead>
 		<tr>
-			<td>Id</td>
-			<td>Nombre</td>
-			<td>Fecha de creacion</td>
-			<!-- <td>Detalles</td> -->
-			<td>Modificar</td>
-			<td>Status</td>
+			<th>Id</th>
+			<th>Nombre</th>
+			<th>Fecha de creacion</th>
+			<th>Modificar</th>
+			<th>Status</th>
 		</tr>
 	</thead>
 	<tbody>

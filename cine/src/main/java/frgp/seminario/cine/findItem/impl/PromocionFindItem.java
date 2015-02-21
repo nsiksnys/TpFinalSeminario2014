@@ -28,15 +28,31 @@ public class PromocionFindItem {
 		}
 		return (long) 0;
 	}
+	
+	
+	/**
+	 * Busca un registro activo con las mismas caracteristicas en la base de datos
+	 * @param item Pelicula que buscamos en la base
+	 * @return id del registro, 0 si no se encontro ninguno
+	 **/
+	public Long getActiveIdByObject(Promocion item){
+		ArrayList<Promocion> todos = getAllEnabled();
+		
+		for (Promocion registro : todos) {
+			if (registro.equals(item))
+				return registro.getId();
+		}
+		return (long) 0;
+	}
 
 	
 	@SuppressWarnings("unchecked")
 	public Promocion findByName(String name){
-		String titulo = name.toUpperCase();
+		String nombre = name.toUpperCase();
 		ArrayList<Promocion> todos = (ArrayList<Promocion>) dataAccess.getAll(Promocion.class);
 		
 		for (Promocion item : todos) {
-			if (item.getNombre().equals(titulo))
+			if (item.getNombre().equals(nombre))
 				return item;
 		}
 		return null;
@@ -44,11 +60,11 @@ public class PromocionFindItem {
 	
 	@SuppressWarnings("unchecked")
 	public boolean findByNameBoolean(String name){
-		name.toUpperCase();
+		String nombre = name.toUpperCase();
 		ArrayList<Promocion> todos = (ArrayList<Promocion>) dataAccess.getAll(Promocion.class);
 		
 		for (Promocion item : todos) {
-			if (item.getNombre().equals(name))
+			if (item.getNombre().equals(nombre))
 				return true;
 		}
 		return false;
