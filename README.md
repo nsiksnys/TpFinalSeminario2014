@@ -17,9 +17,3 @@
 * JPA (Hibernate/HSQLDB)
 * JUnit
 * Spring Security
-
-####Estructura de paquetes y descripción de su contenido
-Ver paquetes.txt
-
-####Estructura de carpetas para la capa de presentación y descripción de su contenido
-Ver carpetas.txt
